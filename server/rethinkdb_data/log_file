@@ -1,0 +1,18 @@
+2018-10-04T13:11:18.435954000 0.051244s notice: Recursively removing directory /Users/hassanjawhar/Desktop/Workspace/neombet/server/rethinkdb_data/tmp
+2018-10-04T13:11:18.439366000 0.054661s notice: Initializing directory /Users/hassanjawhar/Desktop/Workspace/neombet/server/rethinkdb_data
+2018-10-04T13:11:18.439664000 0.054953s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/hassanjawhar/Desktop/Workspace/neombet/server/rethinkdb_data' did not already exist or is empty.)
+2018-10-04T13:11:18.439806000 0.055096s notice: Running rethinkdb 2.3.6 (CLANG 8.1.0 (clang-802.0.42))...
+2018-10-04T13:11:18.445386000 0.060676s notice: Running on Darwin 17.3.0 x86_64
+2018-10-04T13:11:18.445612000 0.060901s notice: Loading data from directory /Users/hassanjawhar/Desktop/Workspace/neombet/server/rethinkdb_data
+2018-10-04T13:11:18.550247000 0.165541s info: Automatically using cache size of 577 MB
+2018-10-04T13:11:18.551623000 0.166916s notice: Listening for intracluster connections on port 29015
+2018-10-04T13:11:18.553812000 0.169105s notice: Listening for client driver connections on port 28015
+2018-10-04T13:11:18.553976000 0.169269s notice: Listening for administrative HTTP connections on port 8080
+2018-10-04T13:11:18.553979000 0.169272s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2018-10-04T13:11:18.553985000 0.169278s notice: Listening on driver addresses: 127.0.0.1, ::1
+2018-10-04T13:11:18.553990000 0.169283s notice: Listening on http addresses: 127.0.0.1, ::1
+2018-10-04T13:11:18.553999000 0.169292s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2018-10-04T13:11:18.554010000 0.169302s notice: Server ready, "ukf_1673_local_op9" fb86d310-7741-4fbd-a3c9-e240ce02dbc5
+2018-10-04T13:23:36.502036000 738.142760s info: Table 2cdae93e-3d03-4cc0-9fa6-1df387bd3b8b: Starting a new Raft election for term 1.
+2018-10-04T13:23:36.503010000 738.143734s info: Table 2cdae93e-3d03-4cc0-9fa6-1df387bd3b8b: Added replica on this server.
+2018-10-04T13:23:36.511493000 738.152217s info: Table 2cdae93e-3d03-4cc0-9fa6-1df387bd3b8b: This server is Raft leader for term 1. Latest log index is 0.
