@@ -1,4 +1,5 @@
 class Database {
+
     initializeConnection() {
         return new Promise((resolve, reject) => {
             r.connect({
@@ -13,7 +14,7 @@ class Database {
 
     insertData(data) {
         return new Promise((resolve, reject) => {
-            r.db('neombet').table('users').insert(data).run(r.connection, function (err, result) {
+            r.db('neombet').table('matches').insert(data).run(r.connection, function (err, result) {
                 if (err) {
                     return reject({success: false});
                 } else {
@@ -35,26 +36,22 @@ class Database {
         });
     }
 
-    viewUser(user_id) {
+    viewMatch(match_id) {
         return new Promise((resolve, reject) => {
-            r.db('neombet').table('users').get(user_id).run(r.connection, function (err, result) {
+            r.db('neombet').table('matches').get(match_id).run(r.connection, function (err, result) {
                 if (err) {
                     return reject(err.message);
                 } else {
-                    if (result == null) {
-                        return reject("Not found.");
-                    } else {
-                        return resolve(result);
-                    }
+                    return resolve(result);
                 }
             });
         });
     }
 
-    updateUser(user_id, data) {
+    updateMatch(match_id, data) {
         return new Promise((resolve, reject) => {
-            r.db('neombet').table('users').filter({
-                id: user_id
+            r.db('neombet').table('matches').filter({
+                id: match_id
             }).update(data).run(r.connection, function (err, result) {
                 if (err) return reject(err.message);
                 return resolve(result);
@@ -62,9 +59,9 @@ class Database {
         });
     }
 
-    viewUsers() {
+    viewMatches() {
         return new Promise((resolve, reject) => {
-            r.db('neombet').table('users').run(r.connection, function (err, cursor) {
+            r.db('neombet').table('matches').run(r.connection, function (err, cursor) {
                 if (err) {
                     return reject(err.message);
                 } else {
@@ -113,5 +110,20 @@ class Database {
         });
     }
 }
+
+
+// let footballdata = new (require('../api/matches/FootballData'))('ed06bf4058f04f9288f8fe44a55bc263');
+
+// footballdata.getLeagueMatches('CL').then(matches=>{
+//     console.log(JSON.stringify(matches))
+// }).catch(err=>console.log(err))
+
+
+// footballdata.getMarchDetails(200063).then(matches=>{
+//     console.log(matches)
+// }).catch(err=>console.log(err))
+
+// let MATCHES = require('./matches');
+// let KEYED_MATCHES = require('./keyed_matches');
 
 module.exports = Database;

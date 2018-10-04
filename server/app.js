@@ -1,11 +1,13 @@
+r = require('rethinkdb');
+db = new (require('./api/rethinkdb/Database'));
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-let r = require('rethinkdb');
-let db = new (require('./api/rethinkdb/Database'));
+
 var index = require('./routes/index');
 var app = express();
 
@@ -20,7 +22,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 db.initializeConnection()
     .then(conn => {
         r.connection = conn;
@@ -29,7 +30,7 @@ db.initializeConnection()
     });
 
 app.use('/', index);
-// app.use('/v1/matches', require('./api/matches/Match'));
+app.use('/v1/matches', require('./routes/matches'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -2,12 +2,12 @@ var request = require('request');
 
 class FootballData {
 
-    constructor(api_key) {
-        this.API_KEY = api_key;
+    constructor() {
+        this.API_KEY = process.env.API_KEY;
     }
 
     getApiKey() {
-        return this.API_KEY;
+        return process.env.API_KEY;
     }
 
     getLeagueMatches(league) {
@@ -21,7 +21,7 @@ class FootballData {
         };
         return new Promise((resolve, reject) => {
             request(options, (error, response, body) => {
-                if (!error && response.statusCode == 200) {
+                if (!error && response.statusCode === 200) {
                     var info = JSON.parse(body);
                     return resolve(info);
                 } else {
@@ -31,7 +31,7 @@ class FootballData {
         });
     }
 
-    getMarchDetails(id) {
+    getMatchDetails(id) {
         var options = {
             url: `https://api.football-data.org/v2/matches/${id}`,
             method: 'GET',
@@ -42,7 +42,7 @@ class FootballData {
         };
         return new Promise((resolve, reject) => {
             request(options, (error, response, body) => {
-                if (!error && response.statusCode == 200) {
+                if (!error && response.statusCode === 200) {
                     var info = JSON.parse(body);
                     return resolve(info);
                 } else {
