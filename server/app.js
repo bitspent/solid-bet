@@ -10,24 +10,32 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var app = express();
+db.initializeConnection()
+    .then(async conn => {
+        r.connection = conn;
+
+        // let wrapper = require('./api/Wrapper');
+        //
+        // wrapper.insertMatches('CL').then(result => {
+        //     console.log(result);
+        // }).catch(err => {
+        //     console.log(err)
+        // });
+
+    })
+    .catch(err => {
+    });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-db.initializeConnection()
-    .then(conn => {
-        r.connection = conn;
-    })
-    .catch(err => {
-    });
+
 
 app.use('/', index);
 app.use('/v1/matches', require('./routes/matches'));

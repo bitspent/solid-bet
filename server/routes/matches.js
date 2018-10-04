@@ -4,16 +4,15 @@ var router = express.Router();
 router.get('/', function (req, res, next) {
     db.viewMatches()
         .then(matches => {
-            console.log("Total matches: " + matches.length)
-            return res.json(matches[0]);
+            return res.json(matches);
         })
         .catch(err => {
             return res.send(err);
         });
 });
 
-router.get('/:matchId', async (req, res, next) => {
-    db.viewMatch(req.params.matchId)
+router.get('/:matchId', function (req, res, next) {
+    db.viewMatch(+req.params.matchId)
         .then(data => {
             let match = data["data"];
             let league = match["league"];
@@ -43,6 +42,6 @@ router.get('/:matchId', async (req, res, next) => {
         }).catch(error => {
         return res.send(error);
     });
-});
+})
 
 module.exports = router;
