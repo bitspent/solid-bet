@@ -22,7 +22,7 @@ router.get('/:matchId', function (req, res, next) {
         .then(data => {
             let match = data["data"];
             let league = match["league"];
-            let lastUpdated = match["lastUpdated"];
+            let lastUpdated = match["utcDate"];
             let timestamp = Math.floor(new Date(lastUpdated).getTime() / 1000);
             let score = match["score"]["fullTime"];
             let teamOne = {
