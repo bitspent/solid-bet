@@ -38,7 +38,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/', index);
-app.use('/v1/matches', require('./routes/matches'));
+
+app.use('/v1/matches', require('./routes/api/matches'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

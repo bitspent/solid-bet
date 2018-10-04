@@ -1,5 +1,5 @@
 r = require('rethinkdb');
-let db = new (require('./api/rethinkdb/Database'));
+let db = new (require('../api/rethinkdb/Database'));
 let async = require('async');
 
 async.series({
