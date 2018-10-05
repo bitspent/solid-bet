@@ -336,17 +336,16 @@ App = {
             console.log("Enter a valid bet price.");
             return;
         }
-        // _matchId , _league, _teamOne, _teamTwo, _matchTimestamp, _executionDelay
         let _league = match["league"];
         let _teamOne = match["homeTeam"]["name"];
         let _teamTwo = match["awayTeam"]["name"];
         let _matchTimestamp = Math.floor(new Date(match["utcDate"]).getTime() / 1000);
         let _executionDelay = _matchTimestamp + (3 * 60 * 60);
         let _price = +price * 1e18;
-console.log(_price)
         var SolidSportBet = web3.eth.contract(ABI);
         var SolidSportBetInstance = SolidSportBet.new(_matchId, _league, _teamOne, _teamTwo, _matchTimestamp, _executionDelay, _price, {
-            from: App.account
+            from: App.account,
+            value: 0.01 * 1e18
         }, function (err, deployedContract) {
             if (!err) {
                 if (!deployedContract.address) {
