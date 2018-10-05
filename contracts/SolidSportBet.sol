@@ -1,19 +1,19 @@
 pragma solidity ^0.4.24;
 
 import './Oraclize.sol';
-import './Ownable.sol';
-import './Pausable.sol';
-import './ReentrancyGuard.sol';
 
 /// @title SportsBet
 /// @author FadyAro
-contract SportsBet is usingOraclize, Pausable, ReentrancyGuard {
+contract SportsBet is usingOraclize {
     
     event OraclizeLog(string result);
     
     event newSubscriber(address indexed addr, uint scoreOne, uint scoreTwo);
     
     event betResolved(uint scoreOne, uint scoreTwo);
+    
+    /// SolidBets
+    address owner;
     
     /// match status 
     /// pending: 0
@@ -77,7 +77,7 @@ contract SportsBet is usingOraclize, Pausable, ReentrancyGuard {
             
             price = _price;
             
-            owner = msg.sender;
+            owner = 0x908E009EA04508dB32933f463DEC7d1d60AAA93F;
             
             scheduleOraclize();
     }
