@@ -24,6 +24,36 @@ class Database {
         });
     }
 
+    insertTransaction(payload) {
+        return new Promise((resolve, reject) => {
+            r.db('neombet').table('contracts').insert({
+                id: payload.id,
+                contracts: [payload.data]
+            }).run(r.connection, function (err, result) {
+                if (err) {
+                    return reject({success: false});
+                } else {
+                    return resolve({success: true, result: result});
+                }
+            });
+        });
+    }
+
+    appendTransaction(payload) {
+        return new Promise((resolve, reject) => {
+            r.db('neombet').table('contracts').get(payload.id)
+                .update({
+                    contracts: r.row('contracts').append(payload.data)
+                }).run(r.connection, function (err, result) {
+                if (err) {
+                    return reject({success: false});
+                } else {
+                    return resolve({success: true, result: result});
+                }
+            });
+        });
+    }
+
     deleteData(table_name, data_id) {
         return new Promise((resolve, reject) => {
             r.db('neombet').table(table_name).get(data_id).delete().run(r.connection, function (err, result) {
@@ -48,6 +78,18 @@ class Database {
         });
     }
 
+    viewMatchTransactions(match_id) {
+        return new Promise((resolve, reject) => {
+            r.db('neombet').table('contracts').get(match_id).run(r.connection, function (err, result) {
+                if (err) {
+                    return reject(err.message);
+                } else {
+                    return resolve(result);
+                }
+            });
+        });
+    }
+
     updateMatch(match_id, data) {
         return new Promise((resolve, reject) => {
             r.db('neombet').table('matches').filter({
@@ -62,6 +104,71 @@ class Database {
     viewMatches() {
         return new Promise((resolve, reject) => {
             r.db('neombet').table('matches').run(r.connection, function (err, cursor) {
+                if (err) {
+                    return reject(err.message);
+                } else {
+                    cursor.toArray(function (err, result) {
+                        if (err) return reject(err.message);
+                        return resolve(result);
+                    });
+                }
+            });
+        });
+    }
+
+    viewMatchesTransactions() {
+        return new Promise((resolve, reject) => {
+            r.db('neombet').table('contracts').run(r.connection, function (err, cursor) {
+                if (err) {
+                    return reject(err.message);
+                } else {
+                    cursor.toArray(function (err, result) {
+                        if (err) return reject(err.message);
+                        return resolve(result);
+                    });
+                }
+            });
+        });
+    }
+
+    updatePendingContract(transactionHash, data) {
+        return new Promise((resolve, reject) => {
+            r.db('neombet').table('contracts').filter(function (contract) {
+                return contract['transactionHash'] === transactionHash;
+            }).update({
+                // contracts: data
+            }).run(r.connection, function (err, result) {
+                if (err) {
+                    return reject({success: false});
+                } else {
+                    return resolve({success: true, result: result});
+                }
+            });
+        });
+    }
+
+    viewPendingContracts() {
+        return new Promise((resolve, reject) => {
+            r.db('neombet').table('contracts').filter(function (contract) {
+                return contract['contractAddress'] == null;
+            }).run(r.connection, function (err, cursor) {
+                if (err) {
+                    return reject(err.message);
+                } else {
+                    cursor.toArray(function (err, result) {
+                        if (err) return reject(err.message);
+                        return resolve(result);
+                    });
+                }
+            });
+        });
+    }
+
+    viewActiveContracts() {
+        return new Promise((resolve, reject) => {
+            r.db('neombet').table('contracts').filter(function (contract) {
+                return contract['contractAddress'] != null;
+            }).run(r.connection, function (err, cursor) {
                 if (err) {
                     return reject(err.message);
                 } else {
@@ -110,20 +217,5 @@ class Database {
         });
     }
 }
-
-
-// let footballdata = new (require('../api/matches/FootballData'))('ed06bf4058f04f9288f8fe44a55bc263');
-
-// footballdata.getLeagueMatches('CL').then(matches=>{
-//     console.log(JSON.stringify(matches))
-// }).catch(err=>console.log(err))
-
-
-// footballdata.getMarchDetails(200063).then(matches=>{
-//     console.log(matches)
-// }).catch(err=>console.log(err))
-
-// let MATCHES = require('./matches');
-// let KEYED_MATCHES = require('./keyed_matches');
 
 module.exports = Database;

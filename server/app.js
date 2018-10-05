@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var app = express();
+
 db.initializeConnection()
     .then(async conn => {
         r.connection = conn;
@@ -40,7 +41,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 
 app.use('/v1/matches', require('./routes/api/matches'));
+app.post('/v1/matches', require('./routes/api/matches_transactions'));
 
+setTimeout(() => {
+    require('./api/blockchain/ContractWrapper');
+}, 2500);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');

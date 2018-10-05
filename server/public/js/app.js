@@ -247,34 +247,53 @@ App = {
             console.log("Enter a valid bet price.");
             return;
         }
-        let _league = web3.toHex(match["league"]);
-        let _teamOne = web3.toHex(match["homeTeam"]["name"]);
-        let _teamTwo = web3.toHex(match["awayTeam"]["name"]);
+        let _league = match["league"];
+        let _teamOne = match["homeTeam"]["name"];
+        let _teamTwo = match["awayTeam"]["name"];
         let _matchTimestamp = Math.floor(new Date(match["utcDate"]).getTime() / 1000);
         let _executionDelay = _matchTimestamp + (3 * 60 * 60);
         let _price = +price * 1e18;
-
-        console.log(_matchId);
-        console.log(_league);
-        console.log(_teamOne);
-        console.log(_teamTwo);
-        console.log(_matchTimestamp);
-        console.log(_executionDelay);
-        console.log(_price);
         console.log(+_matchId, _league, _teamOne, _teamTwo, _matchTimestamp, _executionDelay, _price)
         var SolidSportBet = web3.eth.contract(ABI);
         var SolidSportBetInstance = SolidSportBet.new(+_matchId, _league, _teamOne, _teamTwo, _matchTimestamp, _executionDelay, _price, {
-            from: App.account,
-            value: 0.02 * 1e18
-        }, function (err, deployedContract) {
-            if (!err) {
-                if (!deployedContract.address) {
-                    console.log(deployedContract.transactionHash);
-                } else {
-                    console.log(deployedContract.address);
+                from: App.account,
+                value: 0.01 * 1e18,
+                data: 0x0
+            },
+
+            function (err, deployedContract) {
+                if (!err) {
+                    if (!deployedContract.address) {
+                        console.log(deployedContract["transactionHash"]);
+                        $('#solidBetTransactionModal').modal({
+                            keyboard: false,
+                            show: true
+                        });
+
+                        $.ajax({
+                            method: 'POST',
+                            contentType: 'application/json',
+                            url: '/v1/matches/',
+                            data: JSON.stringify({
+                                account: App.account,
+                                matchId: _matchId,
+                                transactionHash: deployedContract["transactionHash"],
+                            }),
+                            success: function (data, textStatus, jqXHR) {
+                                $("#solidBetTransactionModalBody").html(`Successfully deployed contract for match: ${_matchId}<br/>Track your transaction on the ropsten network by clicking <a href="https://ropsten.etherscan.io/tx/${deployedContract["transactionHash"]}">here</a>`);
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.log('Failed to sign in.');
+                            }
+                        });
+
+                    } else {
+                        console.log(deployedContract.address);
+                    }
                 }
             }
-        });
+            )
+        ;
     },
 
     getMatches: function () {
@@ -337,3 +356,7 @@ function waitSeconds(seconds) {
 function dateToSeconds(current_date) {
     return Math.floor(new Date(current_date).getTime() / 1000);
 }
+
+$('#solidBetTransactionModal').on('hidden.bs.modal', function (e) {
+    $('#solidBetTransactionModalBody').html('');
+})

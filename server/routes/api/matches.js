@@ -48,6 +48,32 @@ router.get('/:matchId', function (req, res, next) {
         }).catch(error => {
         return res.send(error);
     });
-})
+});
 
+router.get('/:matchId/contracts', function (req, res, next) {
+    db.viewMatchesTransactions().then(result => {
+        return res.json(result);
+    }).catch(error => {
+        return res.send(error);
+    });
+});
+
+
+router.get('/:matchId/pending', function (req, res, next) {
+    db.viewPendingContracts().then(result => {
+        return res.json(result);
+    }).catch(error => {
+        return res.send(error);
+    });
+
+});
+
+router.get('/:matchId/active', function (req, res, next) {
+    db.viewActiveContracts().then(result => {
+        return res.json(result);
+    }).catch(error => {
+        return res.send(error);
+    });
+
+});
 module.exports = router;

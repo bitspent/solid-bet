@@ -30,6 +30,15 @@ async.series({
             .catch(err => {
                 parallelCb(err, null);
             });
+    },
+    four: function (parallelCb) {
+        db.createTable('contracts')
+            .then(result => {
+                parallelCb(null, "Successfully created match table.");
+            })
+            .catch(err => {
+                parallelCb(err, null);
+            });
     }
 }, function (err, results) {
     if (err) {
