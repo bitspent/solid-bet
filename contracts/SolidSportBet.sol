@@ -65,6 +65,7 @@ contract SportsBet is usingOraclize {
     )
         payable public 
     {
+            require(msg.value > 10**16);
             
             matchId = _matchId;
             
