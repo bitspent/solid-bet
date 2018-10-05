@@ -41,15 +41,6 @@ let ABI = [
         "type": "function"
     },
     {
-        "constant": false,
-        "inputs": [],
-        "name": "unpause",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
         "constant": true,
         "inputs": [],
         "name": "details",
@@ -92,20 +83,6 @@ let ABI = [
         "type": "function"
     },
     {
-        "constant": true,
-        "inputs": [],
-        "name": "paused",
-        "outputs": [
-            {
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "constant": false,
         "inputs": [
             {
@@ -124,29 +101,6 @@ let ABI = [
         "type": "function"
     },
     {
-        "constant": false,
-        "inputs": [],
-        "name": "pause",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
-            {
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "constant": true,
         "inputs": [],
         "name": "matchResult",
@@ -162,20 +116,6 @@ let ABI = [
         ],
         "payable": false,
         "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "newOwner",
-                "type": "address"
-            }
-        ],
-        "name": "transferOwnership",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -263,35 +203,6 @@ let ABI = [
         ],
         "name": "betResolved",
         "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [],
-        "name": "Pause",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [],
-        "name": "Unpause",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "name": "previousOwner",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "name": "newOwner",
-                "type": "address"
-            }
-        ],
-        "name": "OwnershipTransferred",
-        "type": "event"
     }
 ];
 
@@ -343,7 +254,7 @@ App = {
         let _executionDelay = _matchTimestamp + (3 * 60 * 60);
         let _price = +price * 1e18;
         var SolidSportBet = web3.eth.contract(ABI);
-        var SolidSportBetInstance = SolidSportBet.new(_matchId, _league, _teamOne, _teamTwo, _matchTimestamp, _executionDelay, _price, {
+        var SolidSportBetInstance = SolidSportBet.new(+_matchId, _league, _teamOne, _teamTwo, _matchTimestamp, _executionDelay, _price, {
             from: App.account,
             value: 0.01 * 1e18
         }, function (err, deployedContract) {
@@ -391,6 +302,13 @@ App = {
 
 };
 
+function toHex(s) {
+    var hex = '';
+    for (var i = 0; i < s.length; i++) {
+        hex += '' + s.charCodeAt(i).toString(16);
+    }
+    return `0x${hex}`;
+}
 
 onload = async () => {
     App.getMatches();
