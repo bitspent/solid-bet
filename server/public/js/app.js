@@ -261,10 +261,11 @@ App = {
         console.log(_matchTimestamp);
         console.log(_executionDelay);
         console.log(_price);
+        console.log(+_matchId, _league, _teamOne, _teamTwo, _matchTimestamp, _executionDelay, _price)
         var SolidSportBet = web3.eth.contract(ABI);
         var SolidSportBetInstance = SolidSportBet.new(+_matchId, _league, _teamOne, _teamTwo, _matchTimestamp, _executionDelay, _price, {
             from: App.account,
-            value: 0.01 * 1e18
+            value: 0.02 * 1e18
         }, function (err, deployedContract) {
             if (!err) {
                 if (!deployedContract.address) {
