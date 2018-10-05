@@ -131,14 +131,15 @@ class Database {
         });
     }
 
-    updatePendingContract(transactionHash, data) {
+    updatePendingContract(match_id, transactionHash, data) {
         return new Promise((resolve, reject) => {
             r.db('neombet').table('contracts').filter(function (contract) {
                 return contract['transactionHash'] === transactionHash;
             }).update({
-                // contracts: data
+                // contract['to']
             }).run(r.connection, function (err, result) {
                 if (err) {
+                    console.log(err)
                     return reject({success: false});
                 } else {
                     return resolve({success: true, result: result});
