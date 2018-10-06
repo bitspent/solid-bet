@@ -1,6 +1,7 @@
 r = require('rethinkdb');
 let db = new (require('../api/rethinkdb/Database'));
 let async = require('async');
+require('dotenv').config({path: '/Users/hassanjawhar/Desktop/Workspace/solid-bet/server/.env'});
 
 async.series({
     one: function (parallelCb) {
@@ -23,18 +24,18 @@ async.series({
             });
     },
     three: function (parallelCb) {
-        db.createTable('matches')
+        db.createTable('contracts')
             .then(result => {
-                parallelCb(null, "Successfully created match table.");
+                parallelCb(null, "Successfully created contracts table.");
             })
             .catch(err => {
                 parallelCb(err, null);
             });
     },
     four: function (parallelCb) {
-        db.createTable('contracts')
+        db.createTable('matches')
             .then(result => {
-                parallelCb(null, "Successfully created match table.");
+                parallelCb(null, "Successfully created matches table.");
             })
             .catch(err => {
                 parallelCb(err, null);

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    db.viewMatches()
+    db.viewData('matches', {})
         .then(matches => {
             return res.json(matches);
         })
@@ -18,7 +18,11 @@ let formatScore = function (score) {
 };
 
 router.get('/:matchId', function (req, res, next) {
-    db.viewMatch(+req.params.matchId)
+    db.viewData('contracts', {
+        data: {
+            matchId: +req.params.matchId
+        }
+    })
         .then(data => {
             let match = data["data"];
             let league = match["league"];
@@ -51,29 +55,28 @@ router.get('/:matchId', function (req, res, next) {
 });
 
 router.get('/:matchId/contracts', function (req, res, next) {
-    db.viewMatchesTransactions().then(result => {
+    db.viewData('contracts', {
+        data: {
+            matchId: +req.params.matchId
+        }
+    }).then(result => {
         return res.json(result);
     }).catch(error => {
         return res.send(error);
     });
 });
-
 
 router.get('/:matchId/pending', function (req, res, next) {
-    db.viewPendingContracts().then(result => {
+    db.viewData('contracts', {
+        data: {
+            matchId: +req.params.matchId,
+            contractAddress: null
+        }
+    }).then(result => {
         return res.json(result);
     }).catch(error => {
         return res.send(error);
     });
-
 });
 
-router.get('/:matchId/active', function (req, res, next) {
-    db.viewActiveContracts().then(result => {
-        return res.json(result);
-    }).catch(error => {
-        return res.send(error);
-    });
-
-});
 module.exports = router;

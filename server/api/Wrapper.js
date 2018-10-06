@@ -10,7 +10,7 @@ async function insertMatches(league) {
         keyyed_matches[match.id] = match;
         keyyed_matches[match.id]["league"] = competition["name"];
 
-        db.insertData({
+        db.insertData('matches', {
             id: match.id,
             data: match
         })
@@ -34,7 +34,15 @@ async function updateData(league) {
         keyyed_matches[match.id] = match;
         keyyed_matches[match.id]["league"] = competition["name"];
 
-        db.updateMatch(match.id, {data: match})
+        db.updateData('matches',
+            {
+                data: {
+                    matchId: [match.id],
+                }
+            }, {
+                data: match
+            }
+        )
             .then(result => {
                 console.log(`Successfully updated match ${match.id}`)
             })

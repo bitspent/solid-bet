@@ -313,6 +313,7 @@ App = {
                     content += `<td>${match["data"]["awayTeam"]["name"]}</td>`;
                     content += `<td>${match["data"]["utcDate"]}</td>`;
                     content += `<td><button type="button" class="btn btn-primary" onclick=App.createBetContract(${match["id"]})>Create Contract</button></td>`;
+                    content += `<td><a href="${base_url}/v1/matches/${match["id"]}/contracts" target="_blank"><button type="button" class="btn btn-primary">View bets</button></a></td>`;
                     content += `</tr>`;
                     $("#upcoming_matches_table").prepend(content)
                 });

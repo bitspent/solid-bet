@@ -12,171 +12,44 @@ class Database {
         });
     }
 
-    insertData(data) {
+    insertData(table, data) {
         return new Promise((resolve, reject) => {
-            r.db('neombet').table('matches').insert(data).run(r.connection, function (err, result) {
-                if (err) {
-                    return reject({success: false});
-                } else {
-                    return resolve({success: true, result: result});
-                }
+            r.db(process.env.DB_NAME).table(table).insert(data).run(r.connection, function (err, result) {
+                if (err) return reject(err);
+                return resolve(result);
             });
         });
     }
 
-    insertTransaction(payload) {
+    updateData(table, filter, data) {
         return new Promise((resolve, reject) => {
-            r.db('neombet').table('contracts').insert({
-                id: payload.id,
-                contracts: [payload.data]
-            }).run(r.connection, function (err, result) {
-                if (err) {
-                    return reject({success: false});
-                } else {
-                    return resolve({success: true, result: result});
-                }
-            });
-        });
-    }
-
-    appendTransaction(payload) {
-        return new Promise((resolve, reject) => {
-            r.db('neombet').table('contracts').get(payload.id)
-                .update({
-                    contracts: r.row('contracts').append(payload.data)
-                }).run(r.connection, function (err, result) {
-                if (err) {
-                    return reject({success: false});
-                } else {
-                    return resolve({success: true, result: result});
-                }
-            });
-        });
-    }
-
-    deleteData(table_name, data_id) {
-        return new Promise((resolve, reject) => {
-            r.db('neombet').table(table_name).get(data_id).delete().run(r.connection, function (err, result) {
-                if (err) {
-                    return reject({success: false});
-                } else {
-                    return resolve({success: true, result: result});
-                }
-            });
-        });
-    }
-
-    viewMatch(match_id) {
-        return new Promise((resolve, reject) => {
-            r.db('neombet').table('matches').get(match_id).run(r.connection, function (err, result) {
-                if (err) {
-                    return reject(err.message);
-                } else {
-                    return resolve(result);
-                }
-            });
-        });
-    }
-
-    viewMatchTransactions(match_id) {
-        return new Promise((resolve, reject) => {
-            r.db('neombet').table('contracts').get(match_id).run(r.connection, function (err, result) {
-                if (err) {
-                    return reject(err.message);
-                } else {
-                    return resolve(result);
-                }
-            });
-        });
-    }
-
-    updateMatch(match_id, data) {
-        return new Promise((resolve, reject) => {
-            r.db('neombet').table('matches').filter({
-                id: match_id
-            }).update(data).run(r.connection, function (err, result) {
+            r.db(process.env.DB_NAME).table(table).filter(filter).update(data).run(r.connection, function (err, result) {
                 if (err) return reject(err.message);
                 return resolve(result);
             });
         });
     }
 
-    viewMatches() {
+    viewData(table, filter) {
         return new Promise((resolve, reject) => {
-            r.db('neombet').table('matches').run(r.connection, function (err, cursor) {
-                if (err) {
+            r.db(process.env.DB_NAME).table(table).filter(filter).run(r.connection, function (err, cursor) {
+                if (err)
                     return reject(err.message);
-                } else {
-                    cursor.toArray(function (err, result) {
-                        if (err) return reject(err.message);
-                        return resolve(result);
-                    });
-                }
+                cursor.toArray(function (err, result) {
+                    if (err) return reject(err.message);
+                    return resolve(result);
+                });
             });
         });
     }
 
-    viewMatchesTransactions() {
+    deleteData(table_name, data_id) {
         return new Promise((resolve, reject) => {
-            r.db('neombet').table('contracts').run(r.connection, function (err, cursor) {
+            r.db(process.env.DB_NAME).table(table_name).get(data_id).delete().run(r.connection, function (err, result) {
                 if (err) {
-                    return reject(err.message);
-                } else {
-                    cursor.toArray(function (err, result) {
-                        if (err) return reject(err.message);
-                        return resolve(result);
-                    });
-                }
-            });
-        });
-    }
-
-    updatePendingContract(match_id, transactionHash, data) {
-        return new Promise((resolve, reject) => {
-            r.db('neombet').table('contracts').filter(function (contract) {
-                return contract['transactionHash'] === transactionHash;
-            }).update({
-                // contract['to']
-            }).run(r.connection, function (err, result) {
-                if (err) {
-                    console.log(err)
                     return reject({success: false});
                 } else {
                     return resolve({success: true, result: result});
-                }
-            });
-        });
-    }
-
-    viewPendingContracts() {
-        return new Promise((resolve, reject) => {
-            r.db('neombet').table('contracts').filter(function (contract) {
-                return contract['contractAddress'] == null;
-            }).run(r.connection, function (err, cursor) {
-                if (err) {
-                    return reject(err.message);
-                } else {
-                    cursor.toArray(function (err, result) {
-                        if (err) return reject(err.message);
-                        return resolve(result);
-                    });
-                }
-            });
-        });
-    }
-
-    viewActiveContracts() {
-        return new Promise((resolve, reject) => {
-            r.db('neombet').table('contracts').filter(function (contract) {
-                return contract['contractAddress'] != null;
-            }).run(r.connection, function (err, cursor) {
-                if (err) {
-                    return reject(err.message);
-                } else {
-                    cursor.toArray(function (err, result) {
-                        if (err) return reject(err.message);
-                        return resolve(result);
-                    });
                 }
             });
         });
@@ -184,7 +57,7 @@ class Database {
 
     createTable(tablename) {
         return new Promise((resolve, reject) => {
-            r.db('neombet').tableCreate(tablename).run(r.connection, function (err, result) {
+            r.db(process.env.DB_NAME).tableCreate(tablename).run(r.connection, function (err, result) {
                 if (err) return reject(err.message);
                 return resolve({success: true});
             });
@@ -193,7 +66,7 @@ class Database {
 
     dropTable(tablename) {
         return new Promise((resolve, reject) => {
-            r.db('neombet').tableDrop(tablename).run(r.connection, function (err, result) {
+            r.db(process.env.DB_NAME).tableDrop(tablename).run(r.connection, function (err, result) {
                 if (err) return reject(err.message);
                 return resolve({success: true});
             });
@@ -217,6 +90,21 @@ class Database {
             });
         });
     }
+
+    // appendTransaction(payload) {
+    //     return new Promise((resolve, reject) => {
+    //         r.db('neombet').table('contracts').get(payload.id)
+    //             .update({
+    //                 contracts: r.row('contracts').append(payload.data)
+    //             }).run(r.connection, function (err, result) {
+    //             if (err) {
+    //                 return reject({success: false});
+    //             } else {
+    //                 return resolve({success: true, result: result});
+    //             }
+    //         });
+    //     });
+    // }
 }
 
 module.exports = Database;

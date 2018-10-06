@@ -1,12 +1,16 @@
 let Web3 = require('web3');
 let web3 = new Web3(new Web3.providers.WebsocketProvider('wss://ropsten.infura.io/ws'));
 
-// let abc = [];
-
-// function
-db.viewPendingContracts().then(data => {
-    console.log(data)
-    getData(data, 0, data[0].contracts.length);
+db.viewData('contracts', {
+    data: {
+        contractAddress: null
+    }
+}).then(data => {
+    if (data.length === 0) {
+        console.log("There's nothing to update.");
+    } else {
+        getData(data, 0, data.length);
+    }
 }).catch(err => {
     console.log(err);
 });
@@ -19,35 +23,25 @@ function sleep(seconds) {
     });
 }
 
-
-async function getData(_array, _start, _end) {
+async function getData(_data, _start, _end) {
     if (_start === _end) {
         console.log("Successfully got all pending contracts receipts.");
     } else {
 
-        let contract = _array[0].contracts[_start];
-        console.log(contract)
-        web3.eth.getTransactionReceipt(contract["transactionHash"])
-            .then(receipt => {
-                db.updatePendingContract(_array[0].id, contract["transactionHash"], {
+        let contract = _data[_start];
+        let receipt = await web3.eth.getTransactionReceipt(contract["data"]["transactionHash"])
+        let updated = await db.updateData('contracts', {
+                data: {
+                    transactionHash: receipt['transactionHash']
+                }
+            },
+            {
+                data: {
                     "contractAddress": receipt["contractAddress"],
-                    "to": receipt["to"],
                     "from": receipt["from"]
-                }).then(result => {
-                    console.log(result)
-                    console.log(result)
-                    _start++;
-                    getData(_array, _start, _end);
-                }).catch(err => {
-                    console.log(err)
-                    _start++;
-                    getData(_array, _start, _end);
-                });
-
-            }).catch(err => {
-            _start++;
-            getData(_array, _start, _end);
-        });
-
+                }
+            });
+        _start++;
+        getData(_data, _start, _end);
     }
 }
