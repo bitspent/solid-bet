@@ -1,4 +1,4 @@
-let base_url = "http://localhost:3000";
+let base_url = "";
 let ABI = [
     {
         "constant": false,
