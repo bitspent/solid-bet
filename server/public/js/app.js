@@ -312,8 +312,9 @@ App = {
                     content += `<td>${match["data"]["homeTeam"]["name"]}</td>`;
                     content += `<td>${match["data"]["awayTeam"]["name"]}</td>`;
                     content += `<td>${match["data"]["utcDate"]}</td>`;
+                    content += `<td><a href="${base_url}/matches/${match["id"]}" target="_blank"><button type="button" class="btn btn-primary">View details</button></a></td>`;
                     content += `<td><button type="button" class="btn btn-primary" onclick=App.createBetContract(${match["id"]})>Create Contract</button></td>`;
-                    content += `<td><a href="${base_url}/v1/matches/${match["id"]}/contracts" target="_blank"><button type="button" class="btn btn-primary">View bets</button></a></td>`;
+                    content += `<td><a href="${base_url}/matches/${match["id"]}/contracts" target="_blank"><button type="button" class="btn btn-primary">View bets</button></a></td>`;
                     content += `</tr>`;
                     $("#upcoming_matches_table").prepend(content)
                 });
@@ -324,6 +325,58 @@ App = {
         });
     },
 
+    getMatchDetails: function (match_id) {
+        $.ajax({
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'GET',
+            url: `${base_url}/v1/matches/${match_id}`,
+            success: function (data, textStatus, jqXHR) {
+                let content = "";
+                content += `<b>League</b>: ${data['league']}<br/>`;
+                content += `<b>Time</b>: ${new Date(data['timestamp'])}<br/>`;
+                content += `<b>Status</b>: ${data['status']}<br/>`;
+                content += `<b>Team one</b>: ${data['teamOne']['name']}<br/>`;
+                content += `<b>Team two</b>: ${data['teamTwo']['name']}<br/>`;
+                content += `<b>Team one score</b>: ${data['teamOne']['score']}<br/>`;
+                content += `<b>Team two score</b>: ${data['teamTwo']['score']}<br/>`;
+                content += `<b>Raw score</b>: ${data['raw']}<br/>`;
+                content += `<b>Contracts</b>: <a href="${base_url}/matches/${match_id}/contracts" target="_blank">here</a><br/>`;
+                $("#match_details").html(content);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+    },
+
+    getMatchContracts: function (match_id) {
+        $.ajax({
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'GET',
+            url: `${base_url}/v1/matches/${match_id}/contracts`,
+            success: function (data, textStatus, jqXHR) {
+                data.forEach(contract => {
+                    let content = "";
+                    content += `<tr>`;
+                    content += `<td>${contract['id']}</td>`;
+                    content += `<td>${contract['data']['matchId']}</td>`;
+                    content += `<td><a href="https://ropsten.etherscan.io/address/${contract['data']['contractAddress']}" target="_blank">${contract['data']['contractAddress']}</a></td>`;
+                    content += `<td><a href="https://ropsten.etherscan.io/address/${contract['data']['from']}" target="_blank">${contract['data']['from']}</a></td>`;
+                    content += `<td><a href="https://ropsten.etherscan.io/tx/${contract['data']['transactionHash']}" target="_blank">here</a></td>`;
+                    content += `<td><a href="${base_url}/matches/${match_id}/contracts/${contract['data']['contractAddress']}" target="_blank">here</a></td>`;
+                    content += `</tr>`;
+                    $("#match_contracts").prepend(content);
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+    },
 
     load: async () => {
         App.account = await App.getAccount();
@@ -339,13 +392,6 @@ function toHex(s) {
     return `0x${hex}`;
 }
 
-onload = async () => {
-    App.getMatches();
-
-    await App.initWeb3();
-    await App.load();
-};
-
 function waitSeconds(seconds) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -360,4 +406,26 @@ function dateToSeconds(current_date) {
 
 $('#solidBetTransactionModal').on('hidden.bs.modal', function (e) {
     $('#solidBetTransactionModalBody').html('');
-})
+});
+
+onload = async () => {
+    App.getMatches();
+
+    await App.initWeb3();
+    await App.load();
+    let pathname = window.location.pathname;
+    let link = window.location.href;
+    let splitted = link.replace("http://", "");
+
+    console.log(pathname);
+    console.log(window.location.href);
+
+    splitted = splitted.split("/");
+    if (splitted.length === 3 && splitted[1] === 'matches' && !isNaN(+splitted[2])) {
+        App.getMatchDetails(+splitted[2]);
+    }
+
+    if (splitted.length === 4 && splitted[1] === 'matches' && !isNaN(+splitted[2]) && splitted[3] === 'contracts') {
+        App.getMatchContracts(+splitted[2]);
+    }
+};

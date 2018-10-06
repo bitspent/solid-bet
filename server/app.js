@@ -3,12 +3,10 @@ db = new (require('./api/rethinkdb/Database'));
 
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
 var app = express();
 
 db.initializeConnection()
@@ -37,11 +35,17 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+/**
+ * Routes
+ */
+app.use('/', require('./routes/index'));
+app.use('/matches', require('./routes/matches'));
 
-app.use('/', index);
-
-app.use('/v1/matches', require('./routes/api/matches'));
-app.post('/v1/matches', require('./routes/api/matches_transactions'));
+/**
+ * API endpoints
+ */
+app.use('/v1/matches', require('./api/matches/Matches'));
+app.post('/v1/matches', require('./api/matches/InsertContract'));
 
 setTimeout(() => {
     require('./api/blockchain/ContractWrapper');

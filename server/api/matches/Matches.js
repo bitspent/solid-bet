@@ -11,19 +11,17 @@ router.get('/', function (req, res, next) {
         });
 });
 
-let formatScore = function (score) {
-    score = score + '';
-    while (score.length < 3) score = '0' + score;
-    return score;
-};
-
 router.get('/:matchId', function (req, res, next) {
-    db.viewData('contracts', {
+    db.viewData('matches', {
         data: {
-            matchId: +req.params.matchId
+            id: +req.params.matchId
         }
     })
-        .then(data => {
+        .then(_data => {
+            if (_data.length === 0) {
+                return res.send({});
+            }
+            let data = _data[0];
             let match = data["data"];
             let league = match["league"];
             let lastUpdated = match["utcDate"];
@@ -66,6 +64,19 @@ router.get('/:matchId/contracts', function (req, res, next) {
     });
 });
 
+router.get('/:matchId/contracts/:contractAddress', function (req, res, next) {
+    db.viewData('contracts', {
+        data: {
+            matchId: +req.params.matchId,
+            contractAddress: req.params.contractAddress
+        }
+    }).then(result => {
+        return res.json(result);
+    }).catch(error => {
+        return res.send(error);
+    });
+});
+
 router.get('/:matchId/pending', function (req, res, next) {
     db.viewData('contracts', {
         data: {
@@ -78,5 +89,12 @@ router.get('/:matchId/pending', function (req, res, next) {
         return res.send(error);
     });
 });
+
+
+let formatScore = function (score) {
+    score = score + '';
+    while (score.length < 3) score = '0' + score;
+    return score;
+};
 
 module.exports = router;

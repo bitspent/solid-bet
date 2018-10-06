@@ -6,8 +6,4 @@ router.get('/', function (req, res, next) {
     res.render('index');
 });
 
-router.get('/matches', function (req, res, next) {
-    res.render('matches');
-});
-
 module.exports = router;
