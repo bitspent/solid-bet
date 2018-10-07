@@ -1,2 +1,2 @@
 # solid-bet
-Solid Bets - Crypto and Sport Betting Plateform 
+Solid Bets - Crypto and Sport Betting Platform
