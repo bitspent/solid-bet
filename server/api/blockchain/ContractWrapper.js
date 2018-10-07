@@ -1,19 +1,61 @@
 let Web3 = require('web3');
-let web3 = new Web3(new Web3.providers.WebsocketProvider('wss://ropsten.infura.io/ws'));
 
-db.viewData('contracts', {
-    data: {
-        contractAddress: null
+class ContractWrapper {
+    constructor(db) {
+        this.web3 = new Web3(new Web3.providers.WebsocketProvider('wss://ropsten.infura.io/ws'));
+        this.updating_contracts = false;
+        this.db = db;
     }
-}).then(data => {
-    if (data.length === 0) {
-        console.log("There's nothing to update.");
-    } else {
-        getData(data, 0, data.length);
+
+    async getData(_data, _start, _end) {
+        if (_start === _end) {
+            console.log("Successfully got all pending contracts receipts.");
+            this.updating_contracts = false;
+        } else {
+            this.updating_contracts = true;
+            let contract = _data[_start];
+            let receipt = await this.web3.eth.getTransactionReceipt(contract["data"]["transactionHash"]);
+            if (receipt) {
+                let updated = await this.db.updateData('contracts', {
+                        data: {
+                            transactionHash: receipt['transactionHash']
+                        }
+                    },
+                    {
+                        data: {
+                            "contractAddress": receipt["contractAddress"],
+                            "from": receipt["from"]
+                        }
+                    });
+            }
+
+            _start++;
+            this.getData(_data, _start, _end);
+        }
     }
-}).catch(err => {
-    console.log(err);
-});
+
+    updateContracts() {
+        if (this.updating_contracts === false) {
+            this.db.viewData('contracts', {
+                data: {
+                    contractAddress: null
+                }
+            }).then(data => {
+                if (data.length === 0) {
+                    console.log("There's nothing to update.");
+                } else {
+                    console.log(`Updating ${data.length} contracts.`);
+                    this.getData(data, 0, data.length);
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+        } else {
+
+        }
+    }
+}
+
 
 function sleep(seconds) {
     return new Promise((resolve, reject) => {
@@ -23,25 +65,4 @@ function sleep(seconds) {
     });
 }
 
-async function getData(_data, _start, _end) {
-    if (_start === _end) {
-        console.log("Successfully got all pending contracts receipts.");
-    } else {
-
-        let contract = _data[_start];
-        let receipt = await web3.eth.getTransactionReceipt(contract["data"]["transactionHash"])
-        let updated = await db.updateData('contracts', {
-                data: {
-                    transactionHash: receipt['transactionHash']
-                }
-            },
-            {
-                data: {
-                    "contractAddress": receipt["contractAddress"],
-                    "from": receipt["from"]
-                }
-            });
-        _start++;
-        getData(_data, _start, _end);
-    }
-}
+module.exports = ContractWrapper;

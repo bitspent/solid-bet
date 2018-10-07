@@ -15,13 +15,13 @@ async function insertMatches(league) {
             data: match
         })
             .then(result => {
-                console.log(`Successfully inserted matches`)
+                // console.log(`Successfully inserted matches`)
             })
             .catch(err => {
                 console.log(`Failed to insert matches.`);
             });
-
     });
+    console.log(`League: ${league} - successfully inserted ${matches.length} matches`)
 }
 
 async function updateData(league) {

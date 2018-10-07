@@ -52,7 +52,7 @@ router.get('/:matchId', function (req, res, next) {
     });
 });
 
-router.get('/:matchId/contracts', function (req, res, next) {
+router.get('/:matchId/bets', function (req, res, next) {
     db.viewData('contracts', {
         data: {
             matchId: +req.params.matchId
@@ -64,11 +64,11 @@ router.get('/:matchId/contracts', function (req, res, next) {
     });
 });
 
-router.get('/:matchId/contracts/:contractAddress', function (req, res, next) {
+router.get('/:matchId/bets/:betId', function (req, res, next) {
     db.viewData('contracts', {
+        id: req.params.betId,
         data: {
             matchId: +req.params.matchId,
-            contractAddress: req.params.contractAddress
         }
     }).then(result => {
         return res.json(result);
@@ -89,12 +89,5 @@ router.get('/:matchId/pending', function (req, res, next) {
         return res.send(error);
     });
 });
-
-
-let formatScore = function (score) {
-    score = score + '';
-    while (score.length < 3) score = '0' + score;
-    return score;
-};
 
 module.exports = router;
