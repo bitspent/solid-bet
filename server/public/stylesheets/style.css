@@ -18,5 +18,7 @@ a {
 }
 
 .center {
-    margin-left: auto !important; margin-right: auto !important; text-align: left !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: left !important;
 }
