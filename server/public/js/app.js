@@ -361,7 +361,6 @@ App = {
 
                     var distance = countDownDate - now;
 
-                    // Time calculations for days, hours, minutes and seconds
                     var weeks = Math.floor(distance / (1000 * 60 * 60 * 24 * 7));
                     var days = Math.floor(distance / (1000 * 60 * 60 * 24)) % 7;
                     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -452,7 +451,7 @@ App = {
                             content += `<b>Team one</b>: ${_teamOne}<br/>`;
                             content += `<b>Team two</b>: ${_teamTwo}<br/>`;
                             content += `<b>Time</b>: ${formatTime(_matchTimestamp)}<br/>`;
-                            content += `<b>Execution delay</b>: ${new Date(_executionDelay)}<br/>`;
+                            content += `<b>Execution delay</b>: ${formatTime(_executionDelay)}<br/>`;
                             content += `<b>Price</b>: ${_price} ETH <br/>`;
                             content += `<b>Status</b>: ${_status}<br/>`;
                             $("#bet_details").html(content);
