@@ -322,18 +322,19 @@ App = {
             url: base_url + '/v1/matches',
             success: function (data, textStatus, jqXHR) {
                 data.forEach(match => {
+                    let timestamp = new Date(match["data"]["utcDate"]).getTime();
                     App.matches[match.id] = match.data;
                     let content = `<tr>`;
                     content += `<td>${match["id"]}</td>`;
                     content += `<td>${match["data"]["league"]}</td>`;
                     content += `<td>${match["data"]["homeTeam"]["name"]}</td>`;
                     content += `<td>${match["data"]["awayTeam"]["name"]}</td>`;
-                    content += `<td>${match["data"]["utcDate"]}</td>`;
+                    content += `<td style="word-wrap: break-word">${formatTime(timestamp)}</td>`;
                     content += `<td><a href="${base_url}/matches/${match["id"]}" target="_blank"><button type="button" class="btn btn-primary">View details</button></a></td>`;
                     content += `<td><a href="${base_url}/matches/${match["id"]}/bets" target="_blank"><button type="button" class="btn btn-primary">View bets</button></a></td>`;
                     content += `<td><button type="button" class="btn btn-primary" onclick=App.createBetContract(${match["id"]})>Create Contract</button></td>`;
                     content += `</tr>`;
-                    $("#upcoming_matches_table").prepend(content)
+                    $("#upcoming_matches_table").prepend(content);
                 });
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -351,8 +352,34 @@ App = {
             url: `${base_url}/v1/matches/${match_id}`,
             success: function (data, textStatus, jqXHR) {
                 let content = "";
+                // Set the date we're counting down to
+                var countDownDate = new Date(data['timestamp'] * 1000).getTime();
+
+                var x = setInterval(function () {
+
+                    var now = new Date().getTime();
+
+                    var distance = countDownDate - now;
+
+                    // Time calculations for days, hours, minutes and seconds
+                    var weeks = Math.floor(distance / (1000 * 60 * 60 * 24 * 7));
+                    var days = Math.floor(distance / (1000 * 60 * 60 * 24)) % 7;
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    document.getElementById(`match_details_countdown_${match_id}`).innerHTML = `${weeks} weeks ${days} d ${hours} hr ${minutes} mins ${seconds} secs`;
+
+                    // If the count down is over, write some text
+                    if (distance < 0) {
+                        clearInterval(x);
+                        document.getElementById(`match_details_countdown_${match_id}`).innerHTML = "ENDED";
+                    }
+                }, 1000);
+
                 content += `<b>League</b>: ${data['league']}<br/>`;
-                content += `<b>Time</b>: ${new Date(data['timestamp'] * 1000)}<br/>`;
+                content += `<b>Time</b>: ${formatTime(data['timestamp'] * 1000)}<br/>`;
+                content += `<b>Countdown</b>: <span id="match_details_countdown_${match_id}"></span><br/>`;
                 content += `<b>Status</b>: ${data['status']}<br/>`;
                 content += `<b>Team one</b>: ${data['teamOne']['name']}<br/>`;
                 content += `<b>Team two</b>: ${data['teamTwo']['name']}<br/>`;
@@ -424,7 +451,7 @@ App = {
                             content += `<b>League</b>: ${_league}<br/>`;
                             content += `<b>Team one</b>: ${_teamOne}<br/>`;
                             content += `<b>Team two</b>: ${_teamTwo}<br/>`;
-                            content += `<b>Time</b>: ${new Date(_matchTimestamp)}<br/>`;
+                            content += `<b>Time</b>: ${formatTime(_matchTimestamp)}<br/>`;
                             content += `<b>Execution delay</b>: ${new Date(_executionDelay)}<br/>`;
                             content += `<b>Price</b>: ${_price} ETH <br/>`;
                             content += `<b>Status</b>: ${_status}<br/>`;
@@ -438,18 +465,33 @@ App = {
                         fromBlock: 0,
                         toBlock: 'latest',
                     });
+                    /***
+                     allEvents.get((err, eventResult) => {
+                            if (!err) {
+                                eventResult.forEach(eventR => {
+                                    let result = eventR['args'];
+                                    let content = `<tr>`;
+                                    content += `<td>${result['addr']}</td>`;
+                                    content += `<td>${result['scoreOne']}</td>`;
+                                    content += `<td>${result['scoreTwo']}</td>`;
+                                    content += `</tr>`;
+                                    $("#bet_subscribers").prepend(content)
+                                });
+                            }
+                        });
+                     */
 
-                    allEvents.get((err, eventResult) => {
-                        if (!err) {
-                            eventResult.forEach(eventR => {
-                                let result = eventR['args'];
-                                let content = `<tr>`;
-                                content += `<td>${result['addr']}</td>`;
-                                content += `<td>${result['scoreOne']}</td>`;
-                                content += `<td>${result['scoreTwo']}</td>`;
-                                content += `</tr>`;
-                                $("#bet_subscribers").prepend(content)
-                            });
+
+                    allEvents.watch(function (error, event) {
+                        if (!error) {
+                            let result = event['args'];
+                            let content = `<tr>`;
+                            content += `<td>${result['addr']}</td>`;
+                            content += `<td>${result['scoreOne']}</td>`;
+                            content += `<td>${result['scoreTwo']}</td>`;
+                            content += `</tr>`;
+                            $("#bet_subscribers").prepend(content)
+                            console.log(event);
                         }
                     });
                 }
@@ -535,3 +577,8 @@ onload = async () => {
         App.getMatchContract(+splitted[2], splitted[4]);
     }
 };
+
+function formatTime(_timestamp) {
+    let current_date = new Date(_timestamp);
+    return `${current_date.getUTCDate()}-${current_date.getUTCMonth() + 1}-${current_date.getFullYear()} ${current_date.toLocaleTimeString()}`;
+}
