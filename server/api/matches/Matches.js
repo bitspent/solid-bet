@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    db.viewData('matches', {})
+    db.viewData('matches', {}, {id: true, data: true})
         .then(matches => {
             return res.json(matches);
         })
@@ -16,7 +16,7 @@ router.get('/:matchId', function (req, res, next) {
         data: {
             id: +req.params.matchId
         }
-    })
+    }, {id: true, data: true})
         .then(_data => {
             if (_data.length === 0) {
                 return res.send({});
@@ -57,6 +57,14 @@ router.get('/:matchId/bets', function (req, res, next) {
         data: {
             matchId: +req.params.matchId
         }
+    }, {
+        id: true,
+        data: {
+            matchId: true,
+            transactionHash: true,
+            to: true,
+            from: true
+        }
     }).then(result => {
         return res.json(result);
     }).catch(error => {
@@ -70,18 +78,13 @@ router.get('/:matchId/bets/:betId', function (req, res, next) {
         data: {
             matchId: +req.params.matchId,
         }
-    }).then(result => {
-        return res.json(result);
-    }).catch(error => {
-        return res.send(error);
-    });
-});
-
-router.get('/:matchId/pending', function (req, res, next) {
-    db.viewData('contracts', {
+    }, {
+        id: true,
         data: {
-            matchId: +req.params.matchId,
-            contractAddress: null
+            matchId: true,
+            transactionHash: true,
+            to: true,
+            from: true
         }
     }).then(result => {
         return res.json(result);

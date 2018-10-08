@@ -40,7 +40,7 @@ class ContractWrapper {
                 data: {
                     contractAddress: null
                 }
-            }).then(data => {
+            }, {id: true, data: true}).then(data => {
                 if (data.length === 0) {
                     console.log("There's nothing to update.");
                 } else {

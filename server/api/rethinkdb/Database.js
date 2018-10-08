@@ -30,9 +30,9 @@ class Database {
         });
     }
 
-    viewData(table, filter) {
+    viewData(table, filter, _data) {
         return new Promise((resolve, reject) => {
-            r.db(process.env.DB_NAME).table(table).filter(filter).run(r.connection, function (err, cursor) {
+            r.db(process.env.DB_NAME).table(table).filter(filter).pluck(_data).run(r.connection, function (err, cursor) {
                 if (err)
                     return reject(err.message);
                 cursor.toArray(function (err, result) {

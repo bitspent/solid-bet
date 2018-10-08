@@ -13,14 +13,14 @@ db.initializeConnection()
     .then(async conn => {
         r.connection = conn;
 
-        let wrapper = require('./api/Wrapper');
-
-        wrapper.insertMatches('CL')
-            .then(result => {
-            })
-            .catch(err => {
-                console.log(err)
-            });
+        // let wrapper = require('./api/Wrapper');
+        //
+        // wrapper.insertMatches('CL')
+        //     .then(result => {
+        //     })
+        //     .catch(err => {
+        //         console.log(err)
+        //     });
 
     })
     .catch(err => {
