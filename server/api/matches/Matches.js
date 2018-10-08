@@ -82,6 +82,7 @@ router.get('/:matchId/bets/:betId', function (req, res, next) {
         id: true,
         data: {
             matchId: true,
+            contractAddress: true,
             transactionHash: true,
             to: true,
             from: true
