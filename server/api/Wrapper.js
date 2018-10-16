@@ -1,4 +1,4 @@
-let footballdata = new (require('../api/matches/FootballData'));
+let footballdata = new (require('../api/bets/sports/FootballData'));
 
 async function insertMatches(league) {
     let data = await footballdata.getLeagueMatches(league);

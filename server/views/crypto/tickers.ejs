@@ -7,7 +7,7 @@
     <link rel='stylesheet' href='../stylesheets/style.css'/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <title>Solid Sports Betting - Matches</title>
+    <title>Solid Crypto Betting - Tickers</title>
 </head>
 
 <body>
@@ -39,31 +39,29 @@
     </div>
 </nav>
 <div class="container">
-    <table class="table table-bordered table-hover table-stats custom_background lower" style="table-layout: fixed;">
+    <table class="table table-bordered table-hover table-stats custom_background lower"
+           style="table-layout: fixed; width: 550px">
         <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">League</th>
-            <th scope="col">Team #1</th>
-            <th scope="col">Team #2</th>
-            <th scope="col">Match date</th>
-            <th scope="col">View Details</th>
-            <th scope="col">View Bets</th>
-            <th scope="col">Create Bet</th>
+            <th scope="col" style="width: 50px">#</th>
+            <th scope="col" style="width: 250px">Name</th>
+            <th scope="col" style="width: 250px">View Details</th>
+            <th scope="col" style="width: 250px">View Bets</th>
+            <th scope="col" style="width: 250px">Create Bet</th>
         </tr>
         </thead>
-        <tbody id="upcoming_matches_table">
+        <tbody id="tickets_table">
         </tbody>
     </table>
 </div>
 
 <!-- Add crypto bet modal -->
-<div class="modal fade" id="addMatchModal" tabindex="-1" role="dialog" aria-labelledby="modalAddSolidBetLabel"
+<div class="modal fade" id="addTickerModal" tabindex="-1" role="dialog" aria-labelledby="modalAddCryptoBetLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Solid Sports Betting - Contract Deployment</h5>
+                <h5 class="modal-title">Solid Crypto Betting - Contract Deployment</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -77,13 +75,25 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="closure_delay">Closure Delay</label><br/>
+                    <input type="datetime-local" id="closure_delay"
+                           name="party-time" value="2018-06-12T19:30"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="execution_delay">Execution Delay</label><br/>
+                    <input type="datetime-local" id="execution_delay"
+                           name="party-time" value="2018-06-12T19:30"/>
+                </div>
+
+                <div class="form-group">
                     <label for="subscription_price">Subscription Price</label>
                     <input type="text" class="form-control" id="subscription_price"
                            placeholder="0.1 (amount in ETH)">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="add_sports_button">Deploy</button>
+                <button type="button" class="btn btn-primary" id="add_ticker_button">Deploy</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -111,6 +121,7 @@
         </div>
     </div>
 </div>
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="../js/utils/jquery-3.3.1.min.js"></script>

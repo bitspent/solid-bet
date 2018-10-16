@@ -4,6 +4,9 @@ var router = express.Router();
 router.get('/', function (req, res, next) {
     db.viewData('matches', {}, {id: true, data: true})
         .then(matches => {
+            matches.sort(function (a, b) {
+                return new Date(b['data']['utcDate']).getTime() - new Date(a['data']['utcDate']).getTime();
+            });
             return res.json(matches);
         })
         .catch(err => {
@@ -39,14 +42,15 @@ router.get('/:matchId', function (req, res, next) {
             let raw = (teamOne['score'] + teamTwo['score']).length === 2 ? '0' : teamOne['score'] + teamTwo['score'];
 
             let status = match["status"];
-            return res.json({
+            let object = {
                 league,
                 timestamp,
                 status,
                 teamOne,
                 teamTwo,
                 raw
-            });
+            };
+            return res.json(object);
         }).catch(error => {
         return res.send(error);
     });
@@ -93,5 +97,11 @@ router.get('/:matchId/bets/:betId', function (req, res, next) {
         return res.send(error);
     });
 });
+
+function formatScore(score) {
+    score = score + '';
+    while (score.length < 3) score = '0' + score;
+    return score;
+}
 
 module.exports = router;
