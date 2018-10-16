@@ -34,22 +34,22 @@ contract CryptoPriceBet is usingOraclize, Pausable, ReentrancyGuard {
      *  the currency id bet subject
      *  check on https://api.coinmarketcap.com/v2/listings/
      */
-    uint currency;
+    uint public currency;
 
     /**
      *  the bet subscription closure time
      */
-    uint closureDelay;
+    uint public closureDelay;
 
     /**
      *  the bet result execution time
      */
-    uint executionDelay;
+    uint public executionDelay;
 
     /**
      *  the bet subscrition price in wei
      */
-    uint256 subscriptionPrice;
+    uint256 public subscriptionPrice;
 
     /**
      *  the bet state

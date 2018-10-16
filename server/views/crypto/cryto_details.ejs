@@ -7,7 +7,7 @@
     <link rel='stylesheet' href='../stylesheets/style.css'/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <title>Solid Sports Betting - Matches</title>
+    <title>Solid Sports Betting - Match details</title>
 </head>
 
 <body>
@@ -24,7 +24,10 @@
                 <a class="nav-link" href="../">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="../matches">Matches</a>
+                <a class="nav-link" href="../crypto">Crypto Betting</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../sports">Sports Betting</a>
             </li>
         </ul>
 
@@ -36,45 +39,11 @@
     </div>
 </nav>
 <div class="container">
-    <table class="table table-bordered table-hover table-stats custom_background lower" style="table-layout: fixed;">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">League</th>
-            <th scope="col">Team #1</th>
-            <th scope="col">Team #2</th>
-            <th scope="col">Match date</th>
-            <th scope="col">View Details</th>
-            <th scope="col">View Bets</th>
-            <th scope="col">Create Bet Contract</th>
-        </tr>
-        </thead>
-        <tbody id="upcoming_matches_table">
-        </tbody>
-    </table>
-</div>
+    <div class="lower" id="match_details">
 
-<!-- Modal -->
-<div class="modal fade" id="solidBetTransactionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                    Solid Bet - Contract Deployment</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p id="solidBetTransactionModalBody"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
     </div>
 </div>
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="../js/utils/jquery-3.3.1.min.js"></script>
