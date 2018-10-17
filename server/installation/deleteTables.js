@@ -17,7 +17,7 @@ async.series({
     two: function (parallelCb) {
         db.dropTable('contracts')
             .then(result => {
-                parallelCb(null, "Successfully deleted contracts database.");
+                parallelCb(null, "Successfully deleted contracts table.");
             })
             .catch(err => {
                 parallelCb(err, null);
@@ -26,13 +26,22 @@ async.series({
     three: function (parallelCb) {
         db.dropTable('matches')
             .then(result => {
-                parallelCb(null, "Successfully deleted matches database.");
+                parallelCb(null, "Successfully deleted matches table.");
             })
             .catch(err => {
                 parallelCb(err, null);
             });
     },
     four: function (parallelCb) {
+        db.dropTable('bets')
+            .then(result => {
+                parallelCb(null, "Successfully deleted bets table.");
+            })
+            .catch(err => {
+                parallelCb(err, null);
+            });
+    },
+    five: function (parallelCb) {
         db.createTable('contracts')
             .then(result => {
                 parallelCb(null, "Successfully created contracts database.");
@@ -41,10 +50,19 @@ async.series({
                 parallelCb(err, null);
             });
     },
-    five: function (parallelCb) {
+    six: function (parallelCb) {
         db.createTable('matches')
             .then(result => {
                 parallelCb(null, "Successfully created matches database.");
+            })
+            .catch(err => {
+                parallelCb(err, null);
+            });
+    },
+    seven: function (parallelCb) {
+        db.createTable('bets')
+            .then(result => {
+                parallelCb(null, "Successfully created bets database.");
             })
             .catch(err => {
                 parallelCb(err, null);

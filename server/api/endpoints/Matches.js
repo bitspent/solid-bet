@@ -2,10 +2,20 @@ var express = require('express');
 var router = express.Router();
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    db.viewData('matches', {}, {id: true, data: true})
+    db.viewData('matches', {}, {
+        id: true,
+        season: true,
+        utcDate: true,
+        status: true,
+        lastUpdated: true,
+        homeTeam: true,
+        awayTeam: true,
+        score: true,
+        league: true
+    })
         .then(matches => {
             matches.sort(function (a, b) {
-                return new Date(b['data']['utcDate']).getTime() - new Date(a['data']['utcDate']).getTime();
+                return new Date(b['utcDate']).getTime() - new Date(a['utcDate']).getTime();
             });
             return res.json(matches);
         })
@@ -16,16 +26,23 @@ router.get('/', function (req, res, next) {
 
 router.get('/:matchId', function (req, res, next) {
     db.viewData('matches', {
-        data: {
-            id: +req.params.matchId
-        }
-    }, {id: true, data: true})
+        id: +req.params.matchId
+    }, {
+        id: true,
+        season: true,
+        utcDate: true,
+        status: true,
+        lastUpdated: true,
+        homeTeam: true,
+        awayTeam: true,
+        score: true,
+        league: true
+    })
         .then(_data => {
             if (_data.length === 0) {
                 return res.send({});
             }
-            let data = _data[0];
-            let match = data["data"];
+            let match = _data[0];
             let league = match["league"];
             let lastUpdated = match["utcDate"];
             let timestamp = Math.floor(new Date(lastUpdated).getTime() / 1000);
@@ -56,47 +73,6 @@ router.get('/:matchId', function (req, res, next) {
     });
 });
 
-router.get('/:matchId/bets', function (req, res, next) {
-    db.viewData('contracts', {
-        data: {
-            matchId: +req.params.matchId
-        }
-    }, {
-        id: true,
-        data: {
-            matchId: true,
-            transactionHash: true,
-            to: true,
-            from: true
-        }
-    }).then(result => {
-        return res.json(result);
-    }).catch(error => {
-        return res.send(error);
-    });
-});
-
-router.get('/:matchId/bets/:betId', function (req, res, next) {
-    db.viewData('contracts', {
-        id: req.params.betId,
-        data: {
-            matchId: +req.params.matchId,
-        }
-    }, {
-        id: true,
-        data: {
-            matchId: true,
-            contractAddress: true,
-            transactionHash: true,
-            to: true,
-            from: true
-        }
-    }).then(result => {
-        return res.json(result);
-    }).catch(error => {
-        return res.send(error);
-    });
-});
 
 function formatScore(score) {
     score = score + '';

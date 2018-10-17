@@ -9,11 +9,8 @@ async function insertMatches(league) {
     matches.forEach(match => {
         keyyed_matches[match.id] = match;
         keyyed_matches[match.id]["league"] = competition["name"];
-
-        db.insertData('matches', {
-            id: match.id,
-            data: match
-        })
+        // console.log(match)
+        db.insertData('matches', match)
             .then(result => {
                 // console.log(`Successfully inserted matches`)
             })

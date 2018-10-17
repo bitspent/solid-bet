@@ -40,17 +40,21 @@ app.use(express.static(path.join(__dirname, 'public')));
  * Routes
  */
 app.use('/', require('./routes/index'));
-app.use('/sports', require('./routes/sports'));
+app.use('/matches', require('./routes/matches'));
 app.use('/crypto', require('./routes/crypto'));
+app.use('/contracts', require('./routes/contracts'));
 
 /**
  * API endpoints
  */
-app.use('/v1/sports', require('./api/endpoints/bets/sports/Matches'));
-app.use('/v1/crypto', require('./api/endpoints/bets/crypto/Crypto'));
-app.post('/v1/sports', require('./api/bets/sports/InsertContract'));
-app.post('/v1/crypto', require('./api/bets/crypto/InsertContract'));
+app.use('/v1/matches', require('./api/endpoints/Matches'));
+app.use('/v1/crypto', require('./api/endpoints/Crypto'));
 
+app.use('/v1/bets', require('./api/endpoints/Bets'));
+app.use('/v1/contracts', require('./api/endpoints/Contracts'));
+
+app.post('/v1/contracts', require('./api/bets/InsertContract'));
+app.post('/v1/bets', require('./api/bets/InsertBet'));
 
 setTimeout(() => {
     contractWrapper.updateContracts();

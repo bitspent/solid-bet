@@ -14,18 +14,14 @@ class ContractWrapper {
         } else {
             this.updating_contracts = true;
             let contract = _data[_start];
-            let receipt = await this.web3.eth.getTransactionReceipt(contract["data"]["transactionHash"]);
+            let receipt = await this.web3.eth.getTransactionReceipt(contract["transactionHash"]);
             if (receipt) {
                 let updated = await this.db.updateData('contracts', {
-                        data: {
-                            transactionHash: receipt['transactionHash']
-                        }
+                        transactionHash: receipt['transactionHash']
                     },
                     {
-                        data: {
-                            "contractAddress": receipt["contractAddress"],
-                            "from": receipt["from"]
-                        }
+                        "contractAddress": receipt["contractAddress"],
+                        "from": receipt["from"]
                     });
             }
 
@@ -37,10 +33,15 @@ class ContractWrapper {
     updateContracts() {
         if (this.updating_contracts === false) {
             this.db.viewData('contracts', {
-                data: {
-                    contractAddress: null
-                }
-            }, {id: true, data: true}).then(data => {
+                contractAddress: null
+            }, {
+                id: true,
+                matchId: true,
+                transactionHash: true,
+                to: true,
+                from: true,
+                time: true
+            }).then(data => {
                 if (data.length === 0) {
                     console.log("There's nothing to update.");
                 } else {

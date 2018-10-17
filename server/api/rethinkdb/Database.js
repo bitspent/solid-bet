@@ -91,11 +91,11 @@ class Database {
         });
     }
 
-    // appendTransaction(payload) {
+    // addSubscriber(table, id, data) {
     //     return new Promise((resolve, reject) => {
-    //         r.db('neombet').table('contracts').get(payload.id)
+    //         r.db(process.env.DB_NAME).table(table).get(id)
     //             .update({
-    //                 contracts: r.row('contracts').append(payload.data)
+    //                 subscribers: r.row('subscribers').append(payload.data)
     //             }).run(r.connection, function (err, result) {
     //             if (err) {
     //                 return reject({success: false});

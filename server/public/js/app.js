@@ -657,7 +657,7 @@ App = {
         });
     },
 
-    createSportsBetContract: function () {
+    creatematchesBetContract: function () {
         let match = App.matches[+App.matchId];
         let price = $("#subscription_price").val();
         let visibility_flag = $('#visibility_flag option:selected').val();
@@ -688,12 +688,14 @@ App = {
                     $.ajax({
                         method: 'POST',
                         contentType: 'application/json',
-                        url: '/v1/sports/',
+                        url: '/v1/contracts',
                         data: JSON.stringify({
                             account: App.account,
                             type: +visibility_flag,
-                            matchId: +App.matchId,
+                            uuid: +App.matchId,
+                            category: 'matches',
                             transactionHash: deployedContract["transactionHash"],
+                            execution_time: Math.floor(new Date(match["utcDate"]).getTime() / 1000)
                         }),
                         success: function (data, textStatus, jqXHR) {
                             let content = "";
@@ -746,12 +748,14 @@ App = {
                         $.ajax({
                             method: 'POST',
                             contentType: 'application/json',
-                            url: '/v1/crypto/',
+                            url: '/v1/contracts',
                             data: JSON.stringify({
                                 account: App.account,
                                 type: +visibility_flag,
-                                currencyId: App.currencyId,
+                                uuid: App.currencyId,
+                                category: 'crypto',
                                 transactionHash: deployedContract["transactionHash"],
+                                execution_time: _executionDelay
                             }),
                             success: function (data, textStatus, jqXHR) {
                                 let content = "";
@@ -778,19 +782,19 @@ App = {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             method: 'GET',
-            url: base_url + '/v1/sports',
+            url: base_url + '/v1/matches',
             success: function (data, textStatus, jqXHR) {
                 data.forEach(match => {
-                    let timestamp = new Date(match["data"]["utcDate"]).getTime();
-                    App.matches[match.id] = match.data;
+                    let timestamp = new Date(match["utcDate"]).getTime();
+                    App.matches[match.id] = match;
                     let content = `<tr>`;
                     content += `<td>${match["id"]}</td>`;
-                    content += `<td>${match["data"]["league"]}</td>`;
-                    content += `<td>${match["data"]["homeTeam"]["name"]}</td>`;
-                    content += `<td>${match["data"]["awayTeam"]["name"]}</td>`;
+                    content += `<td>${match["league"]}</td>`;
+                    content += `<td>${match["homeTeam"]["name"]}</td>`;
+                    content += `<td>${match["awayTeam"]["name"]}</td>`;
                     content += `<td style="word-wrap: break-word">${formatTime(timestamp)}</td>`;
-                    content += `<td><a href="${base_url}/sports/${match["id"]}" target="_blank"><button type="button" class="btn btn-primary">View details</button></a></td>`;
-                    content += `<td><a href="${base_url}/sports/${match["id"]}/bets" target="_blank"><button type="button" class="btn btn-primary">View bets</button></a></td>`;
+                    content += `<td><a href="${base_url}/matches/${match["id"]}" target="_blank"><button type="button" class="btn btn-primary">View details</button></a></td>`;
+                    content += `<td><a href="${base_url}/contracts/${match["id"]}" target="_blank"><button type="button" class="btn btn-primary">View contracts</button></a></td>`;
                     content += `<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addMatchModal" onclick="App.matchId=${match['id']}">Create Bet</button></td>`;
                     content += ` < /tr>`;
                     $("#upcoming_matches_table").prepend(content);
@@ -815,7 +819,7 @@ App = {
                     t += `<td>${ticker['rank']}</td>`;
                     t += `<td><img src="https://s2.coinmarketcap.com/static/img/coins/32x32/${ticker['id']}.png"/> ${ticker['name']}</td>`;
                     t += `<td><a href="https://coinmarketcap.com/currencies/${ticker['name']}/" target="_blank"><button type="button" class="btn btn-primary">View details</button></a></td>`;
-                    t += `<td><a href="${base_url}/crypto/${ticker['id']}/bets" target="_blank"><button type="button" class="btn btn-primary">View bets</button></a></td>`;
+                    t += `<td><a href="${base_url}/contracts/${ticker['id']}" target="_blank"><button type="button" class="btn btn-primary">View contracts</button></a></td>`;
                     t += `<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTickerModal" onclick="App.currencyId=${ticker['id']}">
                         Create Bet
                     </button></td>`;
@@ -836,7 +840,7 @@ App = {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             method: 'GET',
-            url: `${base_url}/v1/sports/${match_id}`,
+            url: `${base_url}/v1/matches/${match_id}`,
             success: function (data, textStatus, jqXHR) {
                 let content = "";
                 content += `<b>League</b>: ${data['league']}<br/>`;
@@ -848,7 +852,7 @@ App = {
                 content += `<b>Team one score</b>: ${data['teamOne']['score']}<br/>`;
                 content += `<b>Team two score</b>: ${data['teamTwo']['score']}<br/>`;
                 content += `<b>Raw score</b>: ${data['raw']}<br/>`;
-                content += `<b>Bets</b>: <a href="${base_url}/sports/${match_id}/bets" target="_blank">here</a><br/>`;
+                content += `<b>Contracts</b>: <a href="${base_url}/contracts/${match_id}" target="_blank">here</a><br/>`;
                 $("#match_details").html(content);                // Set the date we're counting down to
                 var countDownDate = new Date(data['timestamp'] * 1000).getTime();
 
@@ -879,22 +883,26 @@ App = {
         });
     },
 
-    getMatchContracts: function (match_id) {
+    getContracts: function (uuid) {
         $.ajax({
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             method: 'GET',
-            url: `${base_url}/v1/sports/${match_id}/bets`,
+            url: `${base_url}/v1/contracts/${uuid}`,
             success: function (data, textStatus, jqXHR) {
                 data.forEach(contract => {
+                    let category = contract['category'];
                     let content = "";
                     content += `<tr>`;
-                    content += `<td>${contract['data']['matchId']}</td>`;
+                    content += `<td>${contract['uuid']}</td>`;
                     content += `<td>${contract['id']}</td>`;
-                    content += `<td><a href="${base_url}/sports/${match_id}/bets/${contract['id']}" target="_blank">here</a></td>`;
+                    content += `<td>${formatTime(contract['time'] * 1000)}</td>`;
+                    content += `<td>${formatTime(contract['execution_time'] * 1000)}</td>`;
+                    content += `<td><a href="https://ropsten.etherscan.io/tx/${contract['transactionHash']}" target="_blank">here</a></td>`;
+                    content += `<td><a href="${base_url}/contracts/${uuid}/${contract['id']}" target="_blank">here</a></td>`;
                     content += `</tr>`;
-                    $("#match_contracts").prepend(content);
+                    $("#contracts").prepend(content);
                 });
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -909,18 +917,18 @@ App = {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             method: 'GET',
-            url: `${base_url}/v1/crypto/${currencyId}/bets/${betId}`,
+            url: `${base_url}/v1/contracts/${currencyId}/${betId}`,
             success: function (_data, textStatus, jqXHR) {
                 if (_data.length === 1) {
                     let data = _data[0];
                     let CryptoContract = web3.eth.contract(SOLID_CRYPTO_BET_ABI);
-                    App.CryptoInstance = CryptoContract.at(data['data']['contractAddress']);
+                    App.CryptoInstance = CryptoContract.at(data['contractAddress']);
                     /**
                      * OPENED, PENDING, EXECUTED, ERROR
                      */
 
                     let states = ['OPENED', 'PENDING', 'EXECUTED', 'ERROR'];
-                    $("#contractAddress").html(data['data']['contractAddress']);
+                    $("#contractAddress").html(data['contractAddress']);
                     App.CryptoInstance.currency(function (err, res) {
                         $("#currency").html(res.valueOf());
                     });
@@ -931,10 +939,12 @@ App = {
 
                     App.CryptoInstance.executionDelay(function (err, res) {
                         $("#executionDelay").html(formatTime(res.valueOf() * 1000));
+                        App.execution_time = res.valueOf();
                     });
 
                     App.CryptoInstance.subscriptionPrice(function (err, res) {
                         $("#subscriptionPrice").html((res.valueOf() / 1e18) + " ETH");
+                        App.CryptoInstancePrice = res.valueOf();
                     });
 
                     App.CryptoInstance.status(function (err, res) {
@@ -976,43 +986,19 @@ App = {
         });
     },
 
-    getCryptoContracts: function (currencyId) {
-        $.ajax({
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            method: 'GET',
-            url: `${base_url}/v1/crypto/${currencyId}/bets`,
-            success: function (data, textStatus, jqXHR) {
-                data.forEach(contract => {
-                    // console.log(contract['data'])
-                    let content = "";
-                    content += `<tr>`;
-                    content += `<td>${contract['data']['currencyId']}</td>`;
-                    content += `<td>${contract['id']}</td>`;
-                    content += `<td><a href="${base_url}/crypto/${currencyId}/bets/${contract['id']}" target="_blank">here</a></td>`;
-                    content += `</tr>`;
-                    $("#crypto_contracts").prepend(content);
-                });
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log(errorThrown);
-            }
-        });
-    },
-
     getMatchContract: function (matchId, betId) {
         $.ajax({
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             method: 'GET',
-            url: `${base_url}/v1/sports/${matchId}/bets/${betId}`,
+            url: `${base_url}/v1/contracts/${matchId}/${betId}`,
             success: function (_data, textStatus, jqXHR) {
                 if (_data.length === 1) {
                     let data = _data[0];
                     let MatchContract = web3.eth.contract(SOLID_SPORT_BET_ABI);
-                    App.MatchInstance = MatchContract.at(data['data']['contractAddress']);
+                    App.MatchInstance = MatchContract.at(data['contractAddress']);
+                    let states = ['PENDING', "SUCCESS"];
                     App.MatchInstance.details(function (err, res) {
                         if (!err) {
                             App.MatchInstancePrice = res[6].valueOf();
@@ -1022,6 +1008,7 @@ App = {
                             let _teamTwo = web3.toAscii(res[3]);
                             let _matchTimestamp = (res[4]).valueOf() * 1000;
                             let _executionDelay = (res[5]).valueOf() * 1000;
+                            App.execution_time = res[5].valueOf();
                             let _price = (res[6]).valueOf() / 1e18;
                             let _status = res[7];
                             let content = "";
@@ -1033,7 +1020,7 @@ App = {
                             content += `<b>Time</b>: ${formatTime(_matchTimestamp)}<br/>`;
                             content += `<b>Execution delay</b>: ${formatTime(_executionDelay)}<br/>`;
                             content += `<b>Price</b>: ${_price} ETH <br/>`;
-                            content += `<b>Status</b>: ${_status}<br/>`;
+                            content += `<b>Status</b>: ${states[_status]}<br/>`;
                             $("#bet_details").html(content);
                         }
                     });
@@ -1057,6 +1044,25 @@ App = {
                             console.log(event);
                         }
                     });
+
+                    let allEvents2 = App.MatchInstance.betResolved({
+                        // address: App.account
+                    }, {
+                        fromBlock: 0,
+                        toBlock: 'latest',
+                    });
+
+                    allEvents2.watch(function (error, event) {
+                        if (!error) {
+                            let result = event['args'];
+                            let scoreOne = result['scoreOne'].valueOf();
+                            let scoreTwo = result['scoreTwo'].valueOf();
+                            let content = ``;
+                            content += `<b>Score one</b>: ${scoreOne}<br/>`;
+                            content += `<b>Score two</b>: ${scoreTwo}`;
+                            $("#result_details").html(content)
+                        }
+                    });
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -1068,9 +1074,6 @@ App = {
     subscribeMatchContract: function () {
         let inputTeamScoreOne = $("#inputTeamScoreOne").val();
         let inputTeamScoreTwo = $("#inputTeamScoreTwo").val();
-        console.log("Team one score: " + inputTeamScoreOne);
-        console.log("Team two score: " + inputTeamScoreTwo);
-        console.log(App.MatchInstance.address);
         App.MatchInstance.subscribe(inputTeamScoreOne, inputTeamScoreTwo, {
             value: App.MatchInstancePrice,
             from: App.account
@@ -1078,7 +1081,65 @@ App = {
             if (err) {
                 console.log(err);
             } else {
-                console.log(res);
+                $.ajax({
+                    method: 'POST',
+                    contentType: 'application/json',
+                    url: '/v1/bets',
+                    data: JSON.stringify({
+                        id: App.betId,
+                        category: 'matches',
+                        account: App.account,
+                        transactionHash: res,
+                        contractAddress: App.MatchInstance.address,
+                        execution_time: App.execution_time
+                    }),
+                    success: function (data, textStatus, jqXHR) {
+                        let content = "";
+                        let link = `https://ropsten.etherscan.io/tx/${res}`;
+                        content += `Successfully subscribed for match: ${+App.matchId}<br/>`;
+                        content += `Track your transaction on the ropsten network by clicking <a href="${link}" target="_blank">here</a>`
+                        $("#solidBetTransactionModalBody").html(content);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('Failed to post data.');
+                    }
+                });
+            }
+        });
+    },
+
+    subscribeCryptoContract: function () {
+        let guess_input = $("#guess_input").val();
+        App.CryptoInstance.subscribe(guess_input, {
+            value: App.CryptoInstancePrice,
+            from: App.account
+        }, function (err, res) {
+            if (err) {
+                console.log(err);
+            } else {
+                $.ajax({
+                    method: 'POST',
+                    contentType: 'application/json',
+                    url: '/v1/bets',
+                    data: JSON.stringify({
+                        id: App.betId,
+                        category: 'crypto',
+                        account: App.account,
+                        transactionHash: res,
+                        contractAddress: App.CryptoInstance.address,
+                        execution_time: App.execution_time
+                    }),
+                    success: function (data, textStatus, jqXHR) {
+                        let content = "";
+                        let link = `https://ropsten.etherscan.io/tx/${res}`;
+                        content += `Successfully subscribed for match: ${+App.matchId}<br/>`;
+                        content += `Track your transaction on the ropsten network by clicking <a href="${link}" target="_blank">here</a>`
+                        $("#solidBetTransactionModalBody").html(content);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('Failed to post data.');
+                    }
+                });
             }
         });
     },
@@ -1122,9 +1183,10 @@ $('#addMatchModal').on('hidden.bs.modal', function (e) {
 });
 
 onload = async () => {
-    $(document).on('click', '#subscribe_button', App.subscribeMatchContract);
+    $(document).on('click', '#subscribe_matches_button', App.subscribeMatchContract);
+    $(document).on('click', '#subscribe_crypto_button', App.subscribeCryptoContract);
     $(document).on('click', '#add_ticker_button', App.createCryptoBetContract);
-    $(document).on('click', '#add_sports_button', App.createSportsBetContract);
+    $(document).on('click', '#add_matches_button', App.creatematchesBetContract);
 
     await App.initWeb3();
     await App.load();
@@ -1135,7 +1197,7 @@ onload = async () => {
     // console.log(pathname);
     // console.log(window.location.href);
     splitted = splitted.split("/");
-    if (splitted.length === 2 && splitted[1] === 'sports') {
+    if (splitted.length === 2 && splitted[1] === 'matches') {
         await App.getMatches();
     }
 
@@ -1143,24 +1205,22 @@ onload = async () => {
         await App.getTickers();
     }
 
-    if (splitted.length === 3 && splitted[1] === 'sports' && !isNaN(+splitted[2])) {
+    if (splitted.length === 3 && splitted[1] === 'contracts' && !isNaN(+splitted[2])) {
+        await App.getContracts(+splitted[2]);
+    }
+
+    if (splitted.length === 3 && splitted[1] === 'matches' && !isNaN(+splitted[2])) {
         await App.getMatchDetails(+splitted[2]);
     }
 
-    if (splitted.length === 4 && splitted[1] === 'sports' && !isNaN(+splitted[2]) && splitted[3] === 'bets') {
-        await App.getMatchContracts(+splitted[2]);
+    if (splitted.length === 4 && splitted[1] === 'contracts' && !isNaN(+splitted[2])) {
+        App.getMatchContract(+splitted[2], splitted[3]);
+        App.betId = splitted[3];
     }
 
-    if (splitted.length === 4 && splitted[1] === 'crypto' && !isNaN(+splitted[2]) && splitted[3] === 'bets') {
-        await App.getCryptoContracts(+splitted[2]);
-    }
-
-    if (splitted.length === 5 && splitted[1] === 'sports' && !isNaN(+splitted[2]) && splitted[3] === 'bets') {
-        App.getMatchContract(+splitted[2], splitted[4]);
-    }
-
-    if (splitted.length === 5 && splitted[1] === 'crypto' && !isNaN(+splitted[2]) && splitted[3] === 'bets') {
-        App.getCryptoContract(+splitted[2], splitted[4]);
+    if (splitted.length === 4 && splitted[1] === 'contracts' && !isNaN(+splitted[2])) {
+        App.getCryptoContract(+splitted[2], splitted[3]);
+        App.betId = splitted[3];
     }
 };
 
