@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-let coinmarketcap = new (require('../../api/bets/crypto/coinmarketcap'));
+let coinmarketcap = new (require('../../api/bets/crypto/CoinMarketCap'));
 let tickers = [];
 
 getTickers();

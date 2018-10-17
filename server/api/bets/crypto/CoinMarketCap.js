@@ -1,6 +1,6 @@
 var request = require('request');
 
-class FootballData {
+class CoinMarketCap {
 
     constructor() {
 
@@ -27,4 +27,4 @@ class FootballData {
     }
 }
 
-module.exports = FootballData;
+module.exports = CoinMarketCap;
