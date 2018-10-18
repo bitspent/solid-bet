@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('./crypto/tickers');
+    res.redirect('./')
 });
 
 router.get('/:uuid', function (req, res, next) {
@@ -20,12 +20,11 @@ router.get('/:uuid/:betId', function (req, res, next) {
             if (_data.length !== 1) {
                 res.send("Error")
             }
-            if (_data[0].category === 'sports') {
+            if (_data[0]['category'] == 'sports') {
                 res.render('./contracts/contract_sports_details');
             } else {
                 res.render('./contracts/contract_crypto_details');
             }
-            console.log(_data[0])
         })
         .catch(err => {
 

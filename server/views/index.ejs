@@ -4,15 +4,15 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel='stylesheet' href='<%= website.url %>/stylesheets/style.css'/>
+    <link rel='stylesheet' href='./stylesheets/style.css'/>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="<%= website.url %>/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
     <title>Solid Sports Betting - Home</title>
 </head>
 
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#" id="rawbot_device_title">SolidBet</a>
+    <a class="navbar-brand" href="#" id="rawbot_device_title">Solid Bets</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -21,7 +21,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="<%= website.url %>/">Home</a>
+                <a class="nav-link" href="./">Home</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -29,39 +29,26 @@
                     Betting
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<%= website.url %>/crypto">Crypto</a>
-                    <a class="dropdown-item" href="<%= website.url %>/matches">Sports</a>
+                    <a class="dropdown-item" href="./crypto">Crypto</a>
+                    <a class="dropdown-item" href="./matches">Sports</a>
                 </div>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    History
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<%= website.url %>/history/created">Created contracts</a>
-                    <a class="dropdown-item" href="<%= website.url %>/history/subscribed">Subscribed contracts</a>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    Active bets
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<%= website.url %>/subscriptions/public">Public</a>
-                    <a class="dropdown-item" href="<%= website.url %>/subscriptions/private">Private</a>
-                    <a class="dropdown-item" href="<%= website.url %>/subscriptions/owned">Owned</a>
-                </div>
+            <li class="nav-item">
+                <a class="nav-link" href="./history">History</a>
             </li>
         </ul>
     </div>
 </nav>
-<div class="container">
-    <div class="jumbotron lower">
-        <h3>Solid Sports Betting - Smart contracts<br/>
-            Go big or go home - that's how we do it
-        </h3>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5 lower center">
+            <a href="./crypto" target="_blank"><img src="./images/btc.svg" style="width: 50%"></a><br/>
+            <h1>Crypto bets</h1>
+        </div>
+        <div class="col-md-5 lower center">
+            <a href="./sports" target="_blank"><img src="./images/football.png" style="width: 50%"></a>
+            <h1>Sports bets</h1>
+        </div>
     </div>
 </div>
 

@@ -12,7 +12,7 @@ var app = express();
 db.initializeConnection()
     .then(async conn => {
         r.connection = conn;
-
+        //
         // let wrapper = require('./api/Wrapper');
         // wrapper.insertMatches('CL')
         //     .then(result => {
@@ -43,6 +43,7 @@ app.use('/', require('./routes/index'));
 app.use('/matches', require('./routes/matches'));
 app.use('/crypto', require('./routes/crypto'));
 app.use('/contracts', require('./routes/contracts'));
+// app.use('/bets', require('./routes/bets'));
 
 /**
  * API endpoints
@@ -50,11 +51,18 @@ app.use('/contracts', require('./routes/contracts'));
 app.use('/v1/matches', require('./api/endpoints/Matches'));
 app.use('/v1/crypto', require('./api/endpoints/Crypto'));
 
-app.use('/v1/bets', require('./api/endpoints/Bets'));
-app.use('/v1/contracts', require('./api/endpoints/Contracts'));
+app.post('/v1/contracts/add', require('./api/endpoints/Contracts').insertContract);
+app.post('/v1/contracts/fetch', require('./api/endpoints/Contracts').showContract);
+app.post('/v1/contracts/mine', require('./api/endpoints/Contracts').showMyContracts);
+app.post('/v1/contracts/public', require('./api/endpoints/Contracts').showPublicContracts);
+app.post('/v1/contracts/private', require('./api/endpoints/Contracts').showPrivateContracts);
+app.post('/v1/contracts/owned', require('./api/endpoints/Contracts').showOwnedContracts);
+app.post('/v1/contracts/inactive', require('./api/endpoints/Contracts').showInactiveContracts);
 
-app.post('/v1/contracts', require('./api/bets/InsertContract'));
-app.post('/v1/bets', require('./api/bets/InsertBet'));
+app.post('/v1/bets/add', require('./api/endpoints/Bets').insertBet);
+app.post('/v1/bets/inactive', require('./api/endpoints/Bets').showInactiveBets);
+// app.post('/v1/bets/fetch', require('./api/endpoints/Bets').showActiveBets);
+// app.post('/v1/bets/fetch', require('./api/endpoints/Bets').showBet);
 
 setTimeout(() => {
     contractWrapper.updateContracts();

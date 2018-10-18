@@ -14,10 +14,16 @@ router.get('/', function (req, res, next) {
         league: true
     })
         .then(matches => {
-            matches.sort(function (a, b) {
+            let temp = [];
+            matches.forEach(match => {
+                if (new Date(match['utcDate']).getTime() > new Date().getTime()) {
+                    temp.push(match);
+                }
+            });
+            temp.sort(function (a, b) {
                 return new Date(b['utcDate']).getTime() - new Date(a['utcDate']).getTime();
             });
-            return res.json(matches);
+            return res.json(temp);
         })
         .catch(err => {
             return res.send(err);

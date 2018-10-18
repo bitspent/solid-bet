@@ -38,23 +38,43 @@
         </ul>
     </div>
 </nav>
-<div class="container">
-    <table class="table table-bordered table-hover table-stats custom_background lower" style="table-layout: fixed;">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">League</th>
-            <th scope="col">Team #1</th>
-            <th scope="col">Team #2</th>
-            <th scope="col">Match date</th>
-            <th scope="col">View Details</th>
-            <th scope="col">View Contracts</th>
-            <th scope="col">Create Bet</th>
-        </tr>
-        </thead>
-        <tbody id="upcoming_matches_table">
-        </tbody>
-    </table>
+<div class="container-fluid">
+    <div class="row">
+        <table class="col-md-6 table table-bordered table-hover table-stats custom_background lower"
+               style="margin-left: 15px;">
+            <thead>
+            <tr>
+                <th colspan="6" style="text-align: center">Sports games</th>
+            </tr>
+            <tr>
+                <th scope="col" style="width: 120px">League</th>
+                <th scope="col" style="width: 125px">Game</th>
+                <th scope="col" style="width: 100px">Match date</th>
+                <th scope="col" style="width: 100px">View Details</th>
+                <th scope="col" style="width: 100px">View Contracts</th>
+                <th scope="col" style="width: 100px">Create Bet</th>
+            </tr>
+            </thead>
+            <tbody id="upcoming_matches_table">
+            </tbody>
+        </table>
+        <table class="col-md-5 table table-bordered table-hover table-stats lower"
+               style="margin-left: 15px">
+            <thead>
+            <tr>
+                <th colspan="5" style="text-align: center">Sports active bets</th>
+            </tr>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Type</th>
+                <th scope="col">Execution date</th>
+                <th scope="col">Details</th>
+            </tr>
+            </thead>
+            <tbody id="bets">
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Add crypto bet modal -->

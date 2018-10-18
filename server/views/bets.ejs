@@ -7,7 +7,7 @@
     <link rel='stylesheet' href='../stylesheets/style.css'/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <title>Solid Betting - Contracts</title>
+    <title>Solid Sports Betting - Bets</title>
 </head>
 
 <body>
@@ -39,18 +39,47 @@
     </div>
 </nav>
 <div class="container">
+    <div id="betForm" class="row lower">
+        <div class="form-group col-md-2">
+            <label for="visibility_flag">Owned</label><br/>
+            <select class="custom-select" id="bet_owned">
+                <option value="1" selected>Yes</option>
+                <option value="0">No</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="visibility_flag">Type</label><br/>
+            <select class="custom-select" id="bet_type">
+                <option value="1" selected>Public</option>
+                <option value="2">Private</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="visibility_flag">Category</label><br/>
+            <select class="custom-select" id="bet_category">
+                <option value="crypto" selected>Crypto</option>
+                <option value="sports">Sports</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" id="fetch_bets_button">Submit</button>
+        </div>
+    </div>
     <table class="table table-bordered table-hover table-stats custom_background lower">
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Bet #</th>
-            <th scope="col">Creation date</th>
-            <th scope="col">Execution date</th>
+            <th scope="col">Category</th>
+            <th scope="col">Type</th>
+            <th scope="col">Subscription date</th>
             <th scope="col">Transaction hash</th>
+            <th scope="col">Contract bet</th>
             <th scope="col">Details</th>
         </tr>
         </thead>
-        <tbody id="contracts">
+        <tbody id="bets">
         </tbody>
     </table>
 </div>
