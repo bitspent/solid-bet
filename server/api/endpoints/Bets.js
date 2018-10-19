@@ -25,7 +25,8 @@ let insertBet = function (req, res, next) {
         to: true,
         from: true,
         time: true,
-        execution_time: true
+        execution_time: true,
+        subscription_price: true
     }).then(result => {
         if (result.length === 1) {
             let contract = result[0];
@@ -38,7 +39,8 @@ let insertBet = function (req, res, next) {
                 from: contract['from'],
                 bettor: account,
                 type: contract['type'],
-                time: Math.floor(new Date().getTime() / 1000)
+                time: Math.floor(new Date().getTime() / 1000),
+                subscription_price: contract['subscription_price']
             };
             db.insertData('bets', payload)
                 .then(res => console.log(res))
@@ -85,7 +87,8 @@ let showInactiveBets = function (req, res, next) {
         from: true,
         time: true,
         type: true,
-        execution_time: true
+        execution_time: true,
+        subscription_price: true
     }).then(result => {
         return res.json(result);
     }).catch(error => {

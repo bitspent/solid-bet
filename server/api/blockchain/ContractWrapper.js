@@ -24,7 +24,6 @@ class ContractWrapper {
                         "from": receipt["from"]
                     });
             }
-
             _start++;
             this.getData(_data, _start, _end);
         }

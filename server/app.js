@@ -8,11 +8,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 let contractWrapper = new (require('./api/blockchain/ContractWrapper'))(db);
 var app = express();
-
 db.initializeConnection()
     .then(async conn => {
         r.connection = conn;
-        //
+
         // let wrapper = require('./api/Wrapper');
         // wrapper.insertMatches('CL')
         //     .then(result => {
@@ -58,6 +57,7 @@ app.post('/v1/contracts/public', require('./api/endpoints/Contracts').showPublic
 app.post('/v1/contracts/private', require('./api/endpoints/Contracts').showPrivateContracts);
 app.post('/v1/contracts/owned', require('./api/endpoints/Contracts').showOwnedContracts);
 app.post('/v1/contracts/inactive', require('./api/endpoints/Contracts').showInactiveContracts);
+app.post('/v1/contracts/length', require('./api/endpoints/Contracts').showContractsLength);
 
 app.post('/v1/bets/add', require('./api/endpoints/Bets').insertBet);
 app.post('/v1/bets/inactive', require('./api/endpoints/Bets').showInactiveBets);

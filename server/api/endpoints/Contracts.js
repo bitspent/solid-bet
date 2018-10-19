@@ -5,6 +5,7 @@ let insertContract = function (req, res, next) {
         || typeof req["body"]["transactionHash"] === 'undefined'
         || typeof req["body"]["uuid"] === 'undefined'
         || typeof req["body"]["category"] === 'undefined'
+        || typeof req["body"]["subscription_price"] === 'undefined'
     ) {
         return res.json({
             success: false,
@@ -18,6 +19,7 @@ let insertContract = function (req, res, next) {
     let category = req["body"]["category"];
     let type = +req["body"]["type"];
     let execution_time = +req["body"]["execution_time"];
+    let subscription_price = req["body"]["subscription_price"];
     let payload = {
         category: category,
         type: type,
@@ -27,16 +29,22 @@ let insertContract = function (req, res, next) {
         to: null,
         from: account,
         time: Math.floor(new Date().getTime() / 1000),
-        execution_time: execution_time
+        execution_time: execution_time,
+        subscription_price: subscription_price
     };
     db.insertData('contracts', payload)
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
-
-    return res.json({
-        success: true,
-        result: "Successfully pushed data."
-    });
+        .then(data => {
+            return res.json({
+                success: true,
+                result: data['generated_keys']
+            });
+        })
+        .catch(err => {
+            return res.json({
+                success: false,
+                result: err
+            });
+        });
 };
 
 let showContract = function (req, res, next) {
@@ -59,7 +67,8 @@ let showContract = function (req, res, next) {
         from: true,
         time: true,
         type: true,
-        execution_time: true
+        execution_time: true,
+        subscription_price: true
     }).then(result => {
         return res.json(result);
     }).catch(error => {
@@ -94,7 +103,8 @@ let showMyContracts = function (req, res, next) {
         from: true,
         time: true,
         type: true,
-        execution_time: true
+        execution_time: true,
+        subscription_price: true
     }).then(result => {
         return res.json(result);
     }).catch(error => {
@@ -126,7 +136,8 @@ let showPublicContracts = function (req, res, next) {
         from: true,
         time: true,
         type: true,
-        execution_time: true
+        execution_time: true,
+        subscription_price: true
     }).then(result => {
         return res.json(result);
     }).catch(error => {
@@ -149,7 +160,7 @@ let showPrivateContracts = function (req, res, next) {
     db.viewData('bets', function (contract) {
         let today = new Date();
         let today_timestamp = today.getTime() / 1000;
-        return contract("execution_time").gt(today_timestamp).and(contract('category').eq(category)).and(contract('type').eq(2)).and(contract('from').eq(req["body"]["account"]))
+        return contract("execution_time").gt(today_timestamp).and(contract('category').eq(category)).and(contract('type').eq(2)).and(contract('bettor').eq(req["body"]["account"]))
     }, {
         id: true,
         betId: true,
@@ -162,7 +173,8 @@ let showPrivateContracts = function (req, res, next) {
         from: true,
         time: true,
         type: true,
-        execution_time: true
+        execution_time: true,
+        subscription_price: true
     }).then(result => {
         return res.json(result);
     }).catch(error => {
@@ -185,7 +197,8 @@ let showOwnedContracts = function (req, res, next) {
         from: true,
         time: true,
         type: true,
-        execution_time: true
+        execution_time: true,
+        subscription_price: true
     }).then(result => {
         return res.json(result);
     }).catch(error => {
@@ -208,9 +221,43 @@ let showInactiveContracts = function (req, res, next) {
         from: true,
         time: true,
         type: true,
-        execution_time: true
+        execution_time: true,
+        subscription_price: true
     }).then(result => {
         return res.json(result);
+    }).catch(error => {
+        return res.send(error);
+    });
+};
+
+let showContractsLength = function (req, res, next) {
+    if (
+        typeof req["body"]["account"] === 'undefined'
+        || typeof req["body"]["category"] === 'undefined'
+    ) {
+        return res.json({
+            success: false,
+            result: "Something is missing"
+        });
+    }
+    db.viewData('contracts', function (contract) {
+        let today = new Date();
+        let today_timestamp = today.getTime() / 1000;
+        return (contract("execution_time").gt(today_timestamp)).and(contract('category').eq(req['body']['category'])).and(contract('from').eq(req['body']['account']))
+    }, {
+        id: true,
+        uuid: true,
+    }).then(result => {
+        let total = {};
+        if (result.length > 0) {
+            result.forEach(r => {
+                total[r.uuid] = [];
+            });
+            result.forEach(r => {
+                total[r.uuid].push(r.id);
+            });
+        }
+        return res.json(total);
     }).catch(error => {
         return res.send(error);
     });
@@ -223,5 +270,6 @@ module.exports = {
     showPublicContracts,
     showPrivateContracts,
     showOwnedContracts,
-    showInactiveContracts
+    showInactiveContracts,
+    showContractsLength
 };
