@@ -709,6 +709,8 @@ App = {
     },
 
     createMatchesBetContract: function () {
+        let temp_match_id = App.matchId;
+        let current_data = {};
         let match = App.matches[+App.matchId];
         let price = $("#subscription_price").val();
         let visibility_flag = $('#visibility_flag option:selected').val();
@@ -731,17 +733,11 @@ App = {
                 if (!err) {
                     if (!deployedContract.address) {
                         console.log(deployedContract["transactionHash"]);
-                        $('#addMatchModal').modal('hide')
+                        $('#addMatchModal').modal('hide');
                         $('#solidBetTransactionModal').modal({
                             keyboard: false,
                             show: true
                         });
-                    } else {
-
-                        let content = "";
-                        let link = `https://ropsten.etherscan.io/tx/${deployedContract["transactionHash"]}`;
-                        content += `Track your transaction by clicking <a href="${link}" target="_blank">here</a>`
-                        $("#solidBetTransactionModalBody").html(content);
 
                         $.ajax({
                             method: 'POST',
@@ -757,18 +753,35 @@ App = {
                                 subscription_price: _price
                             }),
                             success: function (data, textStatus, jqXHR) {
-                                let deployed_contract_content = "";
-                                let link = `https://ropsten.etherscan.io/address/${deployedContract["address"]}`;
-                                let local_link = `./contracts/${+App.matchId}/${data['result'][0]}`;
-                                deployed_contract_content += `Successfully created and deployed contract for match: ${+App.matchId}.<br/>`;
-                                deployed_contract_content += `Check your contract on the ropsten network <a href="${link}" target="_blank">here</a><br/>`;
-                                deployed_contract_content += `Check your deployed contract bet by clicking <a href="${local_link}" target="_blank">here</a><br/>`;
-                                $("#solidBetTransactionModalBody").html(deployed_contract_content);
+                                current_data = data;
+                                if (data['success']) {
+                                    let content = "";
+                                    let link = `https://ropsten.etherscan.io/tx/${deployedContract["transactionHash"]}`;
+                                    content += `Track your transaction by clicking <a href="${link}" target="_blank">here</a>`;
+                                    $("#solidBetTransactionModalBody").html(content);
+                                }
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
                                 console.log('Failed to post data.');
                             }
                         });
+
+                    } else {
+                        if (current_data['success']) {
+                            $('#addTickerModal').modal('hide');
+                            $('#solidBetTransactionModal').modal({
+                                keyboard: false,
+                                show: true
+                            });
+                            console.log(deployedContract.address);
+                            let deployed_contract_content = "";
+                            let link = `https://ropsten.etherscan.io/address/${deployedContract["address"]}`;
+                            let local_link = `./contracts/${+temp_match_id}/${current_data['result'][0]}`;
+                            deployed_contract_content += `Successfully created and deployed contract for match: ${+temp_match_id}.<br/>`;
+                            deployed_contract_content += `Check your contract on the ropsten network <a href="${link}" target="_blank">here</a><br/>`;
+                            deployed_contract_content += `Check your deployed contract bet by clicking <a href="${local_link}" target="_blank">here</a><br/>`;
+                            $("#solidBetTransactionModalBody").html(deployed_contract_content);
+                        }
                     }
                 } else {
                     console.log(err);
@@ -777,6 +790,7 @@ App = {
     },
 
     createCryptoBetContract: function () {
+        let current_data = {};
         var _creator = App.account;
         var _currency = App.currencyId;
         let __closure_delay = $("#closure_delay").val();
@@ -801,17 +815,11 @@ App = {
                 if (!err) {
                     if (!deployedContract.address) {
                         console.log(deployedContract["transactionHash"]);
-                        $('#addTickerModal').modal('hide')
+                        $('#addTickerModal').modal('hide');
                         $('#solidBetTransactionModal').modal({
                             keyboard: false,
                             show: true
                         });
-
-                        let content = "";
-                        let link = `https://ropsten.etherscan.io/tx/${deployedContract["transactionHash"]}`;
-                        content += `Track your transaction by clicking <a href="${link}" target="_blank">here</a>`;
-                        $("#solidBetTransactionModalBody").html(content);
-                    } else {
 
                         $.ajax({
                             method: 'POST',
@@ -827,22 +835,35 @@ App = {
                                 subscription_price: _subscriptionPrice
                             }),
                             success: function (data, textStatus, jqXHR) {
+                                current_data = data;
                                 if (data['success']) {
-                                    console.log(deployedContract.address);
-                                    let deployed_contract_content = "";
-                                    let link = `https://ropsten.etherscan.io/address/${deployedContract["address"]}`;
-                                    let local_link = `./contracts/${_currency}/${data['result'][0]}`;
-                                    let currency_name = App.tickers_data[_currency]['name'];
-                                    deployed_contract_content += `Successfully created and deployed contract for currency: ${currency_name}.<br/>`;
-                                    deployed_contract_content += `Check your contract on the ropsten network <a href="${link}" target="_blank">here</a><br/>`;
-                                    deployed_contract_content += `Check your deployed contract bet by clicking <a href="${local_link}" target="_blank">here</a><br/>`;
-                                    $("#solidBetTransactionModalBody").html(deployed_contract_content);
+                                    let content = "";
+                                    let link = `https://ropsten.etherscan.io/tx/${deployedContract["transactionHash"]}`;
+                                    content += `Track your transaction by clicking <a href="${link}" target="_blank">here</a>`;
+                                    $("#solidBetTransactionModalBody").html(content);
                                 }
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
                                 console.log('Failed to post data.');
                             }
                         });
+                    } else {
+                        if (current_data['success']) {
+                            $('#addTickerModal').modal('hide');
+                            $('#solidBetTransactionModal').modal({
+                                keyboard: false,
+                                show: true
+                            });
+                            console.log(deployedContract.address);
+                            let deployed_contract_content = "";
+                            let link = `https://ropsten.etherscan.io/address/${deployedContract["address"]}`;
+                            let local_link = `./contracts/${_currency}/${current_data['result'][0]}`;
+                            let currency_name = App.tickers_data[_currency]['name'];
+                            deployed_contract_content += `Successfully created and deployed contract for currency: ${currency_name}.<br/>`;
+                            deployed_contract_content += `Check your contract on the ropsten network <a href="${link}" target="_blank">here</a><br/>`;
+                            deployed_contract_content += `Check your deployed contract bet by clicking <a href="${local_link}" target="_blank">here</a><br/>`;
+                            $("#solidBetTransactionModalBody").html(deployed_contract_content);
+                        }
                     }
                 } else {
                     console.log(err);
