@@ -890,7 +890,7 @@ App = {
     },
 
     displayMatches: async () => {
-        let c_length = await App.getContractsLength('crypto');
+        let c_length = await App.getContractsLength('sports');
         let data = await App.getMatches();
         if (data && data.length > 0) {
             data.forEach(match => {
