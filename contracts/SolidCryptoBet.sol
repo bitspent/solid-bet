@@ -20,6 +20,16 @@ contract CryptoPriceBet is usingOraclize, Pausable, ReentrancyGuard {
     event StateTranstition(state _old, state _new);
 
     /**
+     * Log BetBean Subscription
+     */
+    event newSubscriber(address indexed addr, uint guess);
+
+    /**
+     * Log BetBean Winner(s)
+     */
+    event newWinner(address indexed addr, uint reward);
+
+    /**
      *  BetBean States:
      *
      *  OPENED => still open for subscription
@@ -75,7 +85,7 @@ contract CryptoPriceBet is usingOraclize, Pausable, ReentrancyGuard {
      *  the minDistance
      */
     uint public winGuess;
-    
+
     /**
      *  the winner reward
      */
@@ -91,8 +101,8 @@ contract CryptoPriceBet is usingOraclize, Pausable, ReentrancyGuard {
      *  save the oraclize result
      */
     string private oraclizeResult;
-    
-    
+
+
     /**
      *  save the creator user
      */
@@ -101,9 +111,9 @@ contract CryptoPriceBet is usingOraclize, Pausable, ReentrancyGuard {
 
     /**
      * BetBean owned constructor
-     * 
+     *
      * deploys and activate the BetBean
-     * 
+     *
      */
     constructor(
         address _creator,
@@ -138,27 +148,27 @@ contract CryptoPriceBet is usingOraclize, Pausable, ReentrancyGuard {
     /**
      *
      * @dev subscribe a player to the bet, submitting his price prediction
-     * 
-     * @param guess the predicted bet currency price referred to USD 
+     *
+     * @param guess the predicted bet currency price referred to USD
      *
      * @return the subscription count
      */
     function subscribe(uint guess) public payable nonReentrant returns (uint) {
-        
+
         require
         (
-            // only for users
+        // only for users
             tx.origin == msg.sender
-        
+
             // make sure the contract is in an OPENED state
             && status == state.OPENED
 
             // only one bet price guess per user / address
             && guesses[msg.sender] == 0
-            
+
             // a guess price is mandatory
             && guess > 0
-        
+
             // validate the payment amount
             && msg.value >= subscriptionPrice
         );
@@ -166,6 +176,9 @@ contract CryptoPriceBet is usingOraclize, Pausable, ReentrancyGuard {
         // add the player
         subscribers.push(msg.sender);
         guesses[msg.sender] = guess;
+
+        // log the event
+        emit newSubscriber(msg.sender, guess);
 
         // increment the counter
         return ++counter;
@@ -176,22 +189,22 @@ contract CryptoPriceBet is usingOraclize, Pausable, ReentrancyGuard {
      */
     function recallOraclize() public nonReentrant onlyOwner {
         require(status == state.ERROR, 'Not Applicable');
-		// reset state to pending execution
+        // reset state to pending execution
         emit StateTranstition(status, state.PENDING);
         status = state.PENDING;
-		// re-schedule
+        // re-schedule
         uint _executionDelay = executionDelay;
         executionDelay = 10;
         scheduleBetExecution();
         executionDelay = _executionDelay;
     }
-    
+
     function end() public onlyOwner {
         selfdestruct(owner);
     }
 
     /**
-     * Oraclize scheduler to end the subscription period 
+     * Oraclize scheduler to end the subscription period
      */
     function scheduleSubscriptionClose() private {
         require(address(this).balance > oraclize_getPrice('URL'), 'No BGaz');
@@ -199,7 +212,7 @@ contract CryptoPriceBet is usingOraclize, Pausable, ReentrancyGuard {
     }
 
     /**
-     * Oraclize scheduler to execute the bet contract 
+     * Oraclize scheduler to execute the bet contract
      */
     function scheduleBetExecution() private {
         // set state to pending execution
@@ -218,7 +231,7 @@ contract CryptoPriceBet is usingOraclize, Pausable, ReentrancyGuard {
 
     /**
      * Absolute distance between two uints
-     * 
+     *
      * @return the positive distance
      */
     function dist(uint x, uint y) private pure returns (uint) {
@@ -286,15 +299,17 @@ contract CryptoPriceBet is usingOraclize, Pausable, ReentrancyGuard {
             uint factoryReward = feeReward - creatorReward;
             // add the remaining wei
             factoryReward += address(this).balance - totalReward;
-            
+
             // cash-out rewards
-            owner.transfer(factoryReward);            
+            owner.transfer(factoryReward);
             creator.transfer(creatorReward);
             for (i = 0; i <= windex; i++) {
                 winners.push(wins[i]);
                 wins[i].transfer(winnerReward);
+                // log the winner
+                emit newWinner(wins[i], winnerReward);
             }
-            
+
             // update the win Reward
             winReward =  winnerReward;
 

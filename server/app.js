@@ -1,6 +1,6 @@
 r = require('rethinkdb');
 db = new (require('./api/rethinkdb/Database'));
-
+var cors = require('cors');
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
@@ -8,9 +8,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 let contractWrapper = new (require('./api/blockchain/ContractWrapper'))(db);
 var app = express();
+app.use(cors());
 db.initializeConnection()
     .then(async conn => {
         r.connection = conn;
+        console.log("Successfully connected to rethinkdb server");
 
         // let wrapper = require('./api/Wrapper');
         // wrapper.insertMatches('CL')
@@ -21,6 +23,7 @@ db.initializeConnection()
         //     });
     })
     .catch(err => {
+        console.log("Failed to connect to rethinkdb server");
     });
 
 // view engine setup

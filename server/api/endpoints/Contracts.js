@@ -34,12 +34,14 @@ let insertContract = function (req, res, next) {
     };
     db.insertData('contracts', payload)
         .then(data => {
+            console.log(data)
             return res.json({
                 success: true,
                 result: data['generated_keys']
             });
         })
         .catch(err => {
+            console.log(err)
             return res.json({
                 success: false,
                 result: err
