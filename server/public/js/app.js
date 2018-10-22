@@ -1,670 +1,4 @@
 let base_url = "http://neom.bet:3000";
-let SOLID_SPORT_BET_ABI = [
-    {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "myid",
-                "type": "bytes32"
-            },
-            {
-                "name": "res",
-                "type": "string"
-            }
-        ],
-        "name": "__callback",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "myid",
-                "type": "bytes32"
-            },
-            {
-                "name": "result",
-                "type": "string"
-            },
-            {
-                "name": "proof",
-                "type": "bytes"
-            }
-        ],
-        "name": "__callback",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "_owner",
-                "type": "address"
-            }
-        ],
-        "name": "transferOwner",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "details",
-        "outputs": [
-            {
-                "name": "_matchId",
-                "type": "uint256"
-            },
-            {
-                "name": "_league",
-                "type": "bytes32"
-            },
-            {
-                "name": "_teamOne",
-                "type": "bytes32"
-            },
-            {
-                "name": "_teamTwo",
-                "type": "bytes32"
-            },
-            {
-                "name": "_matchTimestamp",
-                "type": "uint256"
-            },
-            {
-                "name": "_executionDelay",
-                "type": "uint256"
-            },
-            {
-                "name": "_price",
-                "type": "uint256"
-            },
-            {
-                "name": "_status",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "scoreOne",
-                "type": "uint256"
-            },
-            {
-                "name": "scoreTwo",
-                "type": "uint256"
-            }
-        ],
-        "name": "subscribe",
-        "outputs": [],
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "matchResult",
-        "outputs": [
-            {
-                "name": "scoreOne",
-                "type": "uint256"
-            },
-            {
-                "name": "scoreTwo",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "_matchId",
-                "type": "uint256"
-            },
-            {
-                "name": "_league",
-                "type": "bytes32"
-            },
-            {
-                "name": "_teamOne",
-                "type": "bytes32"
-            },
-            {
-                "name": "_teamTwo",
-                "type": "bytes32"
-            },
-            {
-                "name": "_matchTimestamp",
-                "type": "uint256"
-            },
-            {
-                "name": "_executionDelay",
-                "type": "uint256"
-            },
-            {
-                "name": "_price",
-                "type": "uint256"
-            }
-        ],
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "constructor"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "name": "result",
-                "type": "string"
-            }
-        ],
-        "name": "OraclizeLog",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "name": "addr",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "name": "scoreOne",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "name": "scoreTwo",
-                "type": "uint256"
-            }
-        ],
-        "name": "newSubscriber",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "name": "addr",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "name": "reward",
-                "type": "uint256"
-            }
-        ],
-        "name": "newWinner",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "name": "scoreOne",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "name": "scoreTwo",
-                "type": "uint256"
-            }
-        ],
-        "name": "betResolved",
-        "type": "event"
-    }
-];
-let SOLID_CRYPTO_BET_ABI = [
-    {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "guess",
-                "type": "uint256"
-            }
-        ],
-        "name": "subscribe",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "status",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint8"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "myid",
-                "type": "bytes32"
-            },
-            {
-                "name": "res",
-                "type": "string"
-            }
-        ],
-        "name": "__callback",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "myid",
-                "type": "bytes32"
-            },
-            {
-                "name": "result",
-                "type": "string"
-            },
-            {
-                "name": "proof",
-                "type": "bytes"
-            }
-        ],
-        "name": "__callback",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [],
-        "name": "unpause",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "closureDelay",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [
-            {
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "name": "guesses",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [],
-        "name": "recallOraclize",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "subscribers",
-        "outputs": [
-            {
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "paused",
-        "outputs": [
-            {
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "counter",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "result",
-        "outputs": [
-            {
-                "name": "",
-                "type": "string"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [],
-        "name": "pause",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "executionDelay",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
-            {
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "winGuess",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "winners",
-        "outputs": [
-            {
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "subscriptionPrice",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "winReward",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "currency",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [],
-        "name": "end",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "newOwner",
-                "type": "address"
-            }
-        ],
-        "name": "transferOwnership",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "_creator",
-                "type": "address"
-            },
-            {
-                "name": "_currency",
-                "type": "uint256"
-            },
-            {
-                "name": "_closureDelay",
-                "type": "uint256"
-            },
-            {
-                "name": "_executionDelay",
-                "type": "uint256"
-            },
-            {
-                "name": "_subscriptionPrice",
-                "type": "uint256"
-            }
-        ],
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "constructor"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "name": "_old",
-                "type": "uint8"
-            },
-            {
-                "indexed": false,
-                "name": "_new",
-                "type": "uint8"
-            }
-        ],
-        "name": "StateTranstition",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "name": "addr",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "name": "guess",
-                "type": "uint256"
-            }
-        ],
-        "name": "newSubscriber",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "name": "addr",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "name": "reward",
-                "type": "uint256"
-            }
-        ],
-        "name": "newWinner",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [],
-        "name": "Pause",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [],
-        "name": "Unpause",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "name": "previousOwner",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "name": "newOwner",
-                "type": "address"
-            }
-        ],
-        "name": "OwnershipTransferred",
-        "type": "event"
-    }
-];
 
 App = {
     web3Provider: null,
@@ -721,7 +55,7 @@ App = {
         let _executionDelay = _matchTimestamp + (3 * 60 * 60);
         let _price = +price * 1e18;
         console.log(+App.matchId, _league, _teamOne, _teamTwo, _matchTimestamp, _executionDelay, _price);
-        var SolidSportBet = web3.eth.contract(SOLID_SPORT_BET_ABI);
+        var SolidSportBet = web3.eth.contract(App.SOLID_SPORT_BET_ABI);
         var SolidSportBetInstance = SolidSportBet.new(+App.matchId, _league, _teamOne, _teamTwo, _matchTimestamp, _executionDelay, _price, {
                 from: App.account,
                 value: 0.1 * 1e18,
@@ -799,7 +133,7 @@ App = {
         let _closureDelay = new Date(__closure_delay).getTime() / 1000;
         let _executionDelay = new Date(__execution_delay).getTime() / 1000;
         var _subscriptionPrice = $("#subscription_price").val() * 1e18;
-        var cryptopricebetContract = web3.eth.contract(SOLID_CRYPTO_BET_ABI);
+        var cryptopricebetContract = web3.eth.contract(App.SOLID_CRYPTO_BET_ABI);
         var cryptopricebet = cryptopricebetContract.new(
             _creator,
             _currency,
@@ -1054,167 +388,176 @@ App = {
     },
 
     getContract: function (uuid, betId) {
-        $.ajax({
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            method: 'POST',
-            contentType: 'application/json',
-            url: base_url + '/v1/contracts/fetch',
-            data: {
-                account: App.account,
-                uuid: uuid,
-                id: betId
-            },
-            success: function (_data, textStatus, jqXHR) {
-                if (_data.length === 1) {
-                    let data = _data[0];
-                    if (data['category'] === 'sports') {
-                        /**
-                         * Match
-                         */
-                        let MatchContract = web3.eth.contract(SOLID_SPORT_BET_ABI);
-                        App.MatchInstance = MatchContract.at(data['contractAddress']);
-                        let states = ['PENDING', "SUCCESS"];
-                        App.MatchInstance.details(function (err, res) {
-                            if (!err) {
-                                App.MatchInstancePrice = res[6].valueOf();
-                                let _matchId = res[0];
-                                let _league = web3.toAscii(res[1]);
-                                let _teamOne = web3.toAscii(res[2]);
-                                let _teamTwo = web3.toAscii(res[3]);
-                                let _matchTimestamp = (res[4]).valueOf() * 1000;
-                                let _executionDelay = (res[5]).valueOf() * 1000;
-                                App.execution_time = res[5].valueOf();
-                                let _price = (res[6]).valueOf() / 1e18;
-                                let _status = res[7];
-                                let content = "";
-                                content += `<b>Match #</b>: ${_matchId}<br/>`;
-                                content += `<b>Bet #</b>: ${betId}<br/>`;
-                                content += `<b>League</b>: ${_league}<br/>`;
-                                content += `<b>Team one</b>: ${_teamOne}<br/>`;
-                                content += `<b>Team two</b>: ${_teamTwo}<br/>`;
-                                content += `<b>Time</b>: ${formatTime(_matchTimestamp)}<br/>`;
-                                content += `<b>Execution delay</b>: ${formatTime(_executionDelay)}<br/>`;
-                                content += `<b>Price</b>: ${_price} ETH <br/>`;
-                                content += `<b>Status</b>: ${states[_status]}<br/>`;
-                                $("#bet_details").html(content);
-                            }
-                        });
-
-                        let allEvents = App.MatchInstance.newSubscriber({
-                            // address: App.account
-                        }, {
-                            fromBlock: 0,
-                            toBlock: 'latest',
-                        });
-
-                        allEvents.watch(function (error, event) {
-                            if (!error) {
-                                let result = event['args'];
-                                let content = `<tr>`;
-                                content += `<td>${result['addr']}</td>`;
-                                content += `<td>${result['scoreOne']}</td>`;
-                                content += `<td>${result['scoreTwo']}</td>`;
-                                content += `</tr>`;
-                                $("#bet_subscribers").prepend(content)
-                                // console.log(event);
-                            }
-                        });
-
-                        let allEvents2 = App.MatchInstance.betResolved({
-                            // address: App.account
-                        }, {
-                            fromBlock: 0,
-                            toBlock: 'latest',
-                        });
-
-                        allEvents2.watch(function (error, event) {
-                            if (!error) {
-                                let result = event['args'];
-                                let scoreOne = result['scoreOne'].valueOf();
-                                let scoreTwo = result['scoreTwo'].valueOf();
-                                let content = ``;
-                                content += `<b>Score one</b>: ${scoreOne}<br/>`;
-                                content += `<b>Score two</b>: ${scoreTwo}`;
-                                $("#result_details").html(content)
-                            }
-                        });
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                method: 'POST',
+                contentType: 'application/json',
+                url: base_url + '/v1/contracts/fetch',
+                data: {
+                    account: App.account,
+                    uuid: uuid,
+                    id: betId
+                },
+                success: function (_data, textStatus, jqXHR) {
+                    if (_data.length === 1) {
+                        return resolve(_data[0]);
                     } else {
-                        /**
-                         * Crypto contract details
-                         */
-
-                        let CryptoContract = web3.eth.contract(SOLID_CRYPTO_BET_ABI);
-                        App.CryptoInstance = CryptoContract.at(data['contractAddress']);
-                        /**
-                         * OPENED, PENDING, EXECUTED, ERROR
-                         */
-
-                        let states = ['OPENED', 'PENDING', 'EXECUTED', 'ERROR'];
-                        $("#contractAddress").html(data['contractAddress']);
-                        App.CryptoInstance.currency(function (err, res) {
-                            $("#currency").html(res.valueOf());
-                        });
-
-                        App.CryptoInstance.closureDelay(function (err, res) {
-                            $("#closureDelay").html(formatTime(res.valueOf() * 1000));
-                        });
-
-                        App.CryptoInstance.executionDelay(function (err, res) {
-                            $("#executionDelay").html(formatTime(res.valueOf() * 1000));
-                            App.execution_time = res.valueOf();
-                        });
-
-                        App.CryptoInstance.subscriptionPrice(function (err, res) {
-                            $("#subscriptionPrice").html((res.valueOf() / 1e18) + " ETH");
-                            App.CryptoInstancePrice = res.valueOf();
-                        });
-
-                        App.CryptoInstance.status(function (err, res) {
-                            $("#status").html(states[res.valueOf()]);
-                        });
-
-                        App.CryptoInstance.winGuess.call(function (err, res) {
-                            if (res.valueOf() == 0) {
-                                $("#winGuess").html('-');
-                            } else {
-                                $("#winGuess").html(res.valueOf());
-                            }
-                        });
-
-                        App.CryptoInstance.winReward.call(function (err, res) {
-                            if (res.valueOf() == 0) {
-                                $("#winReward").html('-');
-                            } else {
-                                $("#winReward").html(res.valueOf());
-                            }
-                        });
-
-                        let allEvents = App.CryptoInstance.newSubscriber({
-                            // address: App.account
-                        }, {
-                            fromBlock: 0,
-                            toBlock: 'latest',
-                        });
-
-                        allEvents.watch(function (error, event) {
-                            if (!error) {
-                                let result = event['args'];
-                                let content = `<tr>`;
-                                content += `<td>${result['addr']}</td>`;
-                                content += `<td>${result['guess']}</td>`;
-                                content += `</tr>`;
-                                $("#bet_subscribers").prepend(content)
-                            }
-                        });
+                        return reject("")
                     }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    return reject(errorThrown);
                 }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log(errorThrown);
-            }
+            });
         });
+    },
+
+    displayContract: async (uuid, betId) => {
+        let data = await App.getContract(uuid, betId);
+        if (data['category'] === 'sports') {
+            /**
+             * Match
+             */
+            let MatchContract = web3.eth.contract(App.SOLID_SPORT_BET_ABI);
+            App.MatchInstance = MatchContract.at(data['contractAddress']);
+            let states = ['PENDING', "SUCCESS"];
+            App.MatchInstance.details(function (err, res) {
+                if (!err) {
+                    App.MatchInstancePrice = res[6].valueOf();
+                    let _matchId = res[0];
+                    let _league = web3.toAscii(res[1]);
+                    let _teamOne = web3.toAscii(res[2]);
+                    let _teamTwo = web3.toAscii(res[3]);
+                    let _matchTimestamp = (res[4]).valueOf() * 1000;
+                    let _executionDelay = (res[5]).valueOf() * 1000;
+                    App.execution_time = res[5].valueOf();
+                    let _price = (res[6]).valueOf() / 1e18;
+                    let _status = res[7];
+                    let content = "";
+                    content += `<b>Match #</b>: ${_matchId}<br/>`;
+                    content += `<b>Bet #</b>: ${betId}<br/>`;
+                    content += `<b>League</b>: ${_league}<br/>`;
+                    content += `<b>Team one</b>: ${_teamOne}<br/>`;
+                    content += `<b>Team two</b>: ${_teamTwo}<br/>`;
+                    content += `<b>Time</b>: ${formatTime(_matchTimestamp)}<br/>`;
+                    content += `<b>Execution delay</b>: ${formatTime(_executionDelay)}<br/>`;
+                    content += `<b>Price</b>: ${_price} ETH <br/>`;
+                    content += `<b>Status</b>: ${states[_status]}<br/>`;
+                    $("#bet_details").html(content);
+                }
+            });
+
+            let allEvents = App.MatchInstance.newSubscriber({
+                // address: App.account
+            }, {
+                fromBlock: 0,
+                toBlock: 'latest',
+            });
+
+            allEvents.watch(function (error, event) {
+                if (!error) {
+                    let result = event['args'];
+                    let content = `<tr>`;
+                    content += `<td>${result['addr']}</td>`;
+                    content += `<td>${result['scoreOne']}</td>`;
+                    content += `<td>${result['scoreTwo']}</td>`;
+                    content += `</tr>`;
+                    $("#bet_subscribers").prepend(content)
+                    // console.log(event);
+                }
+            });
+
+            let allEvents2 = App.MatchInstance.betResolved({
+                // address: App.account
+            }, {
+                fromBlock: 0,
+                toBlock: 'latest',
+            });
+
+            allEvents2.watch(function (error, event) {
+                if (!error) {
+                    let result = event['args'];
+                    let scoreOne = result['scoreOne'].valueOf();
+                    let scoreTwo = result['scoreTwo'].valueOf();
+                    let content = ``;
+                    content += `<b>Score one</b>: ${scoreOne}<br/>`;
+                    content += `<b>Score two</b>: ${scoreTwo}`;
+                    $("#result_details").html(content)
+                }
+            });
+        } else {
+            /**
+             * Crypto contract details
+             */
+
+            let CryptoContract = web3.eth.contract(App.SOLID_CRYPTO_BET_ABI);
+            App.CryptoInstance = CryptoContract.at(data['contractAddress']);
+            /**
+             * OPENED, PENDING, EXECUTED, ERROR
+             */
+
+            let states = ['OPENED', 'PENDING', 'EXECUTED', 'ERROR'];
+            $("#contractAddress").html(data['contractAddress']);
+            App.CryptoInstance.currency(function (err, res) {
+                $("#currency").html(App.tickers_data[res.valueOf()]['name']);
+            });
+
+            App.CryptoInstance.closureDelay(function (err, res) {
+                $("#closureDelay").html(formatTime(res.valueOf() * 1000));
+            });
+
+            App.CryptoInstance.executionDelay(function (err, res) {
+                $("#executionDelay").html(formatTime(res.valueOf() * 1000));
+                App.execution_time = res.valueOf();
+            });
+
+            App.CryptoInstance.subscriptionPrice(function (err, res) {
+                $("#subscriptionPrice").html((res.valueOf() / 1e18) + " ETH");
+                App.CryptoInstancePrice = res.valueOf();
+            });
+
+            App.CryptoInstance.status(function (err, res) {
+                $("#status").html(states[res.valueOf()]);
+            });
+
+            App.CryptoInstance.winGuess.call(function (err, res) {
+                if (res.valueOf() == 0) {
+                    $("#winGuess").html('-');
+                } else {
+                    $("#winGuess").html(res.valueOf());
+                }
+            });
+
+            App.CryptoInstance.winReward.call(function (err, res) {
+                if (res.valueOf() == 0) {
+                    $("#winReward").html('-');
+                } else {
+                    $("#winReward").html(res.valueOf());
+                }
+            });
+
+            let allEvents = App.CryptoInstance.newSubscriber({
+                // address: App.account
+            }, {
+                fromBlock: 0,
+                toBlock: 'latest',
+            });
+
+            allEvents.watch(function (error, event) {
+                if (!error) {
+                    let result = event['args'];
+                    let content = `<tr>`;
+                    content += `<td>${result['addr']}</td>`;
+                    content += `<td>${result['guess']}</td>`;
+                    content += `</tr>`;
+                    $("#bet_subscribers").prepend(content)
+                }
+            });
+        }
+        console.log(`Successfully loaded uuid: ${uuid} - betId: ${betId}`)
     },
 
     subscribeMatchContract: function () {
@@ -1418,8 +761,17 @@ App = {
     },
 
     getTickersData: async () => {
-        let _data = await $.getJSON('ticker.json');
+        let _data = await $.getJSON(`${base_url}/ticker.json`);
         App.tickers_data = _data['data'];
+        console.log("Successfully loaded tickets data.");
+    },
+
+    getABIs: async () => {
+        let sports = await $.getJSON(`${base_url}/sports.json`);
+        let crypto = await $.getJSON(`${base_url}/crypto.json`);
+        App.SOLID_SPORT_BET_ABI = sports['abi'];
+        App.SOLID_CRYPTO_BET_ABI = crypto['abi'];
+        console.log("Successfully loaded ABIs.");
     }
 };
 
@@ -1456,17 +808,22 @@ $('#addMatchModal').on('hidden.bs.modal', function (e) {
 });
 
 onload = async () => {
+    await App.getABIs();
     await App.getTickersData();
+    await App.initWeb3();
+    await App.load();
+
     $(document).on('click', '#subscribe_sports_button', App.subscribeMatchContract);
     $(document).on('click', '#subscribe_crypto_button', App.subscribeCryptoContract);
     $(document).on('click', '#add_ticker_button', App.createCryptoBetContract);
     $(document).on('click', '#add_sports_button', App.createMatchesBetContract);
     $(document).on('click', '#fetch_bets_button', App.getBets);
-    await App.initWeb3();
-    await App.load();
+
     let pathname = window.location.pathname;
     let link = window.location.href;
-    let splitted = link.replace("http://", "");
+    // console.log(link)
+    let splitted = link.replace("http://neom.bet:3000", "");
+    // console.log(splitted)
     // console.log(pathname);
     // console.log(window.location.href);
     splitted = splitted.split("/");
@@ -1494,7 +851,7 @@ onload = async () => {
     }
 
     if (splitted.length === 4 && splitted[1] === 'contracts' && !isNaN(+splitted[2])) {
-        App.getContract(+splitted[2], splitted[3]);
+        await App.displayContract(+splitted[2], splitted[3]);
         App.uuid = +splitted[2];
         App.betId = splitted[3];
     }

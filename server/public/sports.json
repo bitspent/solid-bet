@@ -1,0 +1,239 @@
+{
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "myid",
+          "type": "bytes32"
+        },
+        {
+          "name": "res",
+          "type": "string"
+        }
+      ],
+      "name": "__callback",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "myid",
+          "type": "bytes32"
+        },
+        {
+          "name": "result",
+          "type": "string"
+        },
+        {
+          "name": "proof",
+          "type": "bytes"
+        }
+      ],
+      "name": "__callback",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwner",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "details",
+      "outputs": [
+        {
+          "name": "_matchId",
+          "type": "uint256"
+        },
+        {
+          "name": "_league",
+          "type": "bytes32"
+        },
+        {
+          "name": "_teamOne",
+          "type": "bytes32"
+        },
+        {
+          "name": "_teamTwo",
+          "type": "bytes32"
+        },
+        {
+          "name": "_matchTimestamp",
+          "type": "uint256"
+        },
+        {
+          "name": "_executionDelay",
+          "type": "uint256"
+        },
+        {
+          "name": "_price",
+          "type": "uint256"
+        },
+        {
+          "name": "_status",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "scoreOne",
+          "type": "uint256"
+        },
+        {
+          "name": "scoreTwo",
+          "type": "uint256"
+        }
+      ],
+      "name": "subscribe",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "matchResult",
+      "outputs": [
+        {
+          "name": "scoreOne",
+          "type": "uint256"
+        },
+        {
+          "name": "scoreTwo",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_matchId",
+          "type": "uint256"
+        },
+        {
+          "name": "_league",
+          "type": "bytes32"
+        },
+        {
+          "name": "_teamOne",
+          "type": "bytes32"
+        },
+        {
+          "name": "_teamTwo",
+          "type": "bytes32"
+        },
+        {
+          "name": "_matchTimestamp",
+          "type": "uint256"
+        },
+        {
+          "name": "_executionDelay",
+          "type": "uint256"
+        },
+        {
+          "name": "_price",
+          "type": "uint256"
+        }
+      ],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "result",
+          "type": "string"
+        }
+      ],
+      "name": "OraclizeLog",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "addr",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "scoreOne",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "scoreTwo",
+          "type": "uint256"
+        }
+      ],
+      "name": "newSubscriber",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "addr",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "reward",
+          "type": "uint256"
+        }
+      ],
+      "name": "newWinner",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "scoreOne",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "scoreTwo",
+          "type": "uint256"
+        }
+      ],
+      "name": "betResolved",
+      "type": "event"
+    }
+  ]
+}
