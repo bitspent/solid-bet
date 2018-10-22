@@ -763,7 +763,7 @@ App = {
     getTickersData: async () => {
         let _data = await $.getJSON(`${base_url}/ticker.json`);
         App.tickers_data = _data['data'];
-        console.log("Successfully loaded tickets data.");
+        console.log("Successfully loaded tickers data.");
     },
 
     getABIs: async () => {
