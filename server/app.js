@@ -6,23 +6,26 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-let contractWrapper = new (require('./api/blockchain/ContractWrapper'))(db);
+let wrapper = new (require('./api/Wrapper'))(db);
 var app = express();
 app.use(cors());
+let insert_matches = false;
+let update_matches = false;
 db.initializeConnection()
     .then(async conn => {
         r.connection = conn;
         console.log("Successfully connected to rethinkdb server");
-
-        // let wrapper = require('./api/Wrapper');
-        // wrapper.insertMatches('CL')
-        //     .then(result => {
-        //     })
-        //     .catch(err => {
-        //         console.log(err)
-        //     });
+        if (insert_matches) {
+            wrapper.insertMatches('CL')
+                .then(result => {
+                })
+                .catch(err => {
+                    console.log(err)
+                });
+        }
     })
     .catch(err => {
+        console.log(err)
         console.log("Failed to connect to rethinkdb server");
     });
 
@@ -68,11 +71,18 @@ app.post('/v1/bets/inactive', require('./api/endpoints/Bets').showInactiveBets);
 // app.post('/v1/bets/fetch', require('./api/endpoints/Bets').showBet);
 
 setTimeout(() => {
-    contractWrapper.updateContracts();
+    wrapper.updateContracts();
 }, 2500);
 
 setInterval(() => {
-    contractWrapper.updateContracts();
+    wrapper.updateContracts();
+}, 10 * 1000);
+
+setTimeout(async () => {
+    if (update_matches) {
+        let updateData = await wrapper.updateData('CL');
+        console.log("Successfully updated all matches.");
+    }
 }, 10 * 1000);
 
 // catch 404 and forward to error handler
