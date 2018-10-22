@@ -818,12 +818,12 @@ onload = async () => {
     $(document).on('click', '#add_ticker_button', App.createCryptoBetContract);
     $(document).on('click', '#add_sports_button', App.createMatchesBetContract);
     $(document).on('click', '#fetch_bets_button', App.getBets);
-
+    $("#crypto").height($(window).height());
+    $("#sports").height($(window).height());
     let pathname = window.location.pathname;
     let link = window.location.href;
     // console.log(link)
     let splitted = link.replace("http://neom.bet:3000", "");
-    // console.log(splitted)
     // console.log(pathname);
     // console.log(window.location.href);
     splitted = splitted.split("/");
@@ -856,6 +856,10 @@ onload = async () => {
         App.betId = splitted[3];
     }
 };
+
+function openPage(path) {
+    window.location.replace(`${base_url}/${path}`);
+}
 
 function formatTime(_timestamp) {
     let current_date = new Date(_timestamp);
