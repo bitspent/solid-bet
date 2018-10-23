@@ -50,9 +50,6 @@
             <b>Status</b>: <span id="status"></span><br/>
             <b>Win guess</b>: <span id="winGuess"></span><br/>
             <b>Win reward</b>: <span id="winReward"></span><br/>
-            <b>Winners</b>: <span id="currency"></span>
-        </div>
-        <div class="col-md-4 lower" id="contract_details">
             <div class="form-group">
                 <label for="guess_input">Guess</label>
                 <input type="number" class="form-control" id="guess_input" aria-describedby="teamTwoHelp"
@@ -60,6 +57,19 @@
             </div>
             <button type="button" class="btn btn-primary" id="subscribe_crypto_button">Submit</button>
         </div>
+        <table class="col-md-6 table table-bordered table-hover table-stats custom_background lower">
+            <thead>
+            <tr>
+                <th scope="col" colspan="2" style="text-align: center">Bets</th>
+            </tr>
+            <tr>
+                <th scope="col">User address</th>
+                <th scope="col">User reward</th>
+            </tr>
+            </thead>
+            <tbody id="winners">
+            </tbody>
+        </table>
     </div>
 
 

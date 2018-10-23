@@ -61,11 +61,16 @@ app.post('/v1/contracts/mine', require('./api/endpoints/Contracts').showMyContra
 app.post('/v1/contracts/public', require('./api/endpoints/Contracts').showPublicContracts);
 app.post('/v1/contracts/private', require('./api/endpoints/Contracts').showPrivateContracts);
 app.post('/v1/contracts/owned', require('./api/endpoints/Contracts').showOwnedContracts);
-app.post('/v1/contracts/inactive', require('./api/endpoints/Contracts').showInactiveContracts);
 app.post('/v1/contracts/length', require('./api/endpoints/Contracts').showContractsLength);
 
 app.post('/v1/bets/add', require('./api/endpoints/Bets').insertBet);
-app.post('/v1/bets/inactive', require('./api/endpoints/Bets').showInactiveBets);
+
+app.post('/v1/contracts/inactive/all', require('./api/endpoints/Contracts').showInactiveContracts);
+app.post('/v1/bets/inactive/all', require('./api/endpoints/Bets').showInactiveBets);
+
+app.post('/v1/contracts/inactive/mine', require('./api/endpoints/Contracts').showOwnedInactiveContracts);
+app.post('/v1/bets/inactive/mine', require('./api/endpoints/Bets').showOwnedInactiveBets);
+
 // app.post('/v1/bets/fetch', require('./api/endpoints/Bets').showActiveBets);
 // app.post('/v1/bets/fetch', require('./api/endpoints/Bets').showBet);
 

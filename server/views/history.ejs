@@ -40,11 +40,22 @@
     </div>
 </nav>
 <div class="container">
+    <div class="form-group col-md-4 lower">
+        <label for="visibility_flag">History</label><br/>
+        <select class="custom-select" id="history_flag">
+            <option value="1" selected>All (All contracts & bets)</option>
+            <option value="2">Mine (Contracts & bets assigned to my address)</option>
+        </select>
+        <button type="button" class="btn btn-primary" id="display_history_button" style="margin-top: 5px">Display
+        </button>
+    </div>
     <table class="table table-bordered table-hover table-stats custom_background lower">
         <thead>
         <tr>
-            <th scope="col">#</th>
+            <th scope="col">Bet #</th>
             <th scope="col">Type</th>
+            <th scope="col">Category</th>
+            <th scope="col">Subscription type</th>
             <th scope="col">Execution date</th>
             <th scope="col">Details</th>
         </tr>

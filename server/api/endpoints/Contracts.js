@@ -34,14 +34,12 @@ let insertContract = function (req, res, next) {
     };
     db.insertData('contracts', payload)
         .then(data => {
-            console.log(data)
             return res.json({
                 success: true,
                 result: data['generated_keys']
             });
         })
         .catch(err => {
-            console.log(err)
             return res.json({
                 success: false,
                 result: err
@@ -232,6 +230,30 @@ let showInactiveContracts = function (req, res, next) {
     });
 };
 
+let showOwnedInactiveContracts = function (req, res, next) {
+    db.viewData('contracts', function (contract) {
+        let today = new Date();
+        let today_timestamp = today.getTime() / 1000;
+        return contract("execution_time").lt(today_timestamp).and(contract('from').eq(req["body"]["account"]))
+    }, {
+        id: true,
+        uuid: true,
+        category: true,
+        contractAddress: true,
+        transactionHash: true,
+        to: true,
+        from: true,
+        time: true,
+        type: true,
+        execution_time: true,
+        subscription_price: true
+    }).then(result => {
+        return res.json(result);
+    }).catch(error => {
+        return res.send(error);
+    });
+};
+
 let showContractsLength = function (req, res, next) {
     if (
         typeof req["body"]["account"] === 'undefined'
@@ -272,6 +294,7 @@ module.exports = {
     showPublicContracts,
     showPrivateContracts,
     showOwnedContracts,
+    showOwnedInactiveContracts,
     showInactiveContracts,
     showContractsLength
 };

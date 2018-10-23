@@ -535,7 +535,7 @@ App = {
                 if (res.valueOf() == 0) {
                     $("#winReward").html('-');
                 } else {
-                    $("#winReward").html(res.valueOf());
+                    $("#winReward").html(res.valueOf() / 1e18);
                 }
             });
 
@@ -554,6 +554,26 @@ App = {
                     content += `<td>${result['guess']}</td>`;
                     content += `</tr>`;
                     $("#bet_subscribers").prepend(content)
+                }
+            });
+
+
+            let winEvent = App.CryptoInstance.newWinner({
+                // address: App.account
+            }, {
+                fromBlock: 0,
+                toBlock: 'latest',
+            });
+
+            winEvent.watch(function (error, event) {
+                if (!error) {
+                    let result = event['args'];
+                    let reward = (result['reward']).valueOf() / 1e18;
+                    let content = `<tr>`;
+                    content += `<td>${result['addr']}</td>`;
+                    content += `<td>${reward}</td>`;
+                    content += `</tr>`;
+                    $("#winners").prepend(content)
                 }
             });
         }
@@ -691,13 +711,14 @@ App = {
     },
 
     getInactiveBets: function () {
+        $("#bets").html("");
         $.ajax({
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             method: 'POST',
             contentType: 'application/json',
-            url: base_url + '/v1/contracts/inactive',
+            url: base_url + '/v1/contracts/inactive/all',
             data: {
                 account: App.account
             },
@@ -710,6 +731,8 @@ App = {
                         content += `<tr>`;
                         content += `<td>${contract['id']}</td>`;
                         content += `<td>${type}</td>`;
+                        content += `<td>${contract['category']}</td>`;
+                        content += `<td>contract</td>`;
                         content += `<td>${formatTime(contract['execution_time'] * 1000)}</td>`;
                         content += `<td><a href="${base_url}/contracts/${contract['uuid']}/${contract['id']}" target="_blank">here</a></td>`;
                         content += `</tr>`;
@@ -729,7 +752,42 @@ App = {
             },
             method: 'POST',
             contentType: 'application/json',
-            url: base_url + '/v1/bets/inactive',
+            url: base_url + '/v1/bets/inactive/all',
+            data: {
+                account: App.account
+            },
+            success: function (data, textStatus, jqXHR) {
+                if (data && data.length > 0) {
+                    data.forEach(contract => {
+                        let type = contract['type'] === 1 ? 'public' : 'private';
+                        let content = "";
+                        content += `<tr>`;
+                        content += `<td>${contract['betId']}</td>`;
+                        content += `<td>${type}</td>`;
+                        content += `<td>${contract['category']}</td>`;
+                        content += `<td>subscription</td>`;
+                        content += `<td>${formatTime(contract['execution_time'] * 1000)}</td>`;
+                        content += `<td><a href="${base_url}/contracts/${contract['uuid']}/${contract['betId']}" target="_blank">here</a></td>`;
+                        content += `</tr>`;
+                        $("#bets").prepend(content);
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+    },
+
+    getOwnedInactiveBets: function () {
+        $("#bets").html("");
+        $.ajax({
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
+            contentType: 'application/json',
+            url: base_url + '/v1/contracts/inactive/mine',
             data: {
                 account: App.account
             },
@@ -742,8 +800,43 @@ App = {
                         content += `<tr>`;
                         content += `<td>${contract['id']}</td>`;
                         content += `<td>${type}</td>`;
+                        content += `<td>${contract['category']}</td>`;
+                        content += `<td>contract</td>`;
                         content += `<td>${formatTime(contract['execution_time'] * 1000)}</td>`;
                         content += `<td><a href="${base_url}/contracts/${contract['uuid']}/${contract['id']}" target="_blank">here</a></td>`;
+                        content += `</tr>`;
+                        $("#bets").prepend(content);
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+
+
+        $.ajax({
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
+            contentType: 'application/json',
+            url: base_url + '/v1/bets/inactive/mine',
+            data: {
+                account: App.account
+            },
+            success: function (data, textStatus, jqXHR) {
+                if (data && data.length > 0) {
+                    data.forEach(contract => {
+                        let type = contract['type'] === 1 ? 'public' : 'private';
+                        let content = "";
+                        content += `<tr>`;
+                        content += `<td>${contract['betId']}</td>`;
+                        content += `<td>${type}</td>`;
+                        content += `<td>${contract['category']}</td>`;
+                        content += `<td>subscription</td>`;
+                        content += `<td>${formatTime(contract['execution_time'] * 1000)}</td>`;
+                        content += `<td><a href="${base_url}/contracts/${contract['uuid']}/${contract['betId']}" target="_blank">here</a></td>`;
                         content += `</tr>`;
                         $("#bets").prepend(content);
                     });
@@ -772,8 +865,17 @@ App = {
         App.SOLID_SPORT_BET_ABI = sports['abi'];
         App.SOLID_CRYPTO_BET_ABI = crypto['abi'];
         console.log("Successfully loaded ABIs.");
+    },
+
+    getHistory: async () => {
+        let history_flag = $('#history_flag option:selected').val();
+        if (history_flag == 1) {
+            await App.getInactiveBets();
+        } else {
+            await App.getOwnedInactiveBets()
+        }
     }
-};
+}
 
 function toHex(s) {
     var hex = '';
@@ -818,6 +920,9 @@ onload = async () => {
     $(document).on('click', '#add_ticker_button', App.createCryptoBetContract);
     $(document).on('click', '#add_sports_button', App.createMatchesBetContract);
     $(document).on('click', '#fetch_bets_button', App.getBets);
+    $(document).on('click', '#display_history_button', App.getHistory);
+
+
     $("#crypto").height($(window).height());
     $("#sports").height($(window).height());
     let pathname = window.location.pathname;
@@ -829,17 +934,18 @@ onload = async () => {
     splitted = splitted.split("/");
     // console.log(splitted)
     if (splitted.length === 2 && splitted[1] === 'matches') {
-        App.displayMatches();
-        App.showBets('sports')
+        await App.displayMatches();
+        await App.showBets('sports')
     }
 
     if (splitted.length === 2 && splitted[1] === 'crypto') {
         await App.displayTickers();
-        App.showBets('crypto');
+        await App.showBets('crypto');
     }
 
     if (splitted.length === 2 && splitted[1] === 'history') {
-        App.getInactiveBets();
+        // App.getInactiveBets();
+        // App.getOwnedInactiveBets();
     }
 
     if (splitted.length === 3 && splitted[1] === 'contracts' && !isNaN(+splitted[2])) {

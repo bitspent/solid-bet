@@ -59,22 +59,10 @@ let insertBet = function (req, res, next) {
 };
 
 let showInactiveBets = function (req, res, next) {
-    if (
-        typeof req["body"]["account"] === 'undefined'
-        || typeof req["body"]["category"] === 'undefined'
-    ) {
-        return res.json({
-            success: false,
-            result: "Something is missing"
-        });
-    }
-    let category = req["body"]["category"];
     db.viewData('bets', function (contract) {
         let today = new Date();
         let today_timestamp = today.getTime() / 1000;
         return contract("execution_time").lt(today_timestamp)
-            .and(contract('bettor').eq(req["body"]["account"]).or(contract('from').eq(req["body"]["account"])))
-            .and(contract('category').eq(category))
     }, {
         id: true,
         betId: true,
@@ -96,8 +84,46 @@ let showInactiveBets = function (req, res, next) {
     });
 };
 
+let showOwnedInactiveBets = function (req, res, next) {
+    if (
+        typeof req["body"]["account"] === 'undefined'
+    ) {
+        return res.json({
+            success: false,
+            result: "Something is missing"
+        });
+    }
+    let category = req["body"]["category"];
+    db.viewData('bets', function (contract) {
+        let today = new Date();
+        let today_timestamp = today.getTime() / 1000;
+        return contract("execution_time").lt(today_timestamp)
+            .and(contract('bettor').eq(req["body"]["account"]).or(contract('from').eq(req["body"]["account"])))
+    }, {
+        id: true,
+        betId: true,
+        category: true,
+        uuid: true,
+        contractAddress: true,
+        transactionHash: true,
+        to: true,
+        bettor: true,
+        from: true,
+        time: true,
+        type: true,
+        execution_time: true,
+        subscription_price: true
+    }).then(result => {
+        return res.json(result);
+    }).catch(error => {
+        return res.send(error);
+    });
+};
+
+
 module.exports = {
     insertBet,
-    showInactiveBets
+    showInactiveBets,
+    showOwnedInactiveBets
 };
 
