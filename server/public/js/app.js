@@ -539,6 +539,10 @@ App = {
                 }
             });
 
+            App.CryptoInstance.result.call(function (err, res) {
+                $("#winResult").html(res);
+            });
+
             let allEvents = App.CryptoInstance.newSubscriber({
                 // address: App.account
             }, {
@@ -620,7 +624,7 @@ App = {
     subscribeCryptoContract: function () {
         let guess_input = $("#guess_input").val();
         App.CryptoInstance.subscribe(guess_input, {
-            value: App.CryptoInstancePrice,
+            value: App.CryptoInstancePrice * 1e2,
             from: App.account
         }, function (err, res) {
             if (err) {
