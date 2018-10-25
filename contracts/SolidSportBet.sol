@@ -176,7 +176,7 @@ contract SportsBet is usingOraclize {
         require(address(this).balance > oraclize_getPrice('URL'), 'no api fee');
 
         // build the query string
-        string memory api = 'https://api.krykas.bet/v1/matches/';
+        string memory api = 'http://neom.bet:3000/v1/matches/';
         string memory matchID = uint2str(matchId);
         string memory query = strConcat4('json(', api, matchID, ').raw');
 
