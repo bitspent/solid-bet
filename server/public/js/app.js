@@ -1,4 +1,4 @@
-let base_url = "http://localhost:3000";
+let base_url = "http://neom.bet:3000";
 
 App = {
     web3Provider: null,
