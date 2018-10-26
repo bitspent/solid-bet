@@ -6,10 +6,11 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-let wrapper = new (require('./api/Wrapper'))(db);
+let wrapper = new (require('./api/Wrapper'))('ropsten', db);
 var app = express();
 app.use(cors());
 let insert_matches = true;
+
 db.initializeConnection()
     .then(async conn => {
         r.connection = conn;

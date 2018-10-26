@@ -47,6 +47,11 @@ contract CryptoPriceBet is usingOraclize, Pausable, ReentrancyGuard {
     uint public currency;
 
     /**
+     *  the bet creation time
+     */
+    uint public creationTime;
+
+    /**
      *  the bet subscription closure time
      */
     uint public closureDelay;
@@ -124,7 +129,7 @@ contract CryptoPriceBet is usingOraclize, Pausable, ReentrancyGuard {
 
         // closureDelay should be lower than executionDelay
         require(_closureDelay < _executionDelay, 'Invalid Timing');
-
+        creationTime = now;
         // assign the ownership to the betbean contract constructor
         owner = msg.sender;
         creator = _creator;

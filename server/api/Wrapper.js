@@ -2,8 +2,8 @@ let footballdata = new (require('../api/bets/sports/FootballData'));
 let Web3 = require('web3');
 
 class Wrapper {
-    constructor(db) {
-        this.web3 = new Web3(new Web3.providers.WebsocketProvider('wss://ropsten.infura.io/ws'));
+    constructor(network, db) {
+        this.web3 = new Web3(new Web3.providers.WebsocketProvider(`wss://${network}.infura.io/ws`));
         this.updating_contracts = false;
         this.db = db;
     }
