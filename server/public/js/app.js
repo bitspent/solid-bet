@@ -130,9 +130,10 @@ App = {
         let __closure_delay = $("#closure_delay").val();
         let __execution_delay = $("#execution_delay").val();
         let visibility_flag = $('#visibility_flag option:selected').val();
-        let _closureDelay = new Date(__closure_delay).getTime() / 1000;
-        let _executionDelay = new Date(__execution_delay).getTime() / 1000;
+        let _closureDelay = (new Date(__closure_delay).getTime() - new Date().getTime()) / 1000;
+        let _executionDelay = (new Date(__execution_delay).getTime() - new Date().getTime()) / 1000;
         var _subscriptionPrice = $("#subscription_price").val() * 1e18;
+
         var cryptopricebetContract = web3.eth.contract(App.SOLID_CRYPTO_BET_ABI);
         var cryptopricebet = cryptopricebetContract.new(
             _creator,
@@ -165,7 +166,7 @@ App = {
                                 uuid: _currency,
                                 category: 'crypto',
                                 transactionHash: deployedContract["transactionHash"],
-                                execution_time: _closureDelay,
+                                execution_time: new Date(__closure_delay).getTime() / 1000,
                                 subscription_price: _subscriptionPrice
                             }),
                             success: function (data, textStatus, jqXHR) {
