@@ -17,13 +17,16 @@ class Wrapper {
             let contract = _data[_start];
             let receipt = await this.web3.eth.getTransactionReceipt(contract["transactionHash"]);
             if (receipt) {
-                let updated = await this.db.updateData('contracts', {
-                        transactionHash: receipt['transactionHash']
-                    },
-                    {
-                        "contractAddress": receipt["contractAddress"],
-                        "from": receipt["from"]
-                    });
+                if (receipt['status'] === true) {
+                    let updated = await this.db.updateData('contracts', {
+                            transactionHash: receipt['transactionHash']
+                        },
+                        {
+                            "contractAddress": receipt["contractAddress"],
+                            "from": receipt["from"],
+                            "status": receipt['status']
+                        });
+                }
             }
             _start++;
             this.getData(_data, _start, _end);

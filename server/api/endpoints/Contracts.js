@@ -30,7 +30,8 @@ let insertContract = function (req, res, next) {
         from: account,
         time: Math.floor(new Date().getTime() / 1000),
         execution_time: execution_time,
-        subscription_price: subscription_price
+        subscription_price: subscription_price,
+        status: false
     };
     db.insertData('contracts', payload)
         .then(data => {
@@ -63,6 +64,7 @@ let showContract = function (req, res, next) {
         id: true,
         uuid: true,
         transactionHash: true,
+        status: true,
         to: true,
         from: true,
         time: true,
@@ -100,6 +102,7 @@ let showMyContracts = function (req, res, next) {
         contractAddress: true,
         transactionHash: true,
         to: true,
+        status: true,
         from: true,
         time: true,
         type: true,
@@ -125,13 +128,14 @@ let showPublicContracts = function (req, res, next) {
     db.viewData('contracts', function (contract) {
         let today = new Date();
         let today_timestamp = today.getTime() / 1000;
-        return contract("execution_time").gt(today_timestamp).and(contract("type").eq(1)).and(contract('category').eq(req["body"]["category"]))
+        return contract("execution_time").gt(today_timestamp).and(contract("type").eq(1)).and(contract("status").eq(true)).and(contract('category').eq(req["body"]["category"]))
     }, {
         id: true,
         uuid: true,
         category: true,
         contractAddress: true,
         transactionHash: true,
+        status: true,
         to: true,
         from: true,
         time: true,
@@ -160,7 +164,7 @@ let showPrivateContracts = function (req, res, next) {
     db.viewData('bets', function (contract) {
         let today = new Date();
         let today_timestamp = today.getTime() / 1000;
-        return contract("execution_time").gt(today_timestamp).and(contract('category').eq(category)).and(contract('type').eq(2)).and(contract('bettor').eq(req["body"]["account"]))
+        return contract("execution_time").gt(today_timestamp).and(contract('category').eq(category)).and(contract('type').eq(2)).and(contract("status").eq(true)).and(contract('bettor').eq(req["body"]["account"]))
     }, {
         id: true,
         betId: true,
@@ -168,6 +172,7 @@ let showPrivateContracts = function (req, res, next) {
         uuid: true,
         contractAddress: true,
         transactionHash: true,
+        status: true,
         to: true,
         bettor: true,
         from: true,
@@ -193,6 +198,7 @@ let showOwnedContracts = function (req, res, next) {
         category: true,
         contractAddress: true,
         transactionHash: true,
+        status: true,
         to: true,
         from: true,
         time: true,
@@ -217,6 +223,7 @@ let showInactiveContracts = function (req, res, next) {
         category: true,
         contractAddress: true,
         transactionHash: true,
+        status: true,
         to: true,
         from: true,
         time: true,
@@ -241,6 +248,7 @@ let showOwnedInactiveContracts = function (req, res, next) {
         category: true,
         contractAddress: true,
         transactionHash: true,
+        status: true,
         to: true,
         from: true,
         time: true,

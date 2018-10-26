@@ -425,6 +425,7 @@ App = {
             let MatchContract = web3.eth.contract(App.SOLID_SPORT_BET_ABI);
             App.MatchInstance = MatchContract.at(data['contractAddress']);
             let states = ['PENDING', "SUCCESS"];
+
             App.MatchInstance.details(function (err, res) {
                 if (!err) {
                     App.MatchInstancePrice = res[6].valueOf();
@@ -438,6 +439,7 @@ App = {
                     let _price = (res[6]).valueOf() / 1e18;
                     let _status = res[7];
                     let content = "";
+                    content += `<b>Contract address</b>: <a href="https://ropsten.etherscan.io/address/${data['contractAddress']}" target="_blank">${data['contractAddress']}</a><br/>`;
                     content += `<b>Match #</b>: ${_matchId}<br/>`;
                     content += `<b>Bet #</b>: ${betId}<br/>`;
                     content += `<b>League</b>: ${_league}<br/>`;
@@ -451,14 +453,14 @@ App = {
                 }
             });
 
-            let allEvents = App.MatchInstance.newSubscriber({
+            let MATCH_SUBS = App.MatchInstance.newSubscriber({
                 // address: App.account
             }, {
                 fromBlock: 0,
                 toBlock: 'latest',
             });
 
-            allEvents.watch(function (error, event) {
+            MATCH_SUBS.watch(function (error, event) {
                 if (!error) {
                     let result = event['args'];
                     let content = `<tr>`;
@@ -471,14 +473,14 @@ App = {
                 }
             });
 
-            let allEvents2 = App.MatchInstance.betResolved({
+            let MATCH_WIN_RESULT = App.MatchInstance.betResolved({
                 // address: App.account
             }, {
                 fromBlock: 0,
                 toBlock: 'latest',
             });
 
-            allEvents2.watch(function (error, event) {
+            MATCH_WIN_RESULT.watch(function (error, event) {
                 if (!error) {
                     let result = event['args'];
                     let scoreOne = result['scoreOne'].valueOf();
@@ -501,7 +503,7 @@ App = {
              */
 
             let states = ['OPENED', 'PENDING', 'EXECUTED', 'ERROR'];
-            $("#contractAddress").html(data['contractAddress']);
+            $("#contractAddress").html(`<a href="https://ropsten.etherscan.io/address/${data['contractAddress']}" target="_blank">${data['contractAddress']}</a>`);
             App.CryptoInstance.currency(function (err, res) {
                 $("#currency").html(App.tickers_data[res.valueOf()]['name']);
             });
@@ -544,33 +546,33 @@ App = {
                 $("#winResult").html(res);
             });
 
-            let allEvents = App.CryptoInstance.newSubscriber({
+            let CRYPTO_SUBS = App.CryptoInstance.newSubscriber({
                 // address: App.account
             }, {
                 fromBlock: 0,
                 toBlock: 'latest',
             });
 
-            allEvents.watch(function (error, event) {
+            CRYPTO_SUBS.watch(function (error, event) {
                 if (!error) {
                     let result = event['args'];
                     let content = `<tr>`;
                     content += `<td>${result['addr']}</td>`;
-                    content += `<td>${result['guess']}</td>`;
+                    content += `<td>${(result['guess'] / 1e2).toFixed(2)}</td>`;
                     content += `</tr>`;
                     $("#bet_subscribers").prepend(content)
                 }
             });
 
 
-            let winEvent = App.CryptoInstance.newWinner({
+            let CRYPTO_WIN_RESULT = App.CryptoInstance.newWinner({
                 // address: App.account
             }, {
                 fromBlock: 0,
                 toBlock: 'latest',
             });
 
-            winEvent.watch(function (error, event) {
+            CRYPTO_WIN_RESULT.watch(function (error, event) {
                 if (!error) {
                     let result = event['args'];
                     let reward = (result['reward']).valueOf() / 1e18;
@@ -624,8 +626,8 @@ App = {
 
     subscribeCryptoContract: function () {
         let guess_input = $("#guess_input").val();
-        App.CryptoInstance.subscribe(guess_input, {
-            value: App.CryptoInstancePrice * 1e2,
+        App.CryptoInstance.subscribe(guess_input * 1e2, {
+            value: App.CryptoInstancePrice,
             from: App.account
         }, function (err, res) {
             if (err) {
@@ -644,7 +646,6 @@ App = {
                         execution_time: App.execution_time
                     }),
                     success: function (data, textStatus, jqXHR) {
-                        console.log(data)
                         let content = "";
                         let link = `https://ropsten.etherscan.io/tx/${res}`;
                         content += `Successfully subscribed for match: ${+App.uuid}<br/>`;
@@ -663,8 +664,8 @@ App = {
         // console.log(category)
         let public_bets = await App.getBets(category, 'public');
         let private_bets = await App.getBets(category, 'private');
-        // console.log(public_bets);
-        // console.log(private_bets);
+        console.log(public_bets);
+        console.log(private_bets);
         let data = public_bets.concat(private_bets);
         if (data && data.length > 0) {
             for (let i = 0; i < data.length; i++) {
@@ -692,7 +693,7 @@ App = {
                 let bet_id = type === 'public' ? 'id' : 'betId';
                 content += `<td><a href="${base_url}/contracts/${contract['uuid']}/${contract[bet_id]}" target="_blank"><button type="button" class="btn btn-primary">Open</button></a></td>`;
                 content += `</tr>`;
-                $("#bets").prepend(content);
+                $("#bets").append(content);
             }
         }
     },
@@ -932,7 +933,6 @@ onload = async () => {
     $(document).on('click', '#fetch_bets_button', App.getBets);
     $(document).on('click', '#display_history_button', App.getHistory);
 
-
     $("#crypto").height($(window).height());
     $("#sports").height($(window).height());
     let pathname = window.location.pathname;
@@ -951,6 +951,19 @@ onload = async () => {
     if (splitted.length === 2 && splitted[1] === 'crypto') {
         await App.displayTickers();
         await App.showBets('crypto');
+        // console.log(formatTimeInput(new Date()))
+        let current_date = new Date();
+
+        let closure_ms = 60 * 60 * 1 * 1000;
+        let closure_timestamp = current_date.getTime() + closure_ms;
+        let closure_date = new Date(closure_timestamp);
+
+        let execution_ms = 60 * 60 * 2 * 1000;
+        let execution_timestamp = closure_timestamp + execution_ms;
+        let execution_date = new Date(execution_timestamp);
+
+        $("#closure_delay").val(formatTimeInput(closure_date));
+        $("#execution_delay").val(formatTimeInput(execution_date));
     }
 
     if (splitted.length === 2 && splitted[1] === 'history') {
@@ -980,4 +993,19 @@ function openPage(path) {
 function formatTime(_timestamp) {
     let current_date = new Date(_timestamp);
     return `${current_date.getUTCDate()}-${current_date.getUTCMonth() + 1}-${current_date.getFullYear()} ${current_date.toLocaleTimeString()}`;
+}
+
+
+function formatTimeInput(_timestamp) {
+    let current_date = new Date(_timestamp);
+    let current_time = `${current_date.getFullYear()}-${current_date.getUTCMonth() + 1}-${current_date.getUTCDate()}T${fixTwo(current_date.getHours())}:${fixTwo(current_date.getUTCMinutes())}`;
+    return current_time;
+}
+
+function fixTwo(number) {
+    if (number < 10) {
+        return '0' + number;
+    } else {
+        return number;
+    }
 }

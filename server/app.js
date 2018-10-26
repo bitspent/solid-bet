@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 let wrapper = new (require('./api/Wrapper'))(db);
 var app = express();
 app.use(cors());
-let insert_matches = false;
+let insert_matches = true;
 db.initializeConnection()
     .then(async conn => {
         r.connection = conn;
@@ -87,10 +87,10 @@ setInterval(() => {
 //     console.log("Successfully updated all matches.");
 // }, 10 * 1000);
 //
-// setTimeout(async () => {
-//     let updateData = await wrapper.updateData('CL');
-//     console.log("Successfully updated all matches.");
-// }, 30 * 60 * 1000);
+setTimeout(async () => {
+    let updateData = await wrapper.updateData('CL');
+    console.log("Successfully updated all matches.");
+}, 30 * 60 * 1000);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
