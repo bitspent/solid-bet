@@ -22,4 +22,6 @@ Welcome Page, Banners, Menu Nagivation: To Crypto / Sports Sections
 * Deployed Contract / Transaction Link Page Etherscan etc..
 * Other Bet Details...
 
-## [Raw Demo](//img.youtube.com/vi/n8748atG6dk/0.jpg)](//www.youtube.com/watch?v=n8748atG6dk "Raw Demo")
+
+## Raw Demo
+[![Raw Demo](https://img.youtube.com/vi/n8748atG6dk/2.jpg)](https://www.youtube.com/watch?v=n8748atG6dk)
