@@ -275,7 +275,7 @@ App = {
             t += `<td><a href="https://coinmarketcap.com/currencies/${ticker['name']}/" target="_blank"><img src="https://s2.coinmarketcap.com/static/img/coins/32x32/${ticker['id']}.png"/></a> ${ticker['name']}</td>`;
             t += `<td><a href="${base_url}/contracts/${ticker['id']}" target="_blank"><button type="button" class="btn btn-primary" ${disabled}>View contracts</button></a></td>`;
             t += `<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTickerModal" onclick="App.currencyId=${ticker['id']}">
-                        Create Bet
+                        Create Challenge
                     </button></td>`;
             t += `</tr>`;
             $("#tickets_table").append(t);
