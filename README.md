@@ -1,7 +1,7 @@
 # solid-bet
 Solid Bets - Crypto and Sport Betting Platform
 
-## home section
+## Home Section
 Welcome Page, Banners, Menu Nagivation: To Crypto / Sports Sections
 
 ## Crypto / Sports Section
