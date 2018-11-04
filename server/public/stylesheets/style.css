@@ -22,25 +22,3 @@ a {
     margin-right: auto !important;
     text-align: left !important;
 }
-
-.crypto {
-    width: 100%;
-    background: url('../images/crypto.jpg') no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    position: fixed;
-    opacity: 0.6;
-}
-
-.sports {
-    width: 100%;
-    background: url('../images/football.jpg') no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    position: fixed;
-    opacity: 0.6;
-}
