@@ -22,19 +22,36 @@ class Wrapper {
         contract["transactionHash"]
       );
       if (receipt) {
-        if (receipt["status"] === true) {
-          let updated = await this.db.updateData(
-            "contracts",
-            {
-              transactionHash: receipt["transactionHash"]
-            },
-            {
-              contractAddress: receipt["contractAddress"],
-              from: receipt["from"],
-              status: receipt["status"]
-            }
-          );
-        }
+        let updated = await this.db.updateData(
+          "contracts",
+          {
+            transactionHash: receipt["transactionHash"]
+          },
+          {
+            contractAddress: receipt["contractAddress"],
+            from: receipt["from"],
+            status: receipt["status"],
+            checked: true
+          }
+        );
+
+        io.to(process.env.SOCKET_ROOM).emit("TXS_UPDATES", {
+          from: receipt["from"],
+          transactionHash: receipt["transactionHash"],
+          contractAddress: receipt["contractAddress"],
+          status: receipt["status"],
+          category: contract["category"],
+          type: contract["type"],
+          uuid: contract["uuid"],
+          id: contract["id"]
+        });
+        console.log(
+          `Successfully updated ${receipt["transactionHash"]} -> ${
+            receipt["contractAddress"]
+          } -> ${receipt["from"]}`
+        );
+      } else {
+        console.log(`Pending update for tx ${contract["transactionHash"]}`);
       }
       _start++;
       this.getData(_data, _start, _end);
@@ -47,15 +64,19 @@ class Wrapper {
         .viewData(
           "contracts",
           {
-            contractAddress: null
+            checked: false
           },
           {
             id: true,
-            matchId: true,
+            type: true,
+            category: true,
+            uuid: true,
             transactionHash: true,
             to: true,
             from: true,
-            time: true
+            time: true,
+            contractAddress: true,
+            checked: true
           }
         )
         .then(data => {

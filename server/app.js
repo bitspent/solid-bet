@@ -1,5 +1,6 @@
 r = require("rethinkdb");
 db = new (require("./api/rethinkdb/Database"))();
+io = require("socket.io")();
 var cors = require("cors");
 var express = require("express");
 var path = require("path");
@@ -28,6 +29,10 @@ db.initializeConnection()
     console.log(err);
     console.log("Failed to connect to rethinkdb server");
   });
+
+io.on("connection", function(client) {
+  client.join(process.env.SOCKET_ROOM);
+});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -149,5 +154,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
-
+io.listen(process.env.SOCKET_PORT);
 module.exports = app;

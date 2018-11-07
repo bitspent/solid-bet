@@ -1,4 +1,42 @@
-let base_url = "http://localhost:3000";
+let base_url = "http://neom.bet:3000";
+var socket = io("http://neom.bet:3001");
+
+socket.on("connect", function() {
+  console.log("Successfully conncted to socket.io server");
+});
+socket.on("TXS_UPDATES", function(data) {
+  // console.log(data);
+  if (App.account === data["from"]) {
+    $("#addTickerModal").modal("hide");
+    $("#solidBetTransactionModal").modal({
+      keyboard: false,
+      show: true
+    });
+
+    let deployed_contract_content = ``;
+    if (!data["status"]) {
+      deployed_contract_content += `Failed to deploy contract address.`;
+    }
+
+    if (data["status"]) {
+      let link = `https://ropsten.etherscan.io/address/${
+        data["contractAddress"]
+      }`;
+      let local_link = `${base_url}/contracts/${data["uuid"]}/${data["id"]}`;
+      let display_text =
+        data["category"] === "sports"
+          ? `game ${data["uuid"]}`
+          : `currency: ${App.tickers_data[data["uuid"]]}`;
+
+      deployed_contract_content += `Successfully created and deployed contract for ${display_text}.<br/>`;
+      deployed_contract_content += `Check your contract on the ropsten network <a href="${link}" target="_blank">here</a><br/>`;
+      deployed_contract_content += `Check your deployed contract bet by clicking <a href="${local_link}" target="_blank">here</a><br/>`;
+    }
+    $("#solidBetTransactionModalBody").html(deployed_contract_content);
+  }
+});
+
+socket.on("disconnect", function() {});
 
 App = {
   web3Provider: null,
@@ -123,28 +161,6 @@ App = {
                 console.log("Failed to post data.");
               }
             });
-          } else {
-            if (current_data["success"]) {
-              $("#addTickerModal").modal("hide");
-              $("#solidBetTransactionModal").modal({
-                keyboard: false,
-                show: true
-              });
-              console.log(deployedContract.address);
-              let deployed_contract_content = "";
-              let link = `https://ropsten.etherscan.io/address/${
-                deployedContract["address"]
-              }`;
-              let local_link = `./contracts/${+temp_match_id}/${
-                current_data["result"][0]
-              }`;
-              deployed_contract_content += `Successfully created and deployed contract for match: ${+temp_match_id}.<br/>`;
-              deployed_contract_content += `Check your contract on the ropsten network <a href="${link}" target="_blank">here</a><br/>`;
-              deployed_contract_content += `Check your deployed contract bet by clicking <a href="${local_link}" target="_blank">here</a><br/>`;
-              $("#solidBetTransactionModalBody").html(
-                deployed_contract_content
-              );
-            }
           }
         } else {
           console.log(err);
@@ -217,29 +233,6 @@ App = {
                 console.log("Failed to post data.");
               }
             });
-          } else {
-            if (current_data["success"]) {
-              $("#addTickerModal").modal("hide");
-              $("#solidBetTransactionModal").modal({
-                keyboard: false,
-                show: true
-              });
-              console.log(deployedContract.address);
-              let deployed_contract_content = "";
-              let link = `https://ropsten.etherscan.io/address/${
-                deployedContract["address"]
-              }`;
-              let local_link = `./contracts/${_currency}/${
-                current_data["result"][0]
-              }`;
-              let currency_name = App.tickers_data[_currency]["name"];
-              deployed_contract_content += `Successfully created and deployed contract for currency: ${currency_name}.<br/>`;
-              deployed_contract_content += `Check your contract on the ropsten network <a href="${link}" target="_blank">here</a><br/>`;
-              deployed_contract_content += `Check your deployed contract bet by clicking <a href="${local_link}" target="_blank">here</a><br/>`;
-              $("#solidBetTransactionModalBody").html(
-                deployed_contract_content
-              );
-            }
           }
         } else {
           console.log(err);
@@ -272,8 +265,8 @@ App = {
     App.matches = data;
     if (data && data.length > 0) {
       data.sort(function(a, b) {
-        var nameA = a['league'].toUpperCase(); // ignore upper and lowercase
-        var nameB = b['league'].toUpperCase(); // ignore upper and lowercase
+        var nameA = a["league"].toUpperCase(); // ignore upper and lowercase
+        var nameB = b["league"].toUpperCase(); // ignore upper and lowercase
         if (nameA > nameB) {
           return -1;
         }
@@ -453,10 +446,26 @@ App = {
           let category = contract["category"];
           let type = contract["type"] === 1 ? "public" : "private";
           let content = "";
+
+          let status = "";
+          if (contract["checked"] === false && contract["status"] === false) {
+            status = "pending";
+          } else if (
+            contract["checked"] === true &&
+            contract["status"] === true
+          ) {
+            status = "deployed";
+          } else if (
+            contract["checked"] === true &&
+            contract["status"] === false
+          ) {
+            status = "failed";
+          }
           content += `<tr>`;
           content += `<td>${contract["uuid"]}</td>`;
           content += `<td>${contract["id"]}</td>`;
           content += `<td>${type}</td>`;
+          content += `<td>${status}</td>`;
           content += `<td>${formatTime(contract["time"] * 1000)}</td>`;
           content += `<td>${formatTime(
             contract["execution_time"] * 1000
@@ -788,8 +797,8 @@ App = {
     // console.log(category)
     let public_bets = await App.getBets(category, "public");
     let private_bets = await App.getBets(category, "private");
-    console.log(public_bets);
-    console.log(private_bets);
+    // console.log(public_bets);
+    // console.log(private_bets);
     let data = public_bets.concat(private_bets);
     if (data && data.length > 0) {
       for (let i = 0; i < data.length; i++) {
@@ -865,11 +874,28 @@ App = {
         if (data && data.length > 0) {
           data.forEach(contract => {
             let type = contract["type"] === 1 ? "public" : "private";
+
+            let status = "";
+            if (contract["checked"] === false && contract["status"] === false) {
+              status = "pending";
+            } else if (
+              contract["checked"] === true &&
+              contract["status"] === true
+            ) {
+              status = "deployed";
+            } else if (
+              contract["checked"] === true &&
+              contract["status"] === false
+            ) {
+              status = "failed";
+            }
+
             // let category = contract['category'];
             let content = "";
             content += `<tr>`;
             content += `<td>${contract["id"]}</td>`;
             content += `<td>${type}</td>`;
+            content += `<td>${status}</td>`;
             content += `<td>${contract["category"]}</td>`;
             content += `<td>contract</td>`;
             content += `<td>${formatTime(
@@ -902,10 +928,25 @@ App = {
         if (data && data.length > 0) {
           data.forEach(contract => {
             let type = contract["type"] === 1 ? "public" : "private";
+            let status = "";
+            if (contract["checked"] === false && contract["status"] === false) {
+              status = "pending";
+            } else if (
+              contract["checked"] === true &&
+              contract["status"] === true
+            ) {
+              status = "deployed";
+            } else if (
+              contract["checked"] === true &&
+              contract["status"] === false
+            ) {
+              status = "failed";
+            }
             let content = "";
             content += `<tr>`;
             content += `<td>${contract["betId"]}</td>`;
             content += `<td>${type}</td>`;
+            content += `<td>${status}</td>`;
             content += `<td>${contract["category"]}</td>`;
             content += `<td>subscription</td>`;
             content += `<td>${formatTime(
@@ -941,11 +982,25 @@ App = {
         if (data && data.length > 0) {
           data.forEach(contract => {
             let type = contract["type"] === 1 ? "public" : "private";
-            // let category = contract['category'];
+            let status = "";
+            if (contract["checked"] === false && contract["status"] === false) {
+              status = "pending";
+            } else if (
+              contract["checked"] === true &&
+              contract["status"] === true
+            ) {
+              status = "deployed";
+            } else if (
+              contract["checked"] === true &&
+              contract["status"] === false
+            ) {
+              status = "failed";
+            }
             let content = "";
             content += `<tr>`;
             content += `<td>${contract["id"]}</td>`;
             content += `<td>${type}</td>`;
+            content += `<td>${status}</td>`;
             content += `<td>${contract["category"]}</td>`;
             content += `<td>contract</td>`;
             content += `<td>${formatTime(
@@ -979,9 +1034,24 @@ App = {
           data.forEach(contract => {
             let type = contract["type"] === 1 ? "public" : "private";
             let content = "";
+            let status = "";
+            if (contract["checked"] === false && contract["status"] === false) {
+              status = "pending";
+            } else if (
+              contract["checked"] === true &&
+              contract["status"] === true
+            ) {
+              status = "deployed";
+            } else if (
+              contract["checked"] === true &&
+              contract["status"] === false
+            ) {
+              status = "failed";
+            }
             content += `<tr>`;
             content += `<td>${contract["betId"]}</td>`;
             content += `<td>${type}</td>`;
+            content += `<td>${status}</td>`;
             content += `<td>${contract["category"]}</td>`;
             content += `<td>subscription</td>`;
             content += `<td>${formatTime(

@@ -47,6 +47,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Bet #</th>
                     <th scope="col">Type</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Creation date</th>
                     <th scope="col">Execution date</th>
                     <th scope="col">Transaction hash</th>
@@ -56,6 +57,7 @@
             <tbody id="contracts">
             </tbody>
         </table>
+        <% include partials/modal.ejs %>
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -63,6 +65,7 @@
     <script src="../js/utils/popper.min.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../js/utils/web3.min.js"></script>
+    <script src="../js/utils/socket.io.js"></script>
     <script src="../js/app.js"></script>
 </body>
 

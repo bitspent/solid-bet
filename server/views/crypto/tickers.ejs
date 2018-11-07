@@ -1,156 +1,132 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel='stylesheet' href='../stylesheets/style.css'/>
+    <link rel='stylesheet' href='../stylesheets/style.css' />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <title>Solid Crypto Betting - Tickers</title>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#" id="rawbot_device_title">Solid Bets</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#" id="rawbot_device_title">Solid Bets</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="../">Home</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    Betting
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="../crypto">Crypto</a>
-                    <a class="dropdown-item" href="../matches">Sports</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../history">History</a>
-            </li>
-        </ul>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Betting
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="../crypto">Crypto</a>
+                        <a class="dropdown-item" href="../matches">Sports</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../history">History</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <table class="col-md-5 table table-bordered table-hover table-stats lower" style="margin-left: 15px">
+                <thead>
+                    <tr>
+                        <th colspan="5" style="text-align: center">Crypto tickers</th>
+                    </tr>
+                    <tr>
+                        <th scope="col" style="width: 50px">#</th>
+                        <th scope="col" style="width: 100px">Name</th>
+                        <th scope="col" style="width: 150px">View Contracts</th>
+                        <th scope="col" style="width: 150px">Create Challenge</th>
+                    </tr>
+                </thead>
+                <tbody id="tickets_table">
+                </tbody>
+            </table>
+            <table class="col-md-5 table table-bordered table-hover table-stats lower" style="margin-left: 15px">
+                <thead>
+                    <tr>
+                        <th colspan="6" style="text-align: center">Crypto active bets</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Ticker</th>
+                        <th scope="col">Entry</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Execution date</th>
+                        <th scope="col">Subscribe</th>
+                    </tr>
+                </thead>
+                <tbody id="bets">
+                </tbody>
+            </table>
+        </div>
     </div>
-</nav>
-<div class="container-fluid">
-    <div class="row">
-        <table class="col-md-5 table table-bordered table-hover table-stats lower" style="margin-left: 15px">
-            <thead>
-            <tr>
-                <th colspan="5" style="text-align: center">Crypto tickers</th>
-            </tr>
-            <tr>
-                <th scope="col" style="width: 50px">#</th>
-                <th scope="col" style="width: 100px">Name</th>
-                <th scope="col" style="width: 150px">View Contracts</th>
-                <th scope="col" style="width: 150px">Create Challenge</th>
-            </tr>
-            </thead>
-            <tbody id="tickets_table">
-            </tbody>
-        </table>
-        <table class="col-md-5 table table-bordered table-hover table-stats lower"
-               style="margin-left: 15px">
-            <thead>
-            <tr>
-                <th colspan="6" style="text-align: center">Crypto active bets</th>
-            </tr>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Ticker</th>
-                <th scope="col">Entry</th>
-                <th scope="col">Type</th>
-                <th scope="col">Execution date</th>
-                <th scope="col">Subscribe</th>
-            </tr>
-            </thead>
-            <tbody id="bets">
-            </tbody>
-        </table>
-    </div>
-</div>
 
-<!-- Add crypto bet modal -->
-<div class="modal fade" id="addTickerModal" tabindex="-1" role="dialog" aria-labelledby="modalAddCryptoBetLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Solid Crypto Betting - Contract Deployment</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="visibility_flag">Visibility</label><br/>
-                    <select class="custom-select" id="visibility_flag">
-                        <option value="1" selected>Public (visible on the crypto section page)</option>
-                        <option value="2">Private (only anyone having the link can subscribe)</option>
-                    </select>
+    <!-- Add crypto bet modal -->
+    <div class="modal fade" id="addTickerModal" tabindex="-1" role="dialog" aria-labelledby="modalAddCryptoBetLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Solid Crypto Betting - Contract Deployment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label for="closure_delay">Closure Delay: People can subscribe until</label><br/>
-                    <input type="datetime-local" id="closure_delay"
-                           name="party-time"/>
-                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="visibility_flag">Visibility</label><br />
+                        <select class="custom-select" id="visibility_flag">
+                            <option value="1" selected>Public (visible on the crypto section page)</option>
+                            <option value="2">Private (only anyone having the link can subscribe)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="closure_delay">Closure Delay: People can subscribe until</label><br />
+                        <input type="datetime-local" id="closure_delay" name="party-time" />
+                    </div>
 
-                <div class="form-group">
-                    <label for="execution_delay">Execution Delay: Winners pick time</label><br/>
-                    <input type="datetime-local" id="execution_delay"
-                           name="party-time"/>
-                </div>
+                    <div class="form-group">
+                        <label for="execution_delay">Execution Delay: Winners pick time</label><br />
+                        <input type="datetime-local" id="execution_delay" name="party-time" />
+                    </div>
 
-                <div class="form-group">
-                    <label for="subscription_price">Subscription Price</label>
-                    <input type="text" class="form-control" id="subscription_price"
-                           placeholder="0.1 (amount in ETH)">
+                    <div class="form-group">
+                        <label for="subscription_price">Subscription Price</label>
+                        <input type="text" class="form-control" id="subscription_price" placeholder="0.1 (amount in ETH)">
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="add_ticker_button">Deploy</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="add_ticker_button">Deploy</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="solidBetTransactionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                    Solid Bet - Contract Deployment</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p id="solidBetTransactionModalBody"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="../js/utils/jquery-3.3.1.min.js"></script>
-<script src="../js/utils/popper.min.js"></script>
-<script src="../bootstrap/js/bootstrap.min.js"></script>
-<script src="../js/utils/web3.min.js"></script>
-<script src="../js/app.js"></script>
+    <% include ../partials/modal.ejs %>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="../js/utils/jquery-3.3.1.min.js"></script>
+    <script src="../js/utils/popper.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../js/utils/web3.min.js"></script>
+    <script src="../js/utils/socket.io.js"></script>
+    <script src="../js/app.js"></script>
 </body>
 
 </html>

@@ -46,7 +46,7 @@ async.series({
     five: function (parallelCb) {
         db.createTable('bets')
             .then(result => {
-                parallelCb(null, "Successfully created matches table.");
+                parallelCb(null, "Successfully created bets table.");
             })
             .catch(err => {
                 parallelCb(err, null);
