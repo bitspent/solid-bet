@@ -26,7 +26,7 @@ socket.on("TXS_UPDATES", function(data) {
       let display_text =
         data["category"] === "sports"
           ? `game ${data["uuid"]}`
-          : `currency: ${App.tickers_data[data["uuid"]]}`;
+          : `currency: ${App.tickers_data[data["uuid"]].name}`;
 
       deployed_contract_content += `Successfully created and deployed contract for ${display_text}.<br/>`;
       deployed_contract_content += `Check your contract on the ropsten network <a href="${link}" target="_blank">here</a><br/>`;
@@ -176,10 +176,11 @@ App = {
     let __closure_delay = $("#closure_delay").val();
     let __execution_delay = $("#execution_delay").val();
     let visibility_flag = $("#visibility_flag option:selected").val();
-    let _closureDelay =
-      (new Date(__closure_delay).getTime() - new Date().getTime()) / 1000;
-    let _executionDelay =
-      (new Date(__execution_delay).getTime() - new Date().getTime()) / 1000;
+    let _closureDelay = Math.floor((new Date(__closure_delay).getTime() - new Date().getTime()) / 1000);
+    let _executionDelay = Math.floor((new Date(__execution_delay).getTime() - new Date().getTime()) / 1000);
+
+    console.log(_closureDelay);
+    console.log(_executionDelay);
     var _subscriptionPrice = $("#subscription_price").val() * 1e18;
 
     var cryptopricebetContract = web3.eth.contract(App.SOLID_CRYPTO_BET_ABI);
