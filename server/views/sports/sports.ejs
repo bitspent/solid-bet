@@ -1,0 +1,177 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="apple-touch-icon" href="../../icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/bootstrap.css">
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.min.css">
+</head>
+
+<body>
+  <!--[if lte IE 9]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="../../https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="rightdiv">
+          <div class="logo">
+            <img class="img-responsive" src="img/logo.png">
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-12">
+              <h1 class="orange-title">Sports Bets</h1>
+            </div>
+          </div>
+
+          <br>
+          <div class="row">
+            <div class="col-md-12 line">
+              <ul class="bet-list p-0 bet2-list">
+                <li class="first-li my-active">Active bets</li>
+                <li>My Subscriptions</li>
+                <li>My History</li>
+              </ul>
+
+              <ul class="righ-toolbar p-0 bet2-list">
+                <li class="orange-title" onclick="openModal('#myModal')">Create Challenge</li>
+              </ul>
+            </div>
+          </div>
+          <div class="row" id="displayable_bets">
+          </div><!-- end row card -->
+
+
+
+          <div class="copyright">
+            <p>&#9400; 2018 BetPit</p>
+          </div>
+
+
+        </div><!-- end right div -->
+
+        <div class="modal fade" id="myModal2" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Solid Sports Betting</h4>
+                <h5 class="modal-title">Contact Deployment</h5>
+              </div>
+              <div class="modal-body">
+                <img class="loading" src="img/loading.gif">
+                <p class="light-font">*Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</p>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="modal fade" id="myModal3" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Solid Sports Betting</h4>
+                <h5 class="modal-title">Contact Deployment</h5>
+              </div>
+              <div class="modal-body">
+                <h4 class="green-text">Successfuly created and deplyed contract for game 36789</h4>
+                <br />
+                <a href="../../">Click here</a>to check your contact on the ropsten network
+                <br />
+                <a href="../../">Click here</a>to check your contact on the ropsten network
+              </div>
+              <div class="modal-footer botton-left">
+                <button type="button" class="btn btn-default gray-button" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+
+  </div>
+  <div class="modal" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Solid Sports Betting</h4>
+          <h5 class="modal-title">Contact Deployment</h5>
+        </div>
+        <div class="modal-body">
+          <label for="amount">Subscription Price</label><br />
+          <input type="text" name="amount" placeholder="amount in ETH" id="amount" class="price"><br><br>
+
+          <label for="amount">Visibility </label><br />
+
+          <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+
+          <label for="Radio0" style="color: #b2b2b2; font-size:12px; ">Public</label><br>
+          <p class="light-font">*This bet will be visible to all website</p>
+        </div>
+        <div class="modal-footer botton-left">
+          <button type="button" class="btn btn-default orange-button" data-dismiss="modal">Submit Bet</button>
+          <button type="button" class="btn btn-default gray-button" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <script src="js/utils/jquery-3.3.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/utils/popper.min.js"></script>
+  <script src="js/utils/socket.io.js"></script>
+  <script src="js/utils/web3.min.js"></script>
+  <script src="js/app_sports.js"></script>
+
+  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+  <script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto'); ga('send', 'pageview')
+  </script>
+  <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+</body>
+
+
+
+
+</html>

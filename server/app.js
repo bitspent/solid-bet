@@ -19,7 +19,7 @@ db.initializeConnection()
     if (insert_matches) {
       wrapper
         .insertMatches("CL")
-        .then(result => {})
+        .then(result => { })
         .catch(err => {
           console.log(err);
         });
@@ -30,7 +30,7 @@ db.initializeConnection()
     console.log("Failed to connect to rethinkdb server");
   });
 
-io.on("connection", function(client) {
+io.on("connection", function (client) {
   client.join(process.env.SOCKET_ROOM);
 });
 
@@ -52,10 +52,6 @@ app.use(express.static(path.join(__dirname, "public")));
  * Routes
  */
 app.use("/", require("./routes/index"));
-app.use("/matches", require("./routes/matches"));
-app.use("/crypto", require("./routes/crypto"));
-app.use("/contracts", require("./routes/contracts"));
-// app.use('/bets', require('./routes/bets'));
 
 /**
  * API endpoints
@@ -138,14 +134,14 @@ setInterval(() => {
 }, 5 * 60 * 1000);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error("Not Found");
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};

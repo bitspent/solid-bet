@@ -1,74 +1,145 @@
 <!doctype html>
-<html lang="en">
+<html class="no-js" lang="">
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel='stylesheet' href='./stylesheets/style.css' />
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
-    <title>Solid Sports Betting - Home</title>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#" id="rawbot_device_title">Solid Bets</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+  <!--[if lte IE 9]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="./">Home</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        Betting
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="./crypto">Crypto</a>
-                        <a class="dropdown-item" href="./matches">Sports</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./history">History</a>
-                </li>
-            </ul>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 bg-div">
+      <div class="leftdiv">
+        <div class="logo">
+          <img class="img-responsive" src="img/logow.png">
         </div>
-    </nav>
-    <div class="container">
-        <div class="row lower">
-            <div class="card col-md-4">
-                <div class="card-body">
-                    <h5 class="card-title">Crypto</h5>
-                    <p class="card-text">Place a bet on any cryptocurrency's price.</p>
-                    <button type="button" class="btn btn-primary" onclick="openPage('./crypto')">Open
-                    </button>
-                </div>
-            </div>
-            <div class="card col-md-4" style="margin-left: 15px">
-                <div class="card-body">
-                    <h5 class="card-title">Sports</h5>
-                    <p class="card-text">Place a bet on any football game.</p>
-                    <button type="button" class="btn btn-primary" onclick="openPage('./matches')">Open
-                    </button>
-                </div>
-            </div>
+        <div class="concept">
+
+          <p> NO ICO.</p>
+          <p> NO FEES.</p>
+          <p>  NO BULLSHIT.</p>
+
+
         </div>
-        <% include partials/modal.ejs %>
+        <div class="first-text">
+          <p>Bet on anything with trust-free<br>smart contracts.</p>
+
+        </div>
+        <div class="first-btn">
+          <button class="start-btn">START BETTING</button>
+        </div>
+      </div>
     </div>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="./js/utils/jquery-3.3.1.min.js"></script>
-    <script src="./js/utils/popper.min.js"></script>
-    <script src="./bootstrap/js/bootstrap.min.js"></script>
-    <script src="./js/utils/web3.min.js"></script>
-    <script src="../js/utils/socket.io.js"></script>
-    <script src="./js/app.js"></script>
+    <div class="col-md-6 bg-gray-color">
+      <div class="rightdiv ">
+
+
+
+        <div class="left-div-margin">
+        <div class=" mt-30 ">
+          <p class="fs-24">All</p>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="float-left">
+              <p class="font-bold fs-24">Bets</p>
+            </div>
+            <!--<div class="float-right">-->
+              <!--<p class="mr-0 pt-10">View ALL</p>-->
+            <!--</div>-->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 pr" onclick="redirect('crypto')">
+            <div class="my-card bit-bg">
+               <div class="row">
+                 <div class="col-md-12">
+                   <div class="p-20">
+                     <h3 class="card-title">CRYPTO BETS</h3>
+                   </div>
+                 </div>
+               </div>
+            </div><!-- end my-card -->
+          </div><!-- end col-6 -->
+          <br class="hidden-lg hidden-md">
+
+          <div class="col-md-6 pr" onclick="redirect('sports')">
+            <div class="my-card sport-bg">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="p-20">
+                    <h3 class="card-title">SPORT BETS</h3>
+                  </div>
+                </div>
+              </div>
+            </div><!-- end my-card -->
+          </div><!-- end col-6 -->
+          <br class="hidden-lg hidden-md">
+        </div><!-- end row card -->
+        </div>
+
+
+
+
+
+        <div class="row bottom-40">
+          <div class="col-md-12">
+            <ul class="bet-list">
+              <li class="first-li my-active">All Bets</li>
+              <li>Open</li>
+              <li>Upcoming</li>
+              <li>Closed</li>
+            </ul>
+
+          </div>
+        </div>
+
+        <div class="copyright">
+          <p>&#9400; 2018 BetPit</p>
+        </div>
+
+
+      </div><!-- end right div -->
+
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
+  <script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+  <script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto'); ga('send', 'pageview')
+  </script>
+  <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 </body>
 
 </html>

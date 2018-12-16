@@ -1,0 +1,948 @@
+
+
+/* ==========================================================================
+   Base styles: opinionated defaults
+   ========================================================================== */
+
+html {
+    color: #222;
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+
+
+@font-face {
+  font-family: myFont;
+  src: url("../css/fonts/BebasNeue-Regular.ttf");
+}
+
+body{
+  font-family: myFont!important;
+}
+
+/*
+ * Remove text-shadow in selection highlight:
+ * https://twitter.com/miketaylr/status/12228805301
+ *
+ * Vendor-prefixed and regular ::selection selectors cannot be combined:
+ * https://stackoverflow.com/a/16982510/7133471
+ *
+ * Customize the background color to match your design.
+ */
+
+::selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+/*
+ * A better looking default horizontal rule
+ */
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+/*
+ * Remove the gap between audio, canvas, iframes,
+ * images, videos and the bottom of their containers:
+ * https://github.com/h5bp/html5-boilerplate/issues/440
+ */
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+    vertical-align: middle;
+}
+
+/*
+ * Remove default fieldset styles.
+ */
+
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/*
+ * Allow only vertical resizing of textareas.
+ */
+
+textarea {
+    resize: vertical;
+}
+
+/* ==========================================================================
+   Browser Upgrade Prompt
+   ========================================================================== */
+
+.browserupgrade {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+
+/* ==========================================================================
+   custom styles
+   ========================================================================== */
+
+.bg-div{
+  background-image: url("../img/background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.bg-gray{
+  background-image: url("../img/background-grey.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.bg-lightgray{
+  background-image: url("../img/grey background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.bg-vs{
+  background-image: url("../img/vs.png")!important;
+  background-repeat: no-repeat!important;
+  background-size: contain!important;
+  background-position: center center!important;
+  padding: 5px!important;
+}
+
+.bg-gray-color{
+  background-color: #d3d3d3;
+}
+
+.bg-blue{
+    background-color: #204d74;
+}
+
+.leftdiv {
+    min-height: 100vh;
+  padding: 50px 50px 0px 50px;
+    /*padding: 50px;*/
+}
+
+.logo {
+    width: 80px;
+}
+
+.concept{
+    margin-top: 30vh;
+}
+.concept2{
+    margin-top: 10vh;
+}
+
+.concept p {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 4.5vw;
+    margin: 0 0 0px;
+    line-height: 1;
+
+}
+.concept2 p {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 4.5vw;
+    margin: 0 0 0px;
+    line-height: 1;
+
+}
+
+.first-text{
+    margin-top: 35px;
+}
+
+.first-text p {
+    color: #ffffff;
+    font-size: 18px;
+    margin: 0 0 0px;
+    line-height: 1.5;
+
+}
+
+.first-btn {
+    /*margin-top: 35px;*/
+    position: absolute;
+    bottom: 7vh;
+}
+
+.start-btn {
+    background-color: darkorange;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px 10px 20px;
+    font-size: 18px;
+
+}
+
+.float-left{
+    float: left;
+}
+
+.float-right{
+    float: right;
+}
+
+.font-bold{
+    font-weight: bold;
+}
+
+.rightdiv{
+    padding: 50px 50px 0px 50px;
+    min-height: 100vh;
+}
+
+.mt-30{
+    margin-top: 30px;
+}
+
+.fs-24{
+    font-size: 24px;
+}
+.fs-18{
+    font-size: 18px !important;
+}
+
+.mr-0{
+    margin: 0px !important;
+}
+
+.pt-10{
+    padding-top: 10px;
+}
+.p-20{
+    padding: 20px;
+}
+
+
+.my-card{
+    width: 100%;
+    min-height: 350px;
+    background: #ffffff;
+    box-shadow: 0 10px 7px 2px rgba(0, 0, 0, 0.2);
+    padding-bottom: 10px;
+}
+
+.bit-bg{
+  background-image: url("../img/bitcoins-bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.sport-bg{
+  background-image: url("../img/sport-bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.left-div-margin{
+  margin-top: 5vh;
+}
+
+.card-title{
+  text-align: center;
+  color: #ea8f00;
+}
+
+.orange-title{
+  color: #ea8f00;
+  font-family: myFont;
+}
+
+.righ-toolbar{
+  float: right;
+  display: inline-flex;
+  text-decoration: none;
+  list-style-type: none;
+}
+
+.light-font{
+  color: #b2b2b2;
+}
+
+.line{
+  border-bottom: 1px solid gray;
+  margin-bottom: 10px;
+}
+
+.modal-footer {
+  padding: 15px;
+  text-align: left!important;
+  border-top: 1px solid #e5e5e5;
+}
+
+.orange-button{
+  color: #ffffff!important;
+  background-color: #ea8f00!important;
+  padding: 6px 25px 9px 25px!important;
+}
+
+.gray-button{
+  color: #ffffff!important;
+  background-color: #4a4a4a!important;
+  padding: 6px 25px 9px 25px!important;
+}
+
+.ref{
+  text-decoration: none!important;
+  color: #4a4a4a;
+}
+
+#search{
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.modal-backdrop.in {
+  opacity: 0!important;
+}
+
+.modal.fade .modal-dialog {
+  transform: translate(0, 35%)!important;
+}
+
+.green-text{
+  color: green;
+}
+
+.vs-bg{
+  background-image: url("../img/vs.png")!important;
+  background-repeat: no-repeat!important;
+  background-size: contain!important;
+  background-position: center center!important;
+  padding: 5px!important;
+
+}
+
+.right-input{
+  float: right;
+}
+
+.left-input{
+  float: left;
+}
+
+.full-button{
+  width: 100%!important;
+  padding: 15px!important;
+}
+
+.table, th, td {
+  border: 1px solid #8b8b8b;
+}
+
+.table-title{
+  font-size: 20px;
+  padding: 10px;
+  color: #4a4a4a;
+}
+
+.left-align{
+  text-align: left;
+}
+
+.center-align{
+  text-align: center;
+}
+
+.body-table td{
+  font-size: 15px;
+  padding: 10px;
+  color: #4a4a4a;
+}
+
+.bet-input{
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 13px;
+
+}
+
+.percent-left{
+  margin-top: -55px;
+  padding-left: 5px;
+  font-size: 30px;
+  color: #fff;
+}
+
+.percent-right{
+  margin-top: -55px;
+  padding-right: 5px;
+  font-size: 30px;
+  color: #fff;
+  float: right;
+}
+
+.percent-bottom{
+  margin-top: -20px;
+  padding-left: 5px;
+  font-size: 15px;
+  color: #fff;
+}
+
+.percent-bottom-right{
+  margin-top: -20px;
+  padding-right: 5px;
+  font-size: 15px;
+  color: #fff;
+  float: right;
+}
+
+.price{
+
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 8px;
+
+}
+
+.loading{
+  margin: 0px 40%;
+  height: 90px;
+  margin-bottom: 20px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 15px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #b2b2b2;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+@media (max-width: 992px) {
+ .righ-toolbar{
+   display: none;
+ }
+}
+
+
+@media (min-width: 992px) {
+  .my-card{
+    min-height: 300px;
+  }
+  .left-div-margin{
+    margin-top: 10vh;
+  }
+}
+
+@media (min-width: 1200px) {
+  .my-card{
+    min-height: 350px;
+  }
+  .left-div-margin{
+    margin-top: 1vh;
+  }
+}
+
+.pr{
+    position: relative !important;
+}
+
+.small-logo{
+    width: 50px;
+    padding: 3px;
+}
+
+.gray-text{
+    color: gray;
+}
+
+.left-logo{
+    float: left;
+    padding: 10px;
+    width: 100px;
+    text-align: center;
+}
+.team-logo{
+    padding: 10px;
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+
+.right-logo{
+    float: right;
+    padding: 10px;
+    width: 100px;
+    text-align: center;
+}
+
+.team-text{
+    padding: 10px;
+    padding-bottom: 0;
+    font-weight: bold;
+    font-size: 18px;
+    margin: 0;
+}
+
+.team-name{
+    color: lightgray;
+    font-size: 10px;
+
+}
+
+
+.team-value{
+    color: gray;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.team-rate{
+    color: gray;
+    font-size: 12px;
+}
+
+.bid-div{
+    text-align: center;
+}
+
+.bid-btn{
+    color: #fff;
+    background-color: orange;
+    border:none;
+    outline: none;
+    border-radius: 5px;
+    padding: 3px 20px 3px 20px;
+}
+.bid-btn2{
+    color: #fff;
+    background-color: gray;
+    border:none;
+    outline: none;
+    border-radius: 5px;
+    padding: 3px 20px 3px 20px;
+}
+
+.bid-text{
+    font-size: 12px;
+    color: lightgray;
+    text-decoration: underline;
+}
+
+.card-text{
+    text-align: center;
+}
+.bottom-40{
+    position: absolute;
+    bottom: 50px;
+}
+
+.bet-list{
+    display: inline-flex;
+    text-decoration: none;
+    list-style-type: none;
+}
+
+
+
+.bet-list li{
+    margin-left: 20px;
+    color: gray;
+}
+
+.first-li{
+    margin-left:0px !important;
+}
+
+.my-active{
+    font-weight: bold;
+    color: black !important;
+}
+
+
+.copyright{
+    position: absolute;
+    bottom: 15px;
+    right: 35px;
+}
+
+.copyright p{
+    color: gray;
+    font-size: 10px;
+}
+
+.underline-text{
+    text-decoration: underline;
+}
+
+
+
+
+
+
+.accordion {
+    background-color: unset;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 22px;
+    transition: 0.4s;
+}
+
+.active, .accordion:hover {
+    background-color: #ccc;
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: transparent !important;
+    overflow: hidden;
+    -webkit-box-shadow:none !important;
+    box-shadow: none !important;
+}
+
+button.accordion:after {
+    content: '\002B';
+    color: orange;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+button.accordion.active:after {
+    content: "\2212";
+}
+
+.p-18{
+    padding: 18px;
+}
+
+.fs-22{
+    font-size: 22px;
+}
+
+.p-0{
+    padding: 0;
+}
+
+.bet2-list{
+
+}
+.bet2-list li{
+    font-size: 22px;
+}
+
+.ball-icon{
+    width: 16px;
+    padding-bottom: 3px;
+}
+
+.basket-btn1{
+    background: orange;
+    color: white;
+    border: 1px solid gray;
+    border-radius: 15px;
+}
+.basket-btn2{
+    background: transparent;
+    border: 1px solid gray;
+    border-radius: 15px;
+}
+
+.head-style{
+    width: 100%;
+    border-bottom: 1px solid gray;
+    padding-bottom: 30px;
+}
+
+.left-head{
+    float: left;
+}
+.left-head p{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.right-head{
+    float: right;
+}
+
+.right-head span{
+    font-size: 18px;
+}
+.flag-img{
+    width: 200px;
+}
+
+.win-team{
+    font-size: 32px;
+    font-weight: bold;
+    color: #e86f00;
+}
+
+
+
+.updates-date{
+    font-size: 20px;
+    color: #e86f00;
+}
+
+.my-br{
+    width: 50%;
+    margin-top: 10px;
+}
+
+
+
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+
+/*
+ * Hide visually and from screen readers
+ */
+
+.hidden {
+    display: none !important;
+}
+
+/*
+ * Hide only visually, but have it available for screen readers:
+ * https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+ *
+ * 1. For long content, line feeds are not interpreted as spaces and small width
+ *    causes content to wrap 1 word per line:
+ *    https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
+ */
+
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap; /* 1 */
+}
+
+/*
+ * Extends the .visuallyhidden class to allow the element
+ * to be focusable when navigated to via the keyboard:
+ * https://www.drupal.org/node/897638
+ */
+
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+    white-space: inherit;
+}
+
+/*
+ * Hide visually and from screen readers, but maintain layout
+ */
+
+.invisible {
+    visibility: hidden;
+}
+
+/*
+ * Clearfix: contain floats
+ *
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    `contenteditable` attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that receive the `clearfix` class.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+/* ==========================================================================
+   EXAMPLE Media Queries for Responsive Design.
+   These examples override the primary ('mobile first') styles.
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+    /* Style adjustments for viewports that meet the condition */
+}
+
+@media print,
+       (min-resolution: 1.25dppx),
+       (min-resolution: 120dpi) {
+    /* Style adjustments for high resolution devices */
+}
+
+/* ==========================================================================
+   Print styles.
+   Inlined to avoid the additional HTTP request:
+   https://www.phpied.com/delay-loading-your-print-css/
+   ========================================================================== */
+
+@media print {
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        color: #000 !important; /* Black prints faster */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    /*
+     * Don't show links that are fragment identifiers,
+     * or use the `javascript:` pseudo protocol
+     */
+
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+
+    pre {
+        white-space: pre-wrap !important;
+    }
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    /*
+     * Printing Tables:
+     * http://css-discuss.incutio.com/wiki/Printing_Tables
+     */
+
+    thead {
+        display: table-header-group;
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+
+
+
+}
