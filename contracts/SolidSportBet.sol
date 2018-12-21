@@ -96,6 +96,7 @@ contract SportsBet is usingOraclize {
             && msg.value >= price
             && scoreOne <= SCORE_LIMIT      // no overflow
             && scoreTwo <= SCORE_LIMIT      // no overflow
+            && block.timestamp < matchTimestamp 
         );
         scores.push(score(msg.sender, scoreOne, scoreTwo));
         emit newSubscriber(msg.sender, scoreOne, scoreTwo);
